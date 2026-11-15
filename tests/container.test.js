@@ -7,6 +7,7 @@ import { join } from 'node:path';
 import { Input, BlobSource, ALL_FORMATS, Output, BufferTarget, Mp4OutputFormat, Conversion } from 'mediabunny';
 import { timeline, convert } from '../src/converter.js';
 import { checkTimeline } from '../src/policy.js';
+import { inspect } from '../src/metadata.js';
 const available = spawnSync('ffmpeg', ['-version']).status === 0;
 test('real MOV HEVC/AAC demux, audio packet preservation and MP4 mux verified by ffprobe', { skip: !available }, async () => {
   const dir = mkdtempSync(join(tmpdir(), 'studio-'));
@@ -15,6 +16,9 @@ test('real MOV HEVC/AAC demux, audio packet preservation and MP4 mux verified by
     const source = join(dir, 'source.mov');
     execFileSync('ffmpeg', ['-v','error','-f','lavfi','-i','testsrc2=size=128x72:rate=60','-itsoffset','0.15','-f','lavfi','-i','sine=frequency=440:sample_rate=48000','-t','1','-c:v','libx265','-preset','ultrafast','-x265-params','pools=1:frame-threads=1:log-level=error','-tag:v','hvc1','-c:a','aac',source], {stdio:'pipe'});
     const file = new Blob([readFileSync(source)]);
+    const metadata = await inspect(file);
+    assert.equal(metadata.width,128); assert.equal(metadata.height,72);
+    assert.ok(Math.abs(metadata.fps-60)<0.1); assert.equal(metadata.audio.codec,'mp4a.40.2');
     input = new Input({source:new BlobSource(file),formats:ALL_FORMATS});
     const video = await input.getPrimaryVideoTrack(), audio = await input.getPrimaryAudioTrack();
     assert.equal(await audio.getCodecParameterString(), 'mp4a.40.2');
@@ -35,7 +39,8 @@ test('real MOV HEVC/AAC demux, audio packet preservation and MP4 mux verified by
     check = new Input({source:new BlobSource(new Blob([target.buffer])),formats:ALL_FORMATS});
     const ov = await check.getPrimaryVideoTrack(), oa = await check.getPrimaryAudioTrack();
     assert.match(await ov.getCodecParameterString(), /^hvc1\./);
-    checkTimeline(before,{video:await timeline(ov,true),audio:await timeline(oa)});
+    checkTimeline(before,{video:await timeline(ov,60),audio:await timeline(oa)});
+    await assert.rejects(timeline(ov,30), /cadence/);
     const dest = join(dir,'output.mp4'); writeFileSync(dest,new Uint8Array(target.buffer));
     const probe = JSON.parse(execFileSync('ffprobe',['-v','error','-show_streams','-of','json',dest],{encoding:'utf8'}));
     assert.equal(probe.streams[0].codec_name,'hevc');
@@ -46,7 +51,6 @@ test('real MOV HEVC/AAC demux, audio packet preservation and MP4 mux verified by
     assert.equal(hash(source),hash(dest));
   } finally { input?.dispose(); check?.dispose(); rmSync(dir,{recursive:true,force:true}); }
 });
-test('corrupt container and oversized input fail without an output', async () => {
+test('corrupt container fails without an output', async () => {
   await assert.rejects(convert(new Blob(['bad']),()=>{},new AbortController().signal));
-  await assert.rejects(convert({size:151*1048576},()=>{},new AbortController().signal), /150 MB/);
 });

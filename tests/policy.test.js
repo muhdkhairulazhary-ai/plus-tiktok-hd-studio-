@@ -12,8 +12,8 @@ test('portrait, landscape, square and ultrawide keep aspect within pixel roundin
 });
 test('invalid dimensions and durations fail closed', () => {
   assert.throws(() => dimensions(0,100));
-  for (const duration of [0,-1,Infinity,NaN,60.01]) assert.throws(() => checkDuration(duration));
-  checkDuration(60); checkDuration(0.2);
+  for (const duration of [0,-1,Infinity,NaN]) assert.throws(() => checkDuration(duration));
+  checkDuration(60); checkDuration(3600); checkDuration(0.2);
 });
 test('common timestamp shift preserves sync; audio drift or dropped tail fails', () => {
   const before = { video:{start:2,end:12}, audio:{start:2.05,end:12.05} };

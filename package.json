@@ -1,7 +1,7 @@
 {
   "name": "studio",
-  "version": "1.0.0",
-  "description": "Mobile-first, client-side TikTok video processing prototype.",
+  "version": "2.0.0",
+  "description": "Personal, local-first HEVC video studio for iPhone Safari",
   "main": "index.js",
   "scripts": {
     "build": "esbuild src/app.js --bundle --minify --format=esm --outfile=app.js",
@@ -23,6 +23,7 @@
     "mediabunny": "1.66.0"
   },
   "devDependencies": {
-    "esbuild": "0.28.2"
+    "esbuild": "0.28.2",
+    "jsdom": "31.0.1"
   }
 }
