@@ -1,0 +1,2 @@
+Deploy trigger for plus+ TikTok HD Studio v1.2
+Commit includes HEVC AAC audio and iPhone Share Sheet updates.
