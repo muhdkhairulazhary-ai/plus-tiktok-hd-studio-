@@ -44,3 +44,7 @@ python3 tools/make-ab-fixtures.py /tmp/studio-d-new-study --summarize
 ```
 
 Research pushes use the `[CF-Pages-Skip]` commit prefix so GitHub Actions runs without triggering Cloudflare preview/production deployment, per [Cloudflare's GitHub integration documentation](https://developers.cloudflare.com/pages/configuration/git-integration/github-integration/#skipping-a-build-via-a-commit-message). Main remains unchanged. This prefix must not be carried into any future explicitly authorized deployment commit.
+
+### Independent reference-container prototype
+
+The separate [compatibility prototype](KILATFRAME-PROTOTYPE.md) builds N (sample-preserving layout) and explicitly enabled O/T/K diagnostics for audio-origin reset and four real AAC tail packets. It compares against A and D without changing either harness contract or production behavior. Audio-changing diagnostics are never labeled lossless; native measurements demonstrate synchronization changes and nonzero decoder overlap residuals. See [findings and readiness recommendation](../docs/kilatframe-compatibility-prototype.md).

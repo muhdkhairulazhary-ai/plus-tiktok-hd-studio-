@@ -6,7 +6,7 @@ import {tmpdir} from 'node:os';
 import {join} from 'node:path';
 const available=['ffmpeg','ffprobe','python3'].every(cmd=>spawnSync(cmd,[cmd==='python3'?'--version':'-version']).status===0);
 const run=(cmd,args)=>execFileSync(cmd,args,{encoding:'utf8',stdio:['ignore','pipe','pipe']});
-for(const [kind,rate,channels] of [['sdr',44100,1],['hlg',48000,2],['hdr10',32000,2],['priming',48000,2],['vfr',44100,1]])test(`offline A/B/C/D ${kind}: unchanged HEVC/AAC, PCM, edits, HDR and real alternate structure`,{skip:!available},()=>{
+for(const [kind,rate,channels] of [['sdr',44100,1],['hlg',48000,2],['hdr10',32000,2],['priming',48000,2],['vfr',44100,1]])test(`offline A/B/C/D + independent compatibility prototype ${kind}: payload, timing, audio and HDR audits`,{skip:!available},()=>{
   const dir=mkdtempSync(join(tmpdir(),'studio-ab-'));
   try{
     const src=join(dir,'source.mov'),out=join(dir,'variants');
@@ -98,6 +98,51 @@ try: assert_source_boxes(source,bad)
 except AssertionError: pass
 else: raise AssertionError('Accepted altered AAC edit')
 `,rotated,join(out,'A-smart.mp4'),join(out,'D-source-timing.mp4'),out]);
+    const protoOut=join(dir,'prototype');
+    run('python3',['tools/kf-prototype.py',rotated,join(out,'A-smart.mp4'),join(out,'D-source-timing.mp4'),protoOut,'--audio-mutations']);
+    const proto=JSON.parse(readFileSync(join(protoOut,'prototype.json')));
+    const n=proto.variants.N;
+    assert.equal(n.audio_mutated,false);assert.equal(n.decoded_pcm_matches,true);
+    assert.equal(n.audio_seek_matches,true);assert.equal(n.video_seek_matches,true);
+    assert.equal(n.timing.video.pts_shift_seconds_exact,'0');assert.equal(n.timing.audio.pts_shift_seconds_exact,'0');
+    assert.equal(n.table_validation.mdat_boxes,1);
+    assert.equal(proto.variants.O.audio_mutated,true);assert.notEqual(proto.variants.O.timing.audio.pts_shift_seconds_exact,'0');
+    assert.equal(proto.variants.O.audio_seek_matches,false);
+    if(kind==='priming') {
+      assert.match(proto.blocked.T,/shortened/);assert.match(proto.blocked.K,/shortened/);
+    }else {
+      const t=proto.variants.T,k=proto.variants.K;
+      assert.equal(t.audio_packets_appended,4);assert.equal(t.table_validation.mdat_boxes,2);
+      assert.equal(t.original_pcm_prefix_matches,true);assert.equal(t.decoded_pcm_matches,false);
+      assert.equal(t.timing.audio.pts_shift_seconds_exact,'0');assert.equal(t.audio_seek_matches,true);
+      assert.equal(k.audio_mutated,true);assert.equal(k.audio_seek_matches,false);
+      assert.equal(t.added_pcm_samples_per_channel,4096);
+    }
+    if(kind==='priming') {
+      const defaultOut=join(dir,'default-prototype');
+      run('python3',['tools/kf-prototype.py',rotated,join(out,'A-smart.mp4'),join(out,'D-source-timing.mp4'),defaultOut]);
+      const only=JSON.parse(readFileSync(join(defaultOut,'prototype.json')));
+      assert.deepEqual(Object.keys(only.variants),['N']);
+      assert.equal(only.variants.N.sha256,n.sha256);
+    }
+    for(const variant of Object.values(proto.variants)) {
+      assert.equal(variant.table_validation.tracks.length,2);
+      assert.equal(variant.timing.video.pts_shift_seconds_exact,'0');
+      assert.equal(variant.timing.video.original_packet_hashes_verified,true);
+      assert.equal(variant.timing.audio.original_packet_hashes_verified,true);
+      assert.equal(variant.video_seek_matches,true);
+      assert.equal(variant.decoded_video_frames,source.native_playback.decoded_video_frames);
+    }
+    run('python3',['-c',`import sys
+sys.path.insert(0,'tools')
+import importlib.util
+spec=importlib.util.spec_from_file_location('kf','tools/kf-prototype.py'); kf=importlib.util.module_from_spec(spec); spec.loader.exec_module(kf)
+from mp4_ab import *
+p=Path(sys.argv[1]); nodes=parse(p.read_bytes()); off=child(tracks(nodes)[0][2],b'stco'); data=bytearray(off['payload']); data[8:12]=pack(0); replace(off,bytes(data)); bad=p.parent/'bad-offset.mp4'; bad.write_bytes(b''.join(serialize(n) for n in nodes))
+try:kf.inspect_tables(bad)
+except (AssertionError,ValueError):pass
+else:raise AssertionError('Accepted chunk outside media')
+`,join(protoOut,'N-layout.mp4')]);
     assert.throws(()=>run(process.execPath,['tools/mp4-ab.mjs',src,out]),/Output directory must be empty/);
   }finally{rmSync(dir,{recursive:true,force:true});}
 });
