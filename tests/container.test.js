@@ -8,6 +8,7 @@ import { Input, BlobSource, ALL_FORMATS, Output, BufferTarget, Mp4OutputFormat, 
 import { timeline, convert } from '../src/converter.js';
 import { checkTimeline } from '../src/policy.js';
 import { inspect } from '../src/metadata.js';
+import { resolveSettings } from '../src/settings.js';
 const available = spawnSync('ffmpeg', ['-version']).status === 0;
 test('real MOV HEVC/AAC demux, audio packet preservation and MP4 mux verified by ffprobe', { skip: !available }, async () => {
   const dir = mkdtempSync(join(tmpdir(), 'studio-'));
@@ -17,6 +18,16 @@ test('real MOV HEVC/AAC demux, audio packet preservation and MP4 mux verified by
     execFileSync('ffmpeg', ['-v','error','-f','lavfi','-i','testsrc2=size=128x72:rate=60','-itsoffset','0.15','-f','lavfi','-i','sine=frequency=440:sample_rate=48000','-t','1','-c:v','libx265','-preset','ultrafast','-x265-params','pools=1:frame-threads=1:log-level=error','-tag:v','hvc1','-c:a','aac',source], {stdio:'pipe'});
     const file = new Blob([readFileSync(source)]);
     const metadata = await inspect(file);
+    assert.equal(metadata.fileSize,file.size);
+    assert.ok(metadata.videoBitrate>0);assert.ok(metadata.audioBitrate>0);
+    assert.ok(metadata.videoBytes+metadata.audioBytes<=file.size);
+    assert.equal(metadata.videoBitrate,metadata.videoBytes*8/metadata.videoDuration);
+    assert.equal(metadata.audioBitrate,metadata.audioBytes*8/metadata.audioDuration);
+    const sizeConfig=resolveSettings(metadata.width,metadata.height,{},metadata);
+    assert.equal(sizeConfig.frameRate,undefined);assert.equal(sizeConfig.width,128);assert.ok(sizeConfig.estimatedSize>0);
+    const packetProbe=JSON.parse(execFileSync('ffprobe',['-v','error','-show_packets','-of','json',source],{encoding:'utf8'}));
+    assert.equal(metadata.videoBytes,packetProbe.packets.filter(p=>p.codec_type==='video').reduce((n,p)=>n+Number(p.size),0));
+    assert.equal(metadata.audioBytes,packetProbe.packets.filter(p=>p.codec_type==='audio').reduce((n,p)=>n+Number(p.size),0));
     assert.equal(metadata.width,128); assert.equal(metadata.height,72);
     assert.ok(Math.abs(metadata.fps-60)<0.1); assert.equal(metadata.audio.codec,'mp4a.40.2');
     input = new Input({source:new BlobSource(file),formats:ALL_FORMATS});

@@ -5,7 +5,7 @@ import { JSDOM } from 'jsdom';
 import { createStudio } from '../src/app.js';
 import { resolveSettings } from '../src/settings.js';
 const html = readFileSync(new URL('../index.html',import.meta.url),'utf8');
-const info = {width:1920,height:1080,fps:29.97,duration:12,audio:{codec:'mp4a.40.2',channels:2,sampleRate:48000},videoTracks:1,audioTracks:1};
+const info = {fileSize:10000000,videoDuration:12,videoBitrate:6400000,audioBitrate:160000,audioBytes:240000,audioDuration:12,videoPackets:360,audioPackets:563,width:1920,height:1080,fps:29.97,duration:12,audio:{codec:'mp4a.40.2',channels:2,sampleRate:48000},videoTracks:1,audioTracks:1};
 function setup(overrides = {}) {
   const dom = new JSDOM(html,{url:'https://studio.test'}), win = dom.window, $ = id => win.document.getElementById(id);
   win.HTMLMediaElement.prototype.pause = () => {};
@@ -17,7 +17,7 @@ function setup(overrides = {}) {
   const calls = [];
   const app = createStudio(win.document,{
     inspect:async()=>info,
-    checkSupport:async(meta,settings)=>({supported:true,config:resolveSettings(meta.width,meta.height,settings),reason:'Supported'}),
+    checkSupport:async(meta,settings)=>({supported:true,config:resolveSettings(meta.width,meta.height,settings,meta),reason:'Supported'}),
     checkPlayback:async()=>{},
     convert:async(file,progress,signal,settings)=>{calls.push(settings);progress(50,'Encoding');return {blob:new win.Blob(['mp4']),width:1920,height:1080,fps:60,audioCopied:true};},
     ...overrides,
@@ -42,7 +42,7 @@ test('upload displays measured metadata; settings reach the converter and result
   } finally {s.close();}
 });
 test('unsupported configuration blocks processing with explanation',async()=>{
-  const s=setup({checkSupport:async()=>({supported:false,config:resolveSettings(1920,1080),reason:'HEVC unavailable'})});
+  const s=setup({checkSupport:async()=>({supported:false,config:resolveSettings(1920,1080,{quality:'auto'}),reason:'HEVC unavailable'})});
   try {await s.app.loadFile(s.file); assert.ok(s.$('go').disabled); assert.match(s.$('support').textContent,/HEVC unavailable/); await s.$('go').onclick(); assert.equal(s.calls.length,0);}finally{s.close();}
 });
 test('duplicate processing and source replacement are blocked; cancel restores controls',async()=>{
@@ -104,12 +104,25 @@ test('an older capability probe cannot enable a newer unsupported configuration'
   const s=setup({checkSupport:async(meta,settings)=>{
     count++;
     if(count===1) return new Promise(resolve=>resolveOld=resolve);
-    return {supported:false,config:resolveSettings(meta.width,meta.height,settings),reason:'4K encoder unavailable'};
+    return {supported:false,config:resolveSettings(meta.width,meta.height,settings,meta),reason:'4K encoder unavailable'};
   }});
   try {
     const loading=s.app.loadFile(s.file);await Promise.resolve();await Promise.resolve();
     s.$('resolution').value='4k';await s.app.refreshSupport();
-    resolveOld({supported:true,config:resolveSettings(1920,1080),reason:'Supported'});await loading;
+    resolveOld({supported:true,config:resolveSettings(1920,1080,{quality:'auto'}),reason:'Supported'});await loading;
     assert.ok(s.$('go').disabled);assert.match(s.$('support').textContent,/4K encoder unavailable/);
+  }finally{s.close();}
+});
+test('new default shows source bitrates, original settings, estimates and honest size misses',async()=>{
+  const s=setup();
+  try {
+    assert.equal(s.$('quality').value,'preserve');assert.equal(s.$('resolution').value,'original');assert.equal(s.$('fps').value,'original');
+    await s.app.loadFile(s.file);
+    assert.equal(s.$('source-video-bitrate').textContent,'6.40 Mbps');assert.equal(s.$('source-audio-bitrate').textContent,'160.0 kbps');
+    assert.notEqual(s.$('estimate-output').textContent,'Unavailable');assert.match(s.$('size-note').textContent,/not|Hardware/);
+    await s.$('go').onclick();
+    assert.equal(s.calls[0].quality,'preserve');assert.equal(s.calls[0].fps,'original');
+    assert.notEqual(s.$('compare-estimate').textContent,'Unavailable');assert.match(s.$('size-outcome').textContent,/outside/);
+    assert.ok(s.$('download').href.startsWith('blob:')); // Missing a target never blocks a valid export.
   }finally{s.close();}
 });

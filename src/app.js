@@ -1,6 +1,6 @@
 import { convert } from './converter.js';
 import { inspect, checkSupport } from './metadata.js';
-import { formatBytes, formatTime, sizeComparison } from './settings.js';
+import { formatBytes, formatTime, sizeComparison, formatBitrate, sizeOutcome } from './settings.js';
 
 export function createStudio(doc, dependencies = {}) {
   const win = doc.defaultView;
@@ -8,7 +8,7 @@ export function createStudio(doc, dependencies = {}) {
   const $ = id => doc.getElementById(id);
   let file = null, metadata = null, src = null, out = null, outputFile = null;
   let metadataController = null;
-  let controller = null, generation = 0, supportGeneration = 0, supported = false, timer = null, started = 0, shareFailed = false, sharing = false;
+  let controller = null, generation = 0, supportGeneration = 0, supported = false, estimatedSize = null, timer = null, started = 0, shareFailed = false, sharing = false;
   const settings = () => ({ resolution: $('resolution').value, fps: $('fps').value, quality: $('quality').value, bitrate: $('bitrate').value });
   const message = (text, error = false) => { $('status').textContent = text; $('status').classList.toggle('error', error); };
   const resetPlayer = player => { player.pause(); player.removeAttribute('src'); player.load(); };
@@ -27,7 +27,8 @@ export function createStudio(doc, dependencies = {}) {
   }
   async function refreshSupport() {
     const version = ++supportGeneration;
-    supported = false; $('go').disabled = true;
+    supported = false; estimatedSize = null; $('go').disabled = true;
+    $('estimate-output').textContent = 'Unavailable';
     $('custom-field').hidden = $('quality').value !== 'custom';
     if (!metadata) return;
     $('support').textContent = 'Checking your selected HEVC configuration…';
@@ -37,12 +38,16 @@ export function createStudio(doc, dependencies = {}) {
       if (version !== supportGeneration) return;
       supported = support.supported;
       const c = support.config;
-      $('output-summary').textContent = `${c.width} × ${c.height} · ${c.frameRate ? c.frameRate + ' FPS' : 'Original timing'} · ${(c.bitrate / 1000000).toFixed(1)} Mbps · HEVC + AAC`;
+      $('output-summary').textContent = `${c.width} × ${c.height} · ${c.frameRate ? c.frameRate + ' FPS' : 'Original timing'} · ${formatBitrate(c.bitrate)} · HEVC + AAC`;
+      estimatedSize = c.estimatedSize;
+      $('estimate-output').textContent = formatBytes(estimatedSize);
+      $('size-note').textContent = c.sizeNote || 'Estimated from the target video bitrate, audio and MP4 headers. Hardware output varies. TikTok may still recompress your upload.';
       $('support').textContent = support.reason;
       $('support').classList.toggle('unsupported', !supported);
     } catch (error) {
       if (version !== supportGeneration) return;
       $('support').textContent = error.message; $('support').classList.add('unsupported');
+      $('size-note').textContent = 'An estimate is unavailable for these settings. Choose another mode or configuration.';
     }
     if (!controller) lock(false);
   }
@@ -59,7 +64,10 @@ export function createStudio(doc, dependencies = {}) {
     $('dropzone').hidden = true; $('source-content').hidden = false;
     $('filename').textContent = file.name;
     $('source-size').textContent = formatBytes(file.size);
-    for (const id of ['source-resolution', 'source-fps', 'source-duration', 'source-audio']) $(id).textContent = 'Reading…';
+    $('estimate-original').textContent = formatBytes(file.size);
+    $('estimate-output').textContent = 'Unavailable';
+    $('size-note').textContent = 'Reading source bitrates to estimate output size…';
+    for (const id of ['source-resolution', 'source-fps', 'source-duration', 'source-audio', 'source-video-bitrate', 'source-audio-bitrate']) $(id).textContent = 'Reading…';
     $('support').textContent = 'Reading metadata before checking HEVC support…';
     $('support').classList.remove('unsupported');
     $('output-summary').textContent = 'Waiting for video metadata…';
@@ -73,12 +81,14 @@ export function createStudio(doc, dependencies = {}) {
       $('source-resolution').textContent = `${result.width} × ${result.height}`;
       $('source-fps').textContent = result.fps ? `${result.fps.toFixed(2)} FPS average` : 'Unavailable';
       $('source-duration').textContent = formatTime(result.duration);
+      $('source-video-bitrate').textContent = formatBitrate(result.videoBitrate);
+      $('source-audio-bitrate').textContent = formatBitrate(result.audioBitrate);
       $('source-audio').textContent = result.audio ? `${result.audio.codec || 'Unknown codec'} · ${result.audio.channels} ch · ${(result.audio.sampleRate / 1000).toFixed(1)} kHz${result.audioTracks > 1 ? ` · ${result.audioTracks} tracks` : ''}` : 'No audio track';
       message('Video ready. Choose your finish below.');
       await refreshSupport();
     } catch (error) {
       if (version !== generation) return;
-      for (const id of ['source-resolution', 'source-fps', 'source-duration', 'source-audio']) $(id).textContent = 'Unavailable';
+      for (const id of ['source-resolution', 'source-fps', 'source-duration', 'source-audio', 'source-video-bitrate', 'source-audio-bitrate']) $(id).textContent = 'Unavailable';
       message(`Could not read this video: ${error.message}`, true);
       $('support').textContent = 'Choose another MOV or MP4 video.';
     }
@@ -93,7 +103,7 @@ export function createStudio(doc, dependencies = {}) {
   for (const id of ['resolution', 'fps', 'quality', 'bitrate']) $(id).onchange = () => { if (!controller) void refreshSupport(); };
   $('go').onclick = async () => {
     if (controller || !file || !metadata || !supported) return;
-    const selectedFile = file, selectedSettings = settings();
+    const selectedFile = file, selectedSettings = settings(), selectedEstimate = estimatedSize;
     controller = new AbortController();
     const signal = controller.signal;
     clearOutput(); resetPlayer($('result-preview')); $('preview').pause();
@@ -124,6 +134,8 @@ export function createStudio(doc, dependencies = {}) {
       $('result-time').textContent = formatTime(seconds);
       $('compare-before').textContent = formatBytes(selectedFile.size); $('compare-after').textContent = formatBytes(outputFile.size);
       $('compare-change').textContent = sizeComparison(selectedFile.size, outputFile.size);
+      $('compare-estimate').textContent = formatBytes(result.estimatedSize ?? selectedEstimate);
+      $('size-outcome').textContent = sizeOutcome(selectedSettings.quality === 'preserve' ? selectedFile.size : null, outputFile.size);
       $('results').hidden = false; $('bar').value = 100; $('percent').textContent = '100%';
       $('stage').textContent = 'Export complete. MP4, audio and timing verified.';
       message('Ready to save. Play the result and check sound and sync before posting.');
@@ -146,6 +158,8 @@ export function createStudio(doc, dependencies = {}) {
     $('support').textContent = 'Choose a video to check device compatibility.';
     $('support').classList.remove('unsupported');
     $('output-summary').textContent = 'Choose a video to preview your output settings.';
+    estimatedSize = null; $('estimate-original').textContent = 'Choose a video'; $('estimate-output').textContent = 'Unavailable';
+    $('size-note').textContent = 'Size is a target, not a guarantee. TikTok may still recompress your upload.';
     message(''); lock(false); $('choose').focus({ preventScroll: true }); $('studio').scrollIntoView({ block: 'start' });
   };
   async function shareFile() {

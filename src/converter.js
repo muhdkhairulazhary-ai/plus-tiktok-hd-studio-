@@ -1,6 +1,7 @@
 import { Input, BlobSource, ALL_FORMATS, Output, BufferTarget, Mp4OutputFormat, Conversion, canEncodeVideo, canEncodeAudio, EncodedPacketSink } from 'mediabunny';
 import { checkDuration, checkTimeline } from './policy.js';
 import { resolveSettings } from './settings.js';
+import { analyzeSource } from './analysis.js';
 
 export async function timeline(track, frameRate = false) {
   const times = [];
@@ -33,7 +34,9 @@ export async function convert(file, progress, signal, settings = {}) {
     const video = videos[0], audio = audios[0];
     const duration = await input.computeDuration();
     checkDuration(duration);
-    const config = resolveSettings(await video.getDisplayWidth(), await video.getDisplayHeight(), settings);
+    const source = await analyzeSource(file, input, video, audio, signal);
+    signal.throwIfAborted();
+    const config = resolveSettings(source.width, source.height, settings, source);
     const { width, height, frameRate, bitrate } = config;
     const size = { width, height };
     if (!await video.canDecode()) throw Error('Codec video asal tidak boleh didekod oleh Safari ini. Gunakan fail H.264/HEVC yang disokong.');
@@ -65,7 +68,7 @@ export async function convert(file, progress, signal, settings = {}) {
     if (!await ov.canDecode() || !await oa.canDecode()) throw Error('Safari ini tidak boleh memainkan codec output. Fail tidak dieksport.');
     completed = true;
     const stats = await ov.computePacketStats();
-    return { blob, ...size, fps: stats.averagePacketRate, codec: await ov.getCodecParameterString(), audioCodec: await oa.getCodecParameterString(), bitrate, audioCopied: copyAudio };
+    return { blob, ...size, fps: stats.averagePacketRate, codec: await ov.getCodecParameterString(), audioCodec: await oa.getCodecParameterString(), bitrate, audioCopied: copyAudio, estimatedSize: config.estimatedSize, targetSize: config.targetSize };
   } finally {
     signal.removeEventListener('abort', abort);
     if (!completed) {
