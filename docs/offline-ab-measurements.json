@@ -1,0 +1,3030 @@
+{
+  "purpose": "Synthetic rotated 60000/1001 HEVC MOVs with delayed AAC; no TikTok or physical-iPhone results",
+  "fixtures": {
+    "hdr10": {
+      "ffmpeg_version": "ffmpeg version 7.1.5-0+deb13u1 Copyright (c) 2000-2026 the FFmpeg developers",
+      "source_to_A_timing": {
+        "video": {
+          "max_absolute_pts_difference_microseconds": 10.416666666666666,
+          "max_absolute_dts_difference_microseconds": 9.722222222222221,
+          "max_absolute_duration_difference_microseconds": 16.666666666666668
+        },
+        "audio": {
+          "max_absolute_pts_difference_microseconds": 0.0,
+          "max_absolute_dts_difference_microseconds": 0.0,
+          "max_absolute_duration_difference_microseconds": 0.0
+        }
+      },
+      "variants": {
+        "source": {
+          "bytes": 36494,
+          "sha256": "eb1c90d2dbd1b5e2a07cc0541664ec25f3d06242cd90f1128b313253cba61aa3",
+          "structure": {
+            "top": [
+              "ftyp",
+              "wide",
+              "mdat",
+              "moov"
+            ],
+            "movie_timescale": 1000,
+            "movie_duration_ticks": 1014,
+            "tracks": [
+              {
+                "handler": "vide",
+                "track_duration_ticks": 1001,
+                "media_timescale": 60000,
+                "media_duration_ticks": 60060,
+                "edits": [
+                  {
+                    "duration": 1001,
+                    "media_time": 2002,
+                    "rate": [
+                      1,
+                      0
+                    ]
+                  }
+                ],
+                "sample_entry_sha256": "b9e389091bebaaa216d8f67f423c8612d2db736fa06dc922663292a6e51280e5",
+                "tables": {
+                  "stts": {
+                    "bytes": 24,
+                    "sha256": "ca3c06252aae6cf678120382c7b72121842bfb864395df4f0f8ecce00ded19e6",
+                    "hex": "00000000000000010000003c000003e9"
+                  },
+                  "stss": {
+                    "bytes": 20,
+                    "sha256": "ba32f13acaf822f7ea3ecc784b3783e80a891afe1d25de9a5f74f3fab242904f",
+                    "hex": "000000000000000100000001"
+                  },
+                  "ctts": {
+                    "bytes": 496,
+                    "sha256": "397a0e1679ebec546859d106d8c0755c4059b25e67adb58e73125d7bcdf3ccd7",
+                    "hex": null
+                  },
+                  "stsc": {
+                    "bytes": 88,
+                    "sha256": "5d1516b3a0bee155484e72c259df41e705f9e23669a8f801ca808938dac23623",
+                    "hex": "0000000000000006000000010000000a000000010000000200000001000000010000000300000002000000010000000f00000001000000010000001000000002000000010000001b0000000100000001"
+                  },
+                  "stsz": {
+                    "bytes": 260,
+                    "sha256": "c2d66101024bb397e2131fb18b9a5ff9d427e93fb90dab07325eebe8bd27c55e",
+                    "hex": null
+                  },
+                  "stco": {
+                    "bytes": 128,
+                    "sha256": "d204216b8a25f4990fae9df90a0e4527b6686c58d1f1d5821c2fc676ad6879df",
+                    "hex": "000000000000001c0000002400001a3300001d1200001f94000024050000268900002b6200002e0e000032ff0000357c00003a5400003cd4000041930000446d0000496000004b7600004ffc0000529f0000579c00005a5b00005f28000061cf000066c9000069a000006e650000710800007519000077c6"
+                  }
+                }
+              },
+              {
+                "handler": "soun",
+                "track_duration_ticks": 1014,
+                "media_timescale": 32000,
+                "media_duration_ticks": 28672,
+                "edits": [
+                  {
+                    "duration": 118,
+                    "media_time": -1,
+                    "rate": [
+                      1,
+                      0
+                    ]
+                  },
+                  {
+                    "duration": 896,
+                    "media_time": 0,
+                    "rate": [
+                      1,
+                      0
+                    ]
+                  }
+                ],
+                "sample_entry_sha256": "e5edbfcd3b91cb28fbc31e97f1798ee04b206daf3bd2ea1d8b659b8e5f881021",
+                "tables": {
+                  "stts": {
+                    "bytes": 24,
+                    "sha256": "bba85db76f4aedd3ae80683094dd43b751a9ffae1e4382b5a6e23af752039d8a",
+                    "hex": "00000000000000010000001c00000400"
+                  },
+                  "stsc": {
+                    "bytes": 28,
+                    "sha256": "633c10313c18e03b1d625240713dcab296f19e818bc33ae4eefa50190d793f03",
+                    "hex": "0000000000000001000000010000000100000001"
+                  },
+                  "stsz": {
+                    "bytes": 132,
+                    "sha256": "7864397bd3a880a14dd7bd851637b6b4befeb56a2871b6397be71f160a43bb47",
+                    "hex": "00000000000000000000001c000002070000024c000001d200000224000001fa000001e500000210000001ff000001f90000020d000001ee000001ee0000022000000215000001e10000021d000001e800000213000001f2000001ec000002100000020c000001ea00000223000001f7000001f8000001fb0000021b"
+                  },
+                  "stco": {
+                    "bytes": 128,
+                    "sha256": "5dfc60b2ac16baba2f5e9d76176758d186cf0ad1694b8f6dc6faba7637d1070c",
+                    "hex": "000000000000001c0000182c00001ac600001dc2000021e10000248f0000297d00002bfe00003100000033830000384700003ae600003fa50000424d0000474b0000499500004ddf000050b7000055890000586900005d3c00005fbf000064bd000067b600006c4200006f1100007321000075cb00007823"
+                  },
+                  "sgpd": {
+                    "bytes": 26,
+                    "sha256": "92b9b296cb0f465c18266e76442a7a115e91aeef26a5715225d17e0adb4fb477",
+                    "hex": "01000000726f6c6c0000000200000001ffff"
+                  },
+                  "sbgp": {
+                    "bytes": 28,
+                    "sha256": "0fa0223edfb9cd00c6cf0d4aaaab8f457fb4e85662ac90d7e2079816d527dfea",
+                    "hex": "00000000726f6c6c000000010000001c00000001"
+                  }
+                }
+              }
+            ]
+          },
+          "interleaving": {
+            "track_runs": 56,
+            "largest_consecutive_run_samples": 10,
+            "first_20_track_runs": [
+              [
+                "video",
+                10
+              ],
+              [
+                "audio",
+                1
+              ],
+              [
+                "video",
+                1
+              ],
+              [
+                "audio",
+                1
+              ],
+              [
+                "video",
+                2
+              ],
+              [
+                "audio",
+                1
+              ],
+              [
+                "video",
+                2
+              ],
+              [
+                "audio",
+                1
+              ],
+              [
+                "video",
+                2
+              ],
+              [
+                "audio",
+                1
+              ],
+              [
+                "video",
+                2
+              ],
+              [
+                "audio",
+                1
+              ],
+              [
+                "video",
+                2
+              ],
+              [
+                "audio",
+                1
+              ],
+              [
+                "video",
+                2
+              ],
+              [
+                "audio",
+                1
+              ],
+              [
+                "video",
+                2
+              ],
+              [
+                "audio",
+                1
+              ],
+              [
+                "video",
+                2
+              ],
+              [
+                "audio",
+                1
+              ]
+            ],
+            "timeline": {
+              "video": {
+                "packets": 60,
+                "first_pts_seconds": 0.0,
+                "last_end_seconds": 1.001
+              },
+              "audio": {
+                "packets": 28,
+                "first_pts_seconds": 0.118,
+                "last_end_seconds": 1.014
+              }
+            }
+          },
+          "first_frame_hdr_metadata": [
+            [
+              {
+                "side_data_type": "Mastering display metadata",
+                "red_x": "34000/50000",
+                "red_y": "16000/50000",
+                "green_x": "13250/50000",
+                "green_y": "34500/50000",
+                "blue_x": "7500/50000",
+                "blue_y": "3000/50000",
+                "white_point_x": "15635/50000",
+                "white_point_y": "16450/50000",
+                "min_luminance": "1/10000",
+                "max_luminance": "10000000/10000"
+              },
+              {
+                "side_data_type": "Content light level metadata",
+                "max_content": 1000,
+                "max_average": 400
+              }
+            ]
+          ],
+          "decoded_pcm": "SHA256=a0dbc78b49530d0cd3cb7fca093145019ccde94901c2054c5ff1e4053badac81",
+          "stream_summary": [
+            {
+              "codec_name": "hevc",
+              "profile": "Main 10",
+              "codec_tag_string": "hvc1",
+              "pix_fmt": "yuv420p10le",
+              "time_base": "1/60000",
+              "r_frame_rate": "60000/1001",
+              "avg_frame_rate": "60000/1001",
+              "duration": "1.001000",
+              "extradata_hash": "SHA256:64cc16f130c23a62f001f67db9d988d822161dc7855594efbcb244276dde2a0c",
+              "color_range": "tv",
+              "color_space": "bt2020nc",
+              "color_transfer": "smpte2084",
+              "color_primaries": "bt2020",
+              "side_data_list": [
+                {
+                  "side_data_type": "Display Matrix",
+                  "displaymatrix": "\n00000000:            0      -65536           0\n00000001:        65536           0           0\n00000002:            0           0  1073741824\n",
+                  "rotation": 90
+                }
+              ]
+            },
+            {
+              "codec_name": "aac",
+              "profile": "LC",
+              "codec_tag_string": "mp4a",
+              "time_base": "1/32000",
+              "r_frame_rate": "0/0",
+              "avg_frame_rate": "0/0",
+              "duration": "0.896000",
+              "sample_rate": "32000",
+              "channels": 2,
+              "extradata_hash": "SHA256:53efd1548fcbfdf332ca094f053edac8423b8660a6a265d3c5877e080054c2bf"
+            }
+          ],
+          "ordered_packet_hash_aggregates": {
+            "video": {
+              "count": 60,
+              "sha256_of_ordered_sha256_strings": "d85b5ad8ceaf76d3a4788cdb469e06fcb0dff6dc441886821cde2f781e72ef42"
+            },
+            "audio": {
+              "count": 28,
+              "sha256_of_ordered_sha256_strings": "0b64c9b7a50dff47fe3e6a932564fdd9c7b3e059c48adbf5844c95684f3a73a6"
+            }
+          }
+        },
+        "A": {
+          "bytes": 36057,
+          "sha256": "68f769b215ce5d6b5cba21bd9ec87119598f536719760842e20429344c75fd90",
+          "structure": {
+            "top": [
+              "ftyp",
+              "moov",
+              "mdat"
+            ],
+            "movie_timescale": 57600,
+            "movie_duration_ticks": 58407,
+            "tracks": [
+              {
+                "handler": "vide",
+                "track_duration_ticks": 57658,
+                "media_timescale": 57600,
+                "media_duration_ticks": 57658,
+                "edits": [],
+                "sample_entry_sha256": "937578802fbb0585537e71a202c8ad5c1a8031b5d5f5d8fca0ab8229d64ed17e",
+                "tables": {
+                  "stts": {
+                    "bytes": 56,
+                    "sha256": "7124bbbc7a093818d1c59a6e5604fab02a43976e525162b11ea59932ad65fbb8",
+                    "hex": "00000000000000050000000c000003c100000001000003c000000018000003c100000001000003c000000016000003c1"
+                  },
+                  "ctts": {
+                    "bytes": 496,
+                    "sha256": "715a5cc332fac2752ca58c3c5231ec62b9ec65721e0bd36282c6f45355e1e8dd",
+                    "hex": null
+                  },
+                  "cslg": {
+                    "bytes": 32,
+                    "sha256": "3073d3bd569705cc32a0e9a3913c4f781f733d98cf9bc83ee9fc2be64b637aa1",
+                    "hex": "0000000000000782fffff87e00000b43000000000000e13a"
+                  },
+                  "stsc": {
+                    "bytes": 52,
+                    "sha256": "d9625fd91082525a55baf1808ce7d68dff301e722409be7911ced75e6268a77b",
+                    "hex": "0000000000000003000000010000001d00000001000000020000001c00000001000000030000000300000001"
+                  },
+                  "stsz": {
+                    "bytes": 260,
+                    "sha256": "c2d66101024bb397e2131fb18b9a5ff9d427e93fb90dab07325eebe8bd27c55e",
+                    "hex": null
+                  },
+                  "stco": {
+                    "bytes": 28,
+                    "sha256": "2012fc5bf96f7a288f9281f2e9a4b43fabb286f2a3726a1748c858a579f4b14c",
+                    "hex": "0000000000000003000012bf0000599000008a07"
+                  },
+                  "stss": {
+                    "bytes": 20,
+                    "sha256": "ba32f13acaf822f7ea3ecc784b3783e80a891afe1d25de9a5f74f3fab242904f",
+                    "hex": "000000000000000100000001"
+                  }
+                }
+              },
+              {
+                "handler": "soun",
+                "track_duration_ticks": 58407,
+                "media_timescale": 32000,
+                "media_duration_ticks": 28672,
+                "edits": [
+                  {
+                    "duration": 6797,
+                    "media_time": -1,
+                    "rate": [
+                      1,
+                      0
+                    ]
+                  },
+                  {
+                    "duration": 51610,
+                    "media_time": 0,
+                    "rate": [
+                      1,
+                      0
+                    ]
+                  }
+                ],
+                "sample_entry_sha256": "22eded35b051fdcbb53b5085e9013ecbdb554e08fb8f2c238675d60bd95d08b5",
+                "tables": {
+                  "stts": {
+                    "bytes": 24,
+                    "sha256": "bba85db76f4aedd3ae80683094dd43b751a9ffae1e4382b5a6e23af752039d8a",
+                    "hex": "00000000000000010000001c00000400"
+                  },
+                  "stsc": {
+                    "bytes": 40,
+                    "sha256": "67285423abec8131821f6568f6e90d2ab20264cff631c38ca8d9cdbc06c52aa5",
+                    "hex": "0000000000000002000000010000001000000001000000020000000c00000001"
+                  },
+                  "stsz": {
+                    "bytes": 132,
+                    "sha256": "7864397bd3a880a14dd7bd851637b6b4befeb56a2871b6397be71f160a43bb47",
+                    "hex": "00000000000000000000001c000002070000024c000001d200000224000001fa000001e500000210000001ff000001f90000020d000001ee000001ee0000022000000215000001e10000021d000001e800000213000001f2000001ec000002100000020c000001ea00000223000001f7000001f8000001fb0000021b"
+                  },
+                  "stco": {
+                    "bytes": 24,
+                    "sha256": "1bcf73fa579bc70ac2a1a923dce1f0f8167f8c6a56d33cc78447acca3ce7ffe0",
+                    "hex": "00000000000000020000394400007200"
+                  },
+                  "sgpd": {
+                    "bytes": 26,
+                    "sha256": "92b9b296cb0f465c18266e76442a7a115e91aeef26a5715225d17e0adb4fb477",
+                    "hex": "01000000726f6c6c0000000200000001ffff"
+                  },
+                  "sbgp": {
+                    "bytes": 36,
+                    "sha256": "f38cdbe45c878df9ff7346285f39cb96bb512a0e6332321fb9e97b26066edb87",
+                    "hex": "00000000726f6c6c0000000200000001000000000000001b00000001"
+                  }
+                }
+              }
+            ]
+          },
+          "interleaving": {
+            "track_runs": 5,
+            "largest_consecutive_run_samples": 29,
+            "first_20_track_runs": [
+              [
+                "video",
+                29
+              ],
+              [
+                "audio",
+                16
+              ],
+              [
+                "video",
+                28
+              ],
+              [
+                "audio",
+                12
+              ],
+              [
+                "video",
+                3
+              ]
+            ],
+            "timeline": {
+              "video": {
+                "packets": 60,
+                "first_pts_seconds": 0.0,
+                "last_end_seconds": 1.00099
+              },
+              "audio": {
+                "packets": 28,
+                "first_pts_seconds": 0.118,
+                "last_end_seconds": 1.014
+              }
+            }
+          },
+          "first_frame_hdr_metadata": [
+            [
+              {
+                "side_data_type": "Mastering display metadata",
+                "red_x": "34000/50000",
+                "red_y": "16000/50000",
+                "green_x": "13250/50000",
+                "green_y": "34500/50000",
+                "blue_x": "7500/50000",
+                "blue_y": "3000/50000",
+                "white_point_x": "15635/50000",
+                "white_point_y": "16450/50000",
+                "min_luminance": "1/10000",
+                "max_luminance": "10000000/10000"
+              },
+              {
+                "side_data_type": "Content light level metadata",
+                "max_content": 1000,
+                "max_average": 400
+              }
+            ]
+          ],
+          "decoded_pcm": "SHA256=a0dbc78b49530d0cd3cb7fca093145019ccde94901c2054c5ff1e4053badac81",
+          "stream_summary": [
+            {
+              "codec_name": "hevc",
+              "profile": "Main 10",
+              "codec_tag_string": "hvc1",
+              "pix_fmt": "yuv420p10le",
+              "time_base": "1/57600",
+              "r_frame_rate": "60000/1001",
+              "avg_frame_rate": "1728000/28829",
+              "duration": "1.001007",
+              "extradata_hash": "SHA256:64cc16f130c23a62f001f67db9d988d822161dc7855594efbcb244276dde2a0c",
+              "color_range": "tv",
+              "color_space": "bt2020nc",
+              "color_transfer": "smpte2084",
+              "color_primaries": "bt2020",
+              "side_data_list": [
+                {
+                  "side_data_type": "Display Matrix",
+                  "displaymatrix": "\n00000000:            0      -65536           0\n00000001:        65536           0           0\n00000002:            0           0  1073741824\n",
+                  "rotation": 90
+                }
+              ]
+            },
+            {
+              "codec_name": "aac",
+              "profile": "LC",
+              "codec_tag_string": "mp4a",
+              "time_base": "1/32000",
+              "r_frame_rate": "0/0",
+              "avg_frame_rate": "0/0",
+              "duration": "0.896000",
+              "sample_rate": "32000",
+              "channels": 2,
+              "extradata_hash": "SHA256:53efd1548fcbfdf332ca094f053edac8423b8660a6a265d3c5877e080054c2bf"
+            }
+          ],
+          "ordered_packet_hash_aggregates": {
+            "video": {
+              "count": 60,
+              "sha256_of_ordered_sha256_strings": "d85b5ad8ceaf76d3a4788cdb469e06fcb0dff6dc441886821cde2f781e72ef42"
+            },
+            "audio": {
+              "count": 28,
+              "sha256_of_ordered_sha256_strings": "0b64c9b7a50dff47fe3e6a932564fdd9c7b3e059c48adbf5844c95684f3a73a6"
+            }
+          },
+          "validation": {
+            "packet_hashes": "identical for video and AAC",
+            "pts_dts_duration": "verified per packet",
+            "common_offset_seconds": 0.0,
+            "decoded_pcm": "identical",
+            "first_frame_hdr_metadata": "identical (presence reported separately)"
+          }
+        },
+        "B": {
+          "bytes": 36149,
+          "sha256": "47c1054597a2e3dbef03ab88005e053a74031026e4d968c8efd708b62a1b3bd5",
+          "structure": {
+            "top": [
+              "ftyp",
+              "moov",
+              "mdat"
+            ],
+            "movie_timescale": 57600,
+            "movie_duration_ticks": 58407,
+            "tracks": [
+              {
+                "handler": "vide",
+                "track_duration_ticks": 57658,
+                "media_timescale": 57600,
+                "media_duration_ticks": 57658,
+                "edits": [],
+                "sample_entry_sha256": "937578802fbb0585537e71a202c8ad5c1a8031b5d5f5d8fca0ab8229d64ed17e",
+                "tables": {
+                  "stts": {
+                    "bytes": 56,
+                    "sha256": "7124bbbc7a093818d1c59a6e5604fab02a43976e525162b11ea59932ad65fbb8",
+                    "hex": "00000000000000050000000c000003c100000001000003c000000018000003c100000001000003c000000016000003c1"
+                  },
+                  "ctts": {
+                    "bytes": 496,
+                    "sha256": "715a5cc332fac2752ca58c3c5231ec62b9ec65721e0bd36282c6f45355e1e8dd",
+                    "hex": null
+                  },
+                  "cslg": {
+                    "bytes": 32,
+                    "sha256": "3073d3bd569705cc32a0e9a3913c4f781f733d98cf9bc83ee9fc2be64b637aa1",
+                    "hex": "0000000000000782fffff87e00000b43000000000000e13a"
+                  },
+                  "stsc": {
+                    "bytes": 52,
+                    "sha256": "d9625fd91082525a55baf1808ce7d68dff301e722409be7911ced75e6268a77b",
+                    "hex": "0000000000000003000000010000001d00000001000000020000001c00000001000000030000000300000001"
+                  },
+                  "stsz": {
+                    "bytes": 260,
+                    "sha256": "c2d66101024bb397e2131fb18b9a5ff9d427e93fb90dab07325eebe8bd27c55e",
+                    "hex": null
+                  },
+                  "stco": {
+                    "bytes": 28,
+                    "sha256": "baf5791a6253efe1dfdb76a23830970017bd588df19cd3fd5743a1e8cde2784e",
+                    "hex": "00000000000000030000131b000059ec00008a63"
+                  },
+                  "stss": {
+                    "bytes": 20,
+                    "sha256": "ba32f13acaf822f7ea3ecc784b3783e80a891afe1d25de9a5f74f3fab242904f",
+                    "hex": "000000000000000100000001"
+                  }
+                }
+              },
+              {
+                "handler": "soun",
+                "track_duration_ticks": 58407,
+                "media_timescale": 32000,
+                "media_duration_ticks": 28672,
+                "edits": [
+                  {
+                    "duration": 6797,
+                    "media_time": -1,
+                    "rate": [
+                      1,
+                      0
+                    ]
+                  },
+                  {
+                    "duration": 51610,
+                    "media_time": 0,
+                    "rate": [
+                      1,
+                      0
+                    ]
+                  }
+                ],
+                "sample_entry_sha256": "22eded35b051fdcbb53b5085e9013ecbdb554e08fb8f2c238675d60bd95d08b5",
+                "tables": {
+                  "stts": {
+                    "bytes": 24,
+                    "sha256": "bba85db76f4aedd3ae80683094dd43b751a9ffae1e4382b5a6e23af752039d8a",
+                    "hex": "00000000000000010000001c00000400"
+                  },
+                  "stsc": {
+                    "bytes": 28,
+                    "sha256": "633c10313c18e03b1d625240713dcab296f19e818bc33ae4eefa50190d793f03",
+                    "hex": "0000000000000001000000010000000100000001"
+                  },
+                  "stsz": {
+                    "bytes": 132,
+                    "sha256": "7864397bd3a880a14dd7bd851637b6b4befeb56a2871b6397be71f160a43bb47",
+                    "hex": "00000000000000000000001c000002070000024c000001d200000224000001fa000001e500000210000001ff000001f90000020d000001ee000001ee0000022000000215000001e10000021d000001e800000213000001f2000001ec000002100000020c000001ea00000223000001f7000001f8000001fb0000021b"
+                  },
+                  "stco": {
+                    "bytes": 128,
+                    "sha256": "39583ee4ad5f875ae12a377638f09c2db0c3aa9ce1ba15d884509e1d22f41bc1",
+                    "hex": "000000000000001c000039a000003ba700003df300003fc5000041e9000043e3000045c8000047d8000049d700004bd000004ddd00004fcb000051b9000053d9000055ee000057cf0000725c00007444000076570000784900007a3500007c4500007e510000803b0000825e000084550000864d00008848"
+                  },
+                  "sgpd": {
+                    "bytes": 26,
+                    "sha256": "92b9b296cb0f465c18266e76442a7a115e91aeef26a5715225d17e0adb4fb477",
+                    "hex": "01000000726f6c6c0000000200000001ffff"
+                  },
+                  "sbgp": {
+                    "bytes": 36,
+                    "sha256": "f38cdbe45c878df9ff7346285f39cb96bb512a0e6332321fb9e97b26066edb87",
+                    "hex": "00000000726f6c6c0000000200000001000000000000001b00000001"
+                  }
+                }
+              }
+            ]
+          },
+          "interleaving": {
+            "track_runs": 5,
+            "largest_consecutive_run_samples": 29,
+            "first_20_track_runs": [
+              [
+                "video",
+                29
+              ],
+              [
+                "audio",
+                16
+              ],
+              [
+                "video",
+                28
+              ],
+              [
+                "audio",
+                12
+              ],
+              [
+                "video",
+                3
+              ]
+            ],
+            "timeline": {
+              "video": {
+                "packets": 60,
+                "first_pts_seconds": 0.0,
+                "last_end_seconds": 1.00099
+              },
+              "audio": {
+                "packets": 28,
+                "first_pts_seconds": 0.118,
+                "last_end_seconds": 1.014
+              }
+            }
+          },
+          "first_frame_hdr_metadata": [
+            [
+              {
+                "side_data_type": "Mastering display metadata",
+                "red_x": "34000/50000",
+                "red_y": "16000/50000",
+                "green_x": "13250/50000",
+                "green_y": "34500/50000",
+                "blue_x": "7500/50000",
+                "blue_y": "3000/50000",
+                "white_point_x": "15635/50000",
+                "white_point_y": "16450/50000",
+                "min_luminance": "1/10000",
+                "max_luminance": "10000000/10000"
+              },
+              {
+                "side_data_type": "Content light level metadata",
+                "max_content": 1000,
+                "max_average": 400
+              }
+            ]
+          ],
+          "decoded_pcm": "SHA256=a0dbc78b49530d0cd3cb7fca093145019ccde94901c2054c5ff1e4053badac81",
+          "stream_summary": [
+            {
+              "codec_name": "hevc",
+              "profile": "Main 10",
+              "codec_tag_string": "hvc1",
+              "pix_fmt": "yuv420p10le",
+              "time_base": "1/57600",
+              "r_frame_rate": "60000/1001",
+              "avg_frame_rate": "1728000/28829",
+              "duration": "1.001007",
+              "extradata_hash": "SHA256:64cc16f130c23a62f001f67db9d988d822161dc7855594efbcb244276dde2a0c",
+              "color_range": "tv",
+              "color_space": "bt2020nc",
+              "color_transfer": "smpte2084",
+              "color_primaries": "bt2020",
+              "side_data_list": [
+                {
+                  "side_data_type": "Display Matrix",
+                  "displaymatrix": "\n00000000:            0      -65536           0\n00000001:        65536           0           0\n00000002:            0           0  1073741824\n",
+                  "rotation": 90
+                }
+              ]
+            },
+            {
+              "codec_name": "aac",
+              "profile": "LC",
+              "codec_tag_string": "mp4a",
+              "time_base": "1/32000",
+              "r_frame_rate": "0/0",
+              "avg_frame_rate": "0/0",
+              "duration": "0.896000",
+              "sample_rate": "32000",
+              "channels": 2,
+              "extradata_hash": "SHA256:53efd1548fcbfdf332ca094f053edac8423b8660a6a265d3c5877e080054c2bf"
+            }
+          ],
+          "ordered_packet_hash_aggregates": {
+            "video": {
+              "count": 60,
+              "sha256_of_ordered_sha256_strings": "d85b5ad8ceaf76d3a4788cdb469e06fcb0dff6dc441886821cde2f781e72ef42"
+            },
+            "audio": {
+              "count": 28,
+              "sha256_of_ordered_sha256_strings": "0b64c9b7a50dff47fe3e6a932564fdd9c7b3e059c48adbf5844c95684f3a73a6"
+            }
+          },
+          "validation": {
+            "packet_hashes": "identical for video and AAC",
+            "pts_dts_duration": "verified per packet",
+            "common_offset_seconds": 0.0,
+            "decoded_pcm": "identical",
+            "first_frame_hdr_metadata": "identical (presence reported separately)"
+          }
+        },
+        "C": {
+          "bytes": 36345,
+          "sha256": "1e537543f87431c2eb40433da01fe1017e9d1ed761bbba48971abddc846184d2",
+          "structure": {
+            "top": [
+              "ftyp",
+              "moov",
+              "mdat"
+            ],
+            "movie_timescale": 288000,
+            "movie_duration_ticks": 292035,
+            "tracks": [
+              {
+                "handler": "vide",
+                "track_duration_ticks": 288290,
+                "media_timescale": 57600,
+                "media_duration_ticks": 57658,
+                "edits": [],
+                "sample_entry_sha256": "937578802fbb0585537e71a202c8ad5c1a8031b5d5f5d8fca0ab8229d64ed17e",
+                "tables": {
+                  "stts": {
+                    "bytes": 56,
+                    "sha256": "7124bbbc7a093818d1c59a6e5604fab02a43976e525162b11ea59932ad65fbb8",
+                    "hex": "00000000000000050000000c000003c100000001000003c000000018000003c100000001000003c000000016000003c1"
+                  },
+                  "ctts": {
+                    "bytes": 496,
+                    "sha256": "715a5cc332fac2752ca58c3c5231ec62b9ec65721e0bd36282c6f45355e1e8dd",
+                    "hex": null
+                  },
+                  "cslg": {
+                    "bytes": 32,
+                    "sha256": "3073d3bd569705cc32a0e9a3913c4f781f733d98cf9bc83ee9fc2be64b637aa1",
+                    "hex": "0000000000000782fffff87e00000b43000000000000e13a"
+                  },
+                  "stsc": {
+                    "bytes": 28,
+                    "sha256": "633c10313c18e03b1d625240713dcab296f19e818bc33ae4eefa50190d793f03",
+                    "hex": "0000000000000001000000010000000100000001"
+                  },
+                  "stsz": {
+                    "bytes": 260,
+                    "sha256": "c2d66101024bb397e2131fb18b9a5ff9d427e93fb90dab07325eebe8bd27c55e",
+                    "hex": null
+                  },
+                  "stco": {
+                    "bytes": 256,
+                    "sha256": "69b722cbf85926d595f5b38c8a93e42e4d2ba12bdda090ee1bca5e2d8c50fd94",
+                    "hex": null
+                  },
+                  "stss": {
+                    "bytes": 20,
+                    "sha256": "ba32f13acaf822f7ea3ecc784b3783e80a891afe1d25de9a5f74f3fab242904f",
+                    "hex": "000000000000000100000001"
+                  }
+                }
+              },
+              {
+                "handler": "soun",
+                "track_duration_ticks": 292035,
+                "media_timescale": 32000,
+                "media_duration_ticks": 28672,
+                "edits": [
+                  {
+                    "duration": 33985,
+                    "media_time": -1,
+                    "rate": [
+                      1,
+                      0
+                    ]
+                  },
+                  {
+                    "duration": 258050,
+                    "media_time": 0,
+                    "rate": [
+                      1,
+                      0
+                    ]
+                  }
+                ],
+                "sample_entry_sha256": "22eded35b051fdcbb53b5085e9013ecbdb554e08fb8f2c238675d60bd95d08b5",
+                "tables": {
+                  "stts": {
+                    "bytes": 24,
+                    "sha256": "bba85db76f4aedd3ae80683094dd43b751a9ffae1e4382b5a6e23af752039d8a",
+                    "hex": "00000000000000010000001c00000400"
+                  },
+                  "stsc": {
+                    "bytes": 28,
+                    "sha256": "633c10313c18e03b1d625240713dcab296f19e818bc33ae4eefa50190d793f03",
+                    "hex": "0000000000000001000000010000000100000001"
+                  },
+                  "stsz": {
+                    "bytes": 132,
+                    "sha256": "7864397bd3a880a14dd7bd851637b6b4befeb56a2871b6397be71f160a43bb47",
+                    "hex": "00000000000000000000001c000002070000024c000001d200000224000001fa000001e500000210000001ff000001f90000020d000001ee000001ee0000022000000215000001e10000021d000001e800000213000001f2000001ec000002100000020c000001ea00000223000001f7000001f8000001fb0000021b"
+                  },
+                  "stco": {
+                    "bytes": 128,
+                    "sha256": "7ceae948494cf2c69810f5d9b1fb891e30da78cd248cc7be894191004e5680aa",
+                    "hex": "000000000000001c00002be700002e810000317d0000359c0000384a00003d3800003fb9000044bb0000473e00004c0200004ea1000053600000560800005b0600005d500000619a000064720000694400006c24000070f70000737a0000787800007b7100007ffd000082cc000086dc0000898600008bde"
+                  },
+                  "sgpd": {
+                    "bytes": 26,
+                    "sha256": "92b9b296cb0f465c18266e76442a7a115e91aeef26a5715225d17e0adb4fb477",
+                    "hex": "01000000726f6c6c0000000200000001ffff"
+                  },
+                  "sbgp": {
+                    "bytes": 36,
+                    "sha256": "f38cdbe45c878df9ff7346285f39cb96bb512a0e6332321fb9e97b26066edb87",
+                    "hex": "00000000726f6c6c0000000200000001000000000000001b00000001"
+                  }
+                }
+              }
+            ]
+          },
+          "interleaving": {
+            "track_runs": 56,
+            "largest_consecutive_run_samples": 10,
+            "first_20_track_runs": [
+              [
+                "video",
+                10
+              ],
+              [
+                "audio",
+                1
+              ],
+              [
+                "video",
+                1
+              ],
+              [
+                "audio",
+                1
+              ],
+              [
+                "video",
+                2
+              ],
+              [
+                "audio",
+                1
+              ],
+              [
+                "video",
+                2
+              ],
+              [
+                "audio",
+                1
+              ],
+              [
+                "video",
+                2
+              ],
+              [
+                "audio",
+                1
+              ],
+              [
+                "video",
+                2
+              ],
+              [
+                "audio",
+                1
+              ],
+              [
+                "video",
+                2
+              ],
+              [
+                "audio",
+                1
+              ],
+              [
+                "video",
+                2
+              ],
+              [
+                "audio",
+                1
+              ],
+              [
+                "video",
+                2
+              ],
+              [
+                "audio",
+                1
+              ],
+              [
+                "video",
+                2
+              ],
+              [
+                "audio",
+                1
+              ]
+            ],
+            "timeline": {
+              "video": {
+                "packets": 60,
+                "first_pts_seconds": 0.0,
+                "last_end_seconds": 1.00099
+              },
+              "audio": {
+                "packets": 28,
+                "first_pts_seconds": 0.118,
+                "last_end_seconds": 1.014
+              }
+            }
+          },
+          "first_frame_hdr_metadata": [
+            [
+              {
+                "side_data_type": "Mastering display metadata",
+                "red_x": "34000/50000",
+                "red_y": "16000/50000",
+                "green_x": "13250/50000",
+                "green_y": "34500/50000",
+                "blue_x": "7500/50000",
+                "blue_y": "3000/50000",
+                "white_point_x": "15635/50000",
+                "white_point_y": "16450/50000",
+                "min_luminance": "1/10000",
+                "max_luminance": "10000000/10000"
+              },
+              {
+                "side_data_type": "Content light level metadata",
+                "max_content": 1000,
+                "max_average": 400
+              }
+            ]
+          ],
+          "decoded_pcm": "SHA256=a0dbc78b49530d0cd3cb7fca093145019ccde94901c2054c5ff1e4053badac81",
+          "stream_summary": [
+            {
+              "codec_name": "hevc",
+              "profile": "Main 10",
+              "codec_tag_string": "hvc1",
+              "pix_fmt": "yuv420p10le",
+              "time_base": "1/57600",
+              "r_frame_rate": "60000/1001",
+              "avg_frame_rate": "1728000/28829",
+              "duration": "1.001007",
+              "extradata_hash": "SHA256:64cc16f130c23a62f001f67db9d988d822161dc7855594efbcb244276dde2a0c",
+              "color_range": "tv",
+              "color_space": "bt2020nc",
+              "color_transfer": "smpte2084",
+              "color_primaries": "bt2020",
+              "side_data_list": [
+                {
+                  "side_data_type": "Display Matrix",
+                  "displaymatrix": "\n00000000:            0      -65536           0\n00000001:        65536           0           0\n00000002:            0           0  1073741824\n",
+                  "rotation": 90
+                }
+              ]
+            },
+            {
+              "codec_name": "aac",
+              "profile": "LC",
+              "codec_tag_string": "mp4a",
+              "time_base": "1/32000",
+              "r_frame_rate": "0/0",
+              "avg_frame_rate": "0/0",
+              "duration": "0.896000",
+              "sample_rate": "32000",
+              "channels": 2,
+              "extradata_hash": "SHA256:53efd1548fcbfdf332ca094f053edac8423b8660a6a265d3c5877e080054c2bf"
+            }
+          ],
+          "ordered_packet_hash_aggregates": {
+            "video": {
+              "count": 60,
+              "sha256_of_ordered_sha256_strings": "d85b5ad8ceaf76d3a4788cdb469e06fcb0dff6dc441886821cde2f781e72ef42"
+            },
+            "audio": {
+              "count": 28,
+              "sha256_of_ordered_sha256_strings": "0b64c9b7a50dff47fe3e6a932564fdd9c7b3e059c48adbf5844c95684f3a73a6"
+            }
+          },
+          "validation": {
+            "packet_hashes": "identical for video and AAC",
+            "pts_dts_duration": "verified per packet",
+            "common_offset_seconds": 0.0,
+            "decoded_pcm": "identical",
+            "first_frame_hdr_metadata": "identical (presence reported separately)"
+          }
+        }
+      }
+    },
+    "hlg": {
+      "ffmpeg_version": "ffmpeg version 7.1.5-0+deb13u1 Copyright (c) 2000-2026 the FFmpeg developers",
+      "source_to_A_timing": {
+        "video": {
+          "max_absolute_pts_difference_microseconds": 10.416666666666666,
+          "max_absolute_dts_difference_microseconds": 9.722222222222221,
+          "max_absolute_duration_difference_microseconds": 16.666666666666668
+        },
+        "audio": {
+          "max_absolute_pts_difference_microseconds": 0.0,
+          "max_absolute_dts_difference_microseconds": 0.0,
+          "max_absolute_duration_difference_microseconds": 0.0
+        }
+      },
+      "variants": {
+        "source": {
+          "bytes": 33673,
+          "sha256": "02fa50c2b8b786e45bdb7a53ae1c6ab8566d378111315d737a85a1ddff73cd9b",
+          "structure": {
+            "top": [
+              "ftyp",
+              "wide",
+              "mdat",
+              "moov"
+            ],
+            "movie_timescale": 1000,
+            "movie_duration_ticks": 1003,
+            "tracks": [
+              {
+                "handler": "vide",
+                "track_duration_ticks": 1001,
+                "media_timescale": 60000,
+                "media_duration_ticks": 60060,
+                "edits": [
+                  {
+                    "duration": 1001,
+                    "media_time": 2002,
+                    "rate": [
+                      1,
+                      0
+                    ]
+                  }
+                ],
+                "sample_entry_sha256": "1956d65db9050df96932076cd496a05815668f1588d0882e0e1f461885958b7c",
+                "tables": {
+                  "stts": {
+                    "bytes": 24,
+                    "sha256": "ca3c06252aae6cf678120382c7b72121842bfb864395df4f0f8ecce00ded19e6",
+                    "hex": "00000000000000010000003c000003e9"
+                  },
+                  "stss": {
+                    "bytes": 20,
+                    "sha256": "ba32f13acaf822f7ea3ecc784b3783e80a891afe1d25de9a5f74f3fab242904f",
+                    "hex": "000000000000000100000001"
+                  },
+                  "ctts": {
+                    "bytes": 496,
+                    "sha256": "397a0e1679ebec546859d106d8c0755c4059b25e67adb58e73125d7bcdf3ccd7",
+                    "hex": null
+                  },
+                  "stsc": {
+                    "bytes": 304,
+                    "sha256": "d2c11c14359abc06d8fc65d46e7592fa4b1715a015cb81ef30df82b623993284",
+                    "hex": null
+                  },
+                  "stsz": {
+                    "bytes": 260,
+                    "sha256": "c5510aea06c060fd6d5907fa19967dcb3763a3d8f4b5bcecb769b7bda5474cc0",
+                    "hex": null
+                  },
+                  "stco": {
+                    "bytes": 176,
+                    "sha256": "93cd29081e0cd293230a19ad412073b54f55e1acdc1e78502f2def7472bc4f0e",
+                    "hex": "00000000000000280000002400000f53000011510000133700001621000017f3000019c700001d6900001f6e0000210f000024de000026f50000289000002c1200002e2100002fbd000031700000359200003739000038f200003c7100003eaa0000404b000043d3000045ee0000478200004b9200004d5200004f4b0000533f000054f4000056d600005abb00005c9c00005e5c0000623c0000641a0000659f0000674d00006b0d"
+                  }
+                }
+              },
+              {
+                "handler": "soun",
+                "track_duration_ticks": 1003,
+                "media_timescale": 48000,
+                "media_duration_ticks": 41984,
+                "edits": [
+                  {
+                    "duration": 128,
+                    "media_time": -1,
+                    "rate": [
+                      1,
+                      0
+                    ]
+                  },
+                  {
+                    "duration": 875,
+                    "media_time": 0,
+                    "rate": [
+                      1,
+                      0
+                    ]
+                  }
+                ],
+                "sample_entry_sha256": "baef0569357db6c881c7fbf63bbfff9207f0f6097bb374712ad27b5b8c3bc5be",
+                "tables": {
+                  "stts": {
+                    "bytes": 24,
+                    "sha256": "e95a816eff525540032276e98ae648d15e4e07bb39bb1278f7e8c58b01e03bac",
+                    "hex": "00000000000000010000002900000400"
+                  },
+                  "stsc": {
+                    "bytes": 40,
+                    "sha256": "606eb3dbe1a7f0635b3fbad4ab012ecc3937ee69ea0f157f24691091b7338687",
+                    "hex": "0000000000000002000000010000000100000001000000280000000200000001"
+                  },
+                  "stsz": {
+                    "bytes": 184,
+                    "sha256": "607efa753fbb0b7bbf31ba40c9fe45972fc1422100b077fe47bb0cd3a7016b83",
+                    "hex": "000000000000000000000029000001200000016b00000136000001300000013f0000014a000001580000015b000001540000014f000001560000014d000001430000014d000001540000016900000151000001550000015100000155000001500000015000000170000001600000015a000001600000013500000157000001730000015a0000014c000001510000015a0000015a0000013e0000016100000156000001580000014b0000015f00000176"
+                  },
+                  "stco": {
+                    "bytes": 176,
+                    "sha256": "1f4e6f91a71140c5e3f24450ac0339a569fe61804bdc51769e6503e887afef8b",
+                    "hex": "000000000000002800000e3300000fe600001201000014f1000016b40000187d00001c1100001e1300001fbb0000238f0000259f0000274300002acf00002cd400002e690000300700003441000035e4000037a100003b1c00003d5a00003efb000042630000448e0000462800004a3200004c1d00004df4000051cc0000539a0000558a0000596a00005b4200005d02000060fe000062b900006449000065f5000069c200006b6a"
+                  },
+                  "sgpd": {
+                    "bytes": 26,
+                    "sha256": "92b9b296cb0f465c18266e76442a7a115e91aeef26a5715225d17e0adb4fb477",
+                    "hex": "01000000726f6c6c0000000200000001ffff"
+                  },
+                  "sbgp": {
+                    "bytes": 28,
+                    "sha256": "1d132accff43c0b7960a255651caba49e39cb0feb7d57a6cb7f5d7f9a63f0240",
+                    "hex": "00000000726f6c6c000000010000002900000001"
+                  }
+                }
+              }
+            ]
+          },
+          "interleaving": {
+            "track_runs": 80,
+            "largest_consecutive_run_samples": 10,
+            "first_20_track_runs": [
+              [
+                "video",
+                10
+              ],
+              [
+                "audio",
+                1
+              ],
+              [
+                "video",
+                1
+              ],
+              [
+                "audio",
+                1
+              ],
+              [
+                "video",
+                2
+              ],
+              [
+                "audio",
+                1
+              ],
+              [
+                "video",
+                1
+              ],
+              [
+                "audio",
+                1
+              ],
+              [
+                "video",
+                1
+              ],
+              [
+                "audio",
+                1
+              ],
+              [
+                "video",
+                2
+              ],
+              [
+                "audio",
+                1
+              ],
+              [
+                "video",
+                1
+              ],
+              [
+                "audio",
+                1
+              ],
+              [
+                "video",
+                1
+              ],
+              [
+                "audio",
+                1
+              ],
+              [
+                "video",
+                1
+              ],
+              [
+                "audio",
+                1
+              ],
+              [
+                "video",
+                2
+              ],
+              [
+                "audio",
+                1
+              ]
+            ],
+            "timeline": {
+              "video": {
+                "packets": 60,
+                "first_pts_seconds": 0.0,
+                "last_end_seconds": 1.001
+              },
+              "audio": {
+                "packets": 41,
+                "first_pts_seconds": 0.128,
+                "last_end_seconds": 1.002666
+              }
+            }
+          },
+          "first_frame_hdr_metadata": [
+            []
+          ],
+          "decoded_pcm": "SHA256=c57380ccd776b08f66d6d56c58c759c71ea3738b64edb4283d5440bc7a97ec7c",
+          "stream_summary": [
+            {
+              "codec_name": "hevc",
+              "profile": "Main 10",
+              "codec_tag_string": "hvc1",
+              "pix_fmt": "yuv420p10le",
+              "time_base": "1/60000",
+              "r_frame_rate": "60000/1001",
+              "avg_frame_rate": "60000/1001",
+              "duration": "1.001000",
+              "extradata_hash": "SHA256:66f5f1301c541545566f72b07e5192b3f889d5116f82dc6d386e43dc53185560",
+              "color_range": "tv",
+              "color_space": "bt2020nc",
+              "color_transfer": "arib-std-b67",
+              "color_primaries": "bt2020",
+              "side_data_list": [
+                {
+                  "side_data_type": "Display Matrix",
+                  "displaymatrix": "\n00000000:            0      -65536           0\n00000001:        65536           0           0\n00000002:            0           0  1073741824\n",
+                  "rotation": 90
+                }
+              ]
+            },
+            {
+              "codec_name": "aac",
+              "profile": "LC",
+              "codec_tag_string": "mp4a",
+              "time_base": "1/48000",
+              "r_frame_rate": "0/0",
+              "avg_frame_rate": "0/0",
+              "duration": "0.874667",
+              "sample_rate": "48000",
+              "channels": 2,
+              "extradata_hash": "SHA256:b3108813350006ef07740046fab14af9c374938867d16db02fe1a8baa5e72f10"
+            }
+          ],
+          "ordered_packet_hash_aggregates": {
+            "video": {
+              "count": 60,
+              "sha256_of_ordered_sha256_strings": "729897269e08c8df0d79b1473b1bc59ee57c812fe0b523a575db7b03848d5ca4"
+            },
+            "audio": {
+              "count": 41,
+              "sha256_of_ordered_sha256_strings": "e65844a1a39c74c79b209b8f23900dba1c29c58090e0d4af87f75a971e5ba982"
+            }
+          }
+        },
+        "A": {
+          "bytes": 32912,
+          "sha256": "9d1a8b19d48ea26f5c4e95acb87157386b0f7fc4ba308d97a0e079f4017cac02",
+          "structure": {
+            "top": [
+              "ftyp",
+              "moov",
+              "mdat"
+            ],
+            "movie_timescale": 57600,
+            "movie_duration_ticks": 57754,
+            "tracks": [
+              {
+                "handler": "vide",
+                "track_duration_ticks": 57658,
+                "media_timescale": 57600,
+                "media_duration_ticks": 57658,
+                "edits": [],
+                "sample_entry_sha256": "5a7dabb2c5214a3f59afbceaac4bdab5f809cf510d1396f67cc760e84a91419d",
+                "tables": {
+                  "stts": {
+                    "bytes": 56,
+                    "sha256": "7124bbbc7a093818d1c59a6e5604fab02a43976e525162b11ea59932ad65fbb8",
+                    "hex": "00000000000000050000000c000003c100000001000003c000000018000003c100000001000003c000000016000003c1"
+                  },
+                  "ctts": {
+                    "bytes": 496,
+                    "sha256": "715a5cc332fac2752ca58c3c5231ec62b9ec65721e0bd36282c6f45355e1e8dd",
+                    "hex": null
+                  },
+                  "cslg": {
+                    "bytes": 32,
+                    "sha256": "3073d3bd569705cc32a0e9a3913c4f781f733d98cf9bc83ee9fc2be64b637aa1",
+                    "hex": "0000000000000782fffff87e00000b43000000000000e13a"
+                  },
+                  "stsc": {
+                    "bytes": 52,
+                    "sha256": "d9625fd91082525a55baf1808ce7d68dff301e722409be7911ced75e6268a77b",
+                    "hex": "0000000000000003000000010000001d00000001000000020000001c00000001000000030000000300000001"
+                  },
+                  "stsz": {
+                    "bytes": 260,
+                    "sha256": "c5510aea06c060fd6d5907fa19967dcb3763a3d8f4b5bcecb769b7bda5474cc0",
+                    "hex": null
+                  },
+                  "stco": {
+                    "bytes": 28,
+                    "sha256": "100f5457b556e6dac77be4c1e5a17b65c2c1d08ec874bae19df753ca7fbe01bd",
+                    "hex": "00000000000000030000127500004e7d00007dbe"
+                  },
+                  "stss": {
+                    "bytes": 20,
+                    "sha256": "ba32f13acaf822f7ea3ecc784b3783e80a891afe1d25de9a5f74f3fab242904f",
+                    "hex": "000000000000000100000001"
+                  }
+                }
+              },
+              {
+                "handler": "soun",
+                "track_duration_ticks": 57754,
+                "media_timescale": 48000,
+                "media_duration_ticks": 41984,
+                "edits": [
+                  {
+                    "duration": 7373,
+                    "media_time": -1,
+                    "rate": [
+                      1,
+                      0
+                    ]
+                  },
+                  {
+                    "duration": 50381,
+                    "media_time": 0,
+                    "rate": [
+                      1,
+                      0
+                    ]
+                  }
+                ],
+                "sample_entry_sha256": "ae95d4dfe5dc7fbcac81c30567e69257aa9642162480e04a47a6d9b8a905a2c6",
+                "tables": {
+                  "stts": {
+                    "bytes": 24,
+                    "sha256": "e95a816eff525540032276e98ae648d15e4e07bb39bb1278f7e8c58b01e03bac",
+                    "hex": "00000000000000010000002900000400"
+                  },
+                  "stsc": {
+                    "bytes": 40,
+                    "sha256": "8202388931c53ea4dc672520d73a60a36875870ab31cce80d8443040404b6083",
+                    "hex": "0000000000000002000000010000001800000001000000020000001100000001"
+                  },
+                  "stsz": {
+                    "bytes": 184,
+                    "sha256": "607efa753fbb0b7bbf31ba40c9fe45972fc1422100b077fe47bb0cd3a7016b83",
+                    "hex": "000000000000000000000029000001200000016b00000136000001300000013f0000014a000001580000015b000001540000014f000001560000014d000001430000014d000001540000016900000151000001550000015100000155000001500000015000000170000001600000015a000001600000013500000157000001730000015a0000014c000001510000015a0000015a0000013e0000016100000156000001580000014b0000015f00000176"
+                  },
+                  "stco": {
+                    "bytes": 24,
+                    "sha256": "a4c0703cf830991d8114c1280c14426eaf20664f26f33e6ab028f7ac5ad9cee6",
+                    "hex": "000000000000000200002f01000066ed"
+                  },
+                  "sgpd": {
+                    "bytes": 26,
+                    "sha256": "92b9b296cb0f465c18266e76442a7a115e91aeef26a5715225d17e0adb4fb477",
+                    "hex": "01000000726f6c6c0000000200000001ffff"
+                  },
+                  "sbgp": {
+                    "bytes": 36,
+                    "sha256": "c62d5b56cf13dd0133613126da06672c1eb4cb1d2bee363e1a82b9e3d4c6fa57",
+                    "hex": "00000000726f6c6c0000000200000001000000000000002800000001"
+                  }
+                }
+              }
+            ]
+          },
+          "interleaving": {
+            "track_runs": 5,
+            "largest_consecutive_run_samples": 29,
+            "first_20_track_runs": [
+              [
+                "video",
+                29
+              ],
+              [
+                "audio",
+                24
+              ],
+              [
+                "video",
+                28
+              ],
+              [
+                "audio",
+                17
+              ],
+              [
+                "video",
+                3
+              ]
+            ],
+            "timeline": {
+              "video": {
+                "packets": 60,
+                "first_pts_seconds": 0.0,
+                "last_end_seconds": 1.00099
+              },
+              "audio": {
+                "packets": 41,
+                "first_pts_seconds": 0.128,
+                "last_end_seconds": 1.002666
+              }
+            }
+          },
+          "first_frame_hdr_metadata": [
+            []
+          ],
+          "decoded_pcm": "SHA256=c57380ccd776b08f66d6d56c58c759c71ea3738b64edb4283d5440bc7a97ec7c",
+          "stream_summary": [
+            {
+              "codec_name": "hevc",
+              "profile": "Main 10",
+              "codec_tag_string": "hvc1",
+              "pix_fmt": "yuv420p10le",
+              "time_base": "1/57600",
+              "r_frame_rate": "60000/1001",
+              "avg_frame_rate": "1728000/28829",
+              "duration": "1.001007",
+              "extradata_hash": "SHA256:66f5f1301c541545566f72b07e5192b3f889d5116f82dc6d386e43dc53185560",
+              "color_range": "tv",
+              "color_space": "bt2020nc",
+              "color_transfer": "arib-std-b67",
+              "color_primaries": "bt2020",
+              "side_data_list": [
+                {
+                  "side_data_type": "Display Matrix",
+                  "displaymatrix": "\n00000000:            0      -65536           0\n00000001:        65536           0           0\n00000002:            0           0  1073741824\n",
+                  "rotation": 90
+                }
+              ]
+            },
+            {
+              "codec_name": "aac",
+              "profile": "LC",
+              "codec_tag_string": "mp4a",
+              "time_base": "1/48000",
+              "r_frame_rate": "0/0",
+              "avg_frame_rate": "0/0",
+              "duration": "0.874667",
+              "sample_rate": "48000",
+              "channels": 2,
+              "extradata_hash": "SHA256:b3108813350006ef07740046fab14af9c374938867d16db02fe1a8baa5e72f10"
+            }
+          ],
+          "ordered_packet_hash_aggregates": {
+            "video": {
+              "count": 60,
+              "sha256_of_ordered_sha256_strings": "729897269e08c8df0d79b1473b1bc59ee57c812fe0b523a575db7b03848d5ca4"
+            },
+            "audio": {
+              "count": 41,
+              "sha256_of_ordered_sha256_strings": "e65844a1a39c74c79b209b8f23900dba1c29c58090e0d4af87f75a971e5ba982"
+            }
+          },
+          "validation": {
+            "packet_hashes": "identical for video and AAC",
+            "pts_dts_duration": "verified per packet",
+            "common_offset_seconds": 0.0,
+            "decoded_pcm": "identical",
+            "first_frame_hdr_metadata": "identical (presence reported separately)"
+          }
+        },
+        "B": {
+          "bytes": 33056,
+          "sha256": "da26e865fd61437aaf42fd695ea682494cbfdf348b27bcb6ad8fd71b0033c736",
+          "structure": {
+            "top": [
+              "ftyp",
+              "moov",
+              "mdat"
+            ],
+            "movie_timescale": 57600,
+            "movie_duration_ticks": 57754,
+            "tracks": [
+              {
+                "handler": "vide",
+                "track_duration_ticks": 57658,
+                "media_timescale": 57600,
+                "media_duration_ticks": 57658,
+                "edits": [],
+                "sample_entry_sha256": "5a7dabb2c5214a3f59afbceaac4bdab5f809cf510d1396f67cc760e84a91419d",
+                "tables": {
+                  "stts": {
+                    "bytes": 56,
+                    "sha256": "7124bbbc7a093818d1c59a6e5604fab02a43976e525162b11ea59932ad65fbb8",
+                    "hex": "00000000000000050000000c000003c100000001000003c000000018000003c100000001000003c000000016000003c1"
+                  },
+                  "ctts": {
+                    "bytes": 496,
+                    "sha256": "715a5cc332fac2752ca58c3c5231ec62b9ec65721e0bd36282c6f45355e1e8dd",
+                    "hex": null
+                  },
+                  "cslg": {
+                    "bytes": 32,
+                    "sha256": "3073d3bd569705cc32a0e9a3913c4f781f733d98cf9bc83ee9fc2be64b637aa1",
+                    "hex": "0000000000000782fffff87e00000b43000000000000e13a"
+                  },
+                  "stsc": {
+                    "bytes": 52,
+                    "sha256": "d9625fd91082525a55baf1808ce7d68dff301e722409be7911ced75e6268a77b",
+                    "hex": "0000000000000003000000010000001d00000001000000020000001c00000001000000030000000300000001"
+                  },
+                  "stsz": {
+                    "bytes": 260,
+                    "sha256": "c5510aea06c060fd6d5907fa19967dcb3763a3d8f4b5bcecb769b7bda5474cc0",
+                    "hex": null
+                  },
+                  "stco": {
+                    "bytes": 28,
+                    "sha256": "31ce880f34a644e82779867e8483487ffa522156c37210fb9f38762971923ce6",
+                    "hex": "00000000000000030000130500004f0d00007e4e"
+                  },
+                  "stss": {
+                    "bytes": 20,
+                    "sha256": "ba32f13acaf822f7ea3ecc784b3783e80a891afe1d25de9a5f74f3fab242904f",
+                    "hex": "000000000000000100000001"
+                  }
+                }
+              },
+              {
+                "handler": "soun",
+                "track_duration_ticks": 57754,
+                "media_timescale": 48000,
+                "media_duration_ticks": 41984,
+                "edits": [
+                  {
+                    "duration": 7373,
+                    "media_time": -1,
+                    "rate": [
+                      1,
+                      0
+                    ]
+                  },
+                  {
+                    "duration": 50381,
+                    "media_time": 0,
+                    "rate": [
+                      1,
+                      0
+                    ]
+                  }
+                ],
+                "sample_entry_sha256": "ae95d4dfe5dc7fbcac81c30567e69257aa9642162480e04a47a6d9b8a905a2c6",
+                "tables": {
+                  "stts": {
+                    "bytes": 24,
+                    "sha256": "e95a816eff525540032276e98ae648d15e4e07bb39bb1278f7e8c58b01e03bac",
+                    "hex": "00000000000000010000002900000400"
+                  },
+                  "stsc": {
+                    "bytes": 28,
+                    "sha256": "633c10313c18e03b1d625240713dcab296f19e818bc33ae4eefa50190d793f03",
+                    "hex": "0000000000000001000000010000000100000001"
+                  },
+                  "stsz": {
+                    "bytes": 184,
+                    "sha256": "607efa753fbb0b7bbf31ba40c9fe45972fc1422100b077fe47bb0cd3a7016b83",
+                    "hex": "000000000000000000000029000001200000016b00000136000001300000013f0000014a000001580000015b000001540000014f000001560000014d000001430000014d000001540000016900000151000001550000015100000155000001500000015000000170000001600000015a000001600000013500000157000001730000015a0000014c000001510000015a0000015a0000013e0000016100000156000001580000014b0000015f00000176"
+                  },
+                  "stco": {
+                    "bytes": 180,
+                    "sha256": "a21eeaecea10e5f9e48bf2ec70503fadd8ac22ac3714b02ef27f3082c212eab5",
+                    "hex": "000000000000002900002f91000030b10000321c0000335200003482000035c10000370b00003863000039be00003b1200003c6100003db700003f040000404700004194000042e800004451000045a2000046f7000048480000499d00004aed00004c3d00004dad0000677d000068d700006a3700006b6c00006cc300006e3600006f90000070dc0000722d00007387000074e10000761f00007780000078d600007a2e00007b7900007cd8"
+                  },
+                  "sgpd": {
+                    "bytes": 26,
+                    "sha256": "92b9b296cb0f465c18266e76442a7a115e91aeef26a5715225d17e0adb4fb477",
+                    "hex": "01000000726f6c6c0000000200000001ffff"
+                  },
+                  "sbgp": {
+                    "bytes": 36,
+                    "sha256": "c62d5b56cf13dd0133613126da06672c1eb4cb1d2bee363e1a82b9e3d4c6fa57",
+                    "hex": "00000000726f6c6c0000000200000001000000000000002800000001"
+                  }
+                }
+              }
+            ]
+          },
+          "interleaving": {
+            "track_runs": 5,
+            "largest_consecutive_run_samples": 29,
+            "first_20_track_runs": [
+              [
+                "video",
+                29
+              ],
+              [
+                "audio",
+                24
+              ],
+              [
+                "video",
+                28
+              ],
+              [
+                "audio",
+                17
+              ],
+              [
+                "video",
+                3
+              ]
+            ],
+            "timeline": {
+              "video": {
+                "packets": 60,
+                "first_pts_seconds": 0.0,
+                "last_end_seconds": 1.00099
+              },
+              "audio": {
+                "packets": 41,
+                "first_pts_seconds": 0.128,
+                "last_end_seconds": 1.002666
+              }
+            }
+          },
+          "first_frame_hdr_metadata": [
+            []
+          ],
+          "decoded_pcm": "SHA256=c57380ccd776b08f66d6d56c58c759c71ea3738b64edb4283d5440bc7a97ec7c",
+          "stream_summary": [
+            {
+              "codec_name": "hevc",
+              "profile": "Main 10",
+              "codec_tag_string": "hvc1",
+              "pix_fmt": "yuv420p10le",
+              "time_base": "1/57600",
+              "r_frame_rate": "60000/1001",
+              "avg_frame_rate": "1728000/28829",
+              "duration": "1.001007",
+              "extradata_hash": "SHA256:66f5f1301c541545566f72b07e5192b3f889d5116f82dc6d386e43dc53185560",
+              "color_range": "tv",
+              "color_space": "bt2020nc",
+              "color_transfer": "arib-std-b67",
+              "color_primaries": "bt2020",
+              "side_data_list": [
+                {
+                  "side_data_type": "Display Matrix",
+                  "displaymatrix": "\n00000000:            0      -65536           0\n00000001:        65536           0           0\n00000002:            0           0  1073741824\n",
+                  "rotation": 90
+                }
+              ]
+            },
+            {
+              "codec_name": "aac",
+              "profile": "LC",
+              "codec_tag_string": "mp4a",
+              "time_base": "1/48000",
+              "r_frame_rate": "0/0",
+              "avg_frame_rate": "0/0",
+              "duration": "0.874667",
+              "sample_rate": "48000",
+              "channels": 2,
+              "extradata_hash": "SHA256:b3108813350006ef07740046fab14af9c374938867d16db02fe1a8baa5e72f10"
+            }
+          ],
+          "ordered_packet_hash_aggregates": {
+            "video": {
+              "count": 60,
+              "sha256_of_ordered_sha256_strings": "729897269e08c8df0d79b1473b1bc59ee57c812fe0b523a575db7b03848d5ca4"
+            },
+            "audio": {
+              "count": 41,
+              "sha256_of_ordered_sha256_strings": "e65844a1a39c74c79b209b8f23900dba1c29c58090e0d4af87f75a971e5ba982"
+            }
+          },
+          "validation": {
+            "packet_hashes": "identical for video and AAC",
+            "pts_dts_duration": "verified per packet",
+            "common_offset_seconds": 0.0,
+            "decoded_pcm": "identical",
+            "first_frame_hdr_metadata": "identical (presence reported separately)"
+          }
+        },
+        "C": {
+          "bytes": 33252,
+          "sha256": "9d8bf2dc2bf8fe51603e6a8bebf2b7201d72cf9b48ed241002a8ba1498b0cedd",
+          "structure": {
+            "top": [
+              "ftyp",
+              "moov",
+              "mdat"
+            ],
+            "movie_timescale": 288000,
+            "movie_duration_ticks": 288770,
+            "tracks": [
+              {
+                "handler": "vide",
+                "track_duration_ticks": 288290,
+                "media_timescale": 57600,
+                "media_duration_ticks": 57658,
+                "edits": [],
+                "sample_entry_sha256": "5a7dabb2c5214a3f59afbceaac4bdab5f809cf510d1396f67cc760e84a91419d",
+                "tables": {
+                  "stts": {
+                    "bytes": 56,
+                    "sha256": "7124bbbc7a093818d1c59a6e5604fab02a43976e525162b11ea59932ad65fbb8",
+                    "hex": "00000000000000050000000c000003c100000001000003c000000018000003c100000001000003c000000016000003c1"
+                  },
+                  "ctts": {
+                    "bytes": 496,
+                    "sha256": "715a5cc332fac2752ca58c3c5231ec62b9ec65721e0bd36282c6f45355e1e8dd",
+                    "hex": null
+                  },
+                  "cslg": {
+                    "bytes": 32,
+                    "sha256": "3073d3bd569705cc32a0e9a3913c4f781f733d98cf9bc83ee9fc2be64b637aa1",
+                    "hex": "0000000000000782fffff87e00000b43000000000000e13a"
+                  },
+                  "stsc": {
+                    "bytes": 28,
+                    "sha256": "633c10313c18e03b1d625240713dcab296f19e818bc33ae4eefa50190d793f03",
+                    "hex": "0000000000000001000000010000000100000001"
+                  },
+                  "stsz": {
+                    "bytes": 260,
+                    "sha256": "c5510aea06c060fd6d5907fa19967dcb3763a3d8f4b5bcecb769b7bda5474cc0",
+                    "hex": null
+                  },
+                  "stco": {
+                    "bytes": 256,
+                    "sha256": "890ece5f418a19f62f3ff3b4263211aad3d10d11887e34d4755ac1faf9b1c488",
+                    "hex": null
+                  },
+                  "stss": {
+                    "bytes": 20,
+                    "sha256": "ba32f13acaf822f7ea3ecc784b3783e80a891afe1d25de9a5f74f3fab242904f",
+                    "hex": "000000000000000100000001"
+                  }
+                }
+              },
+              {
+                "handler": "soun",
+                "track_duration_ticks": 288770,
+                "media_timescale": 48000,
+                "media_duration_ticks": 41984,
+                "edits": [
+                  {
+                    "duration": 36865,
+                    "media_time": -1,
+                    "rate": [
+                      1,
+                      0
+                    ]
+                  },
+                  {
+                    "duration": 251905,
+                    "media_time": 0,
+                    "rate": [
+                      1,
+                      0
+                    ]
+                  }
+                ],
+                "sample_entry_sha256": "ae95d4dfe5dc7fbcac81c30567e69257aa9642162480e04a47a6d9b8a905a2c6",
+                "tables": {
+                  "stts": {
+                    "bytes": 24,
+                    "sha256": "e95a816eff525540032276e98ae648d15e4e07bb39bb1278f7e8c58b01e03bac",
+                    "hex": "00000000000000010000002900000400"
+                  },
+                  "stsc": {
+                    "bytes": 28,
+                    "sha256": "633c10313c18e03b1d625240713dcab296f19e818bc33ae4eefa50190d793f03",
+                    "hex": "0000000000000001000000010000000100000001"
+                  },
+                  "stsz": {
+                    "bytes": 184,
+                    "sha256": "607efa753fbb0b7bbf31ba40c9fe45972fc1422100b077fe47bb0cd3a7016b83",
+                    "hex": "000000000000000000000029000001200000016b00000136000001300000013f0000014a000001580000015b000001540000014f000001560000014d000001430000014d000001540000016900000151000001550000015100000155000001500000015000000170000001600000015a000001600000013500000157000001730000015a0000014c000001510000015a0000015a0000013e0000016100000156000001580000014b0000015f00000176"
+                  },
+                  "stco": {
+                    "bytes": 180,
+                    "sha256": "e4447a109bcf7ff5c088a98de9992fa683964e20d956ffb3e239167193acc8b6",
+                    "hex": "0000000000000029000021d80000238b000025a60000289600002a5900002c2200002fb6000031b800003360000037340000394400003ae800003e74000040790000420e000043ac000047e60000498900004b4600004ec1000050ff000052a00000560800005833000059cd00005dd700005fc200006199000065710000673f0000692f00006d0f00006ee7000070a7000074a30000765e000077ee0000799a00007d6700007f0f0000806e"
+                  },
+                  "sgpd": {
+                    "bytes": 26,
+                    "sha256": "92b9b296cb0f465c18266e76442a7a115e91aeef26a5715225d17e0adb4fb477",
+                    "hex": "01000000726f6c6c0000000200000001ffff"
+                  },
+                  "sbgp": {
+                    "bytes": 36,
+                    "sha256": "c62d5b56cf13dd0133613126da06672c1eb4cb1d2bee363e1a82b9e3d4c6fa57",
+                    "hex": "00000000726f6c6c0000000200000001000000000000002800000001"
+                  }
+                }
+              }
+            ]
+          },
+          "interleaving": {
+            "track_runs": 80,
+            "largest_consecutive_run_samples": 10,
+            "first_20_track_runs": [
+              [
+                "video",
+                10
+              ],
+              [
+                "audio",
+                1
+              ],
+              [
+                "video",
+                1
+              ],
+              [
+                "audio",
+                1
+              ],
+              [
+                "video",
+                2
+              ],
+              [
+                "audio",
+                1
+              ],
+              [
+                "video",
+                1
+              ],
+              [
+                "audio",
+                1
+              ],
+              [
+                "video",
+                1
+              ],
+              [
+                "audio",
+                1
+              ],
+              [
+                "video",
+                2
+              ],
+              [
+                "audio",
+                1
+              ],
+              [
+                "video",
+                1
+              ],
+              [
+                "audio",
+                1
+              ],
+              [
+                "video",
+                1
+              ],
+              [
+                "audio",
+                1
+              ],
+              [
+                "video",
+                1
+              ],
+              [
+                "audio",
+                1
+              ],
+              [
+                "video",
+                2
+              ],
+              [
+                "audio",
+                1
+              ]
+            ],
+            "timeline": {
+              "video": {
+                "packets": 60,
+                "first_pts_seconds": 0.0,
+                "last_end_seconds": 1.00099
+              },
+              "audio": {
+                "packets": 41,
+                "first_pts_seconds": 0.128,
+                "last_end_seconds": 1.002666
+              }
+            }
+          },
+          "first_frame_hdr_metadata": [
+            []
+          ],
+          "decoded_pcm": "SHA256=c57380ccd776b08f66d6d56c58c759c71ea3738b64edb4283d5440bc7a97ec7c",
+          "stream_summary": [
+            {
+              "codec_name": "hevc",
+              "profile": "Main 10",
+              "codec_tag_string": "hvc1",
+              "pix_fmt": "yuv420p10le",
+              "time_base": "1/57600",
+              "r_frame_rate": "60000/1001",
+              "avg_frame_rate": "1728000/28829",
+              "duration": "1.001007",
+              "extradata_hash": "SHA256:66f5f1301c541545566f72b07e5192b3f889d5116f82dc6d386e43dc53185560",
+              "color_range": "tv",
+              "color_space": "bt2020nc",
+              "color_transfer": "arib-std-b67",
+              "color_primaries": "bt2020",
+              "side_data_list": [
+                {
+                  "side_data_type": "Display Matrix",
+                  "displaymatrix": "\n00000000:            0      -65536           0\n00000001:        65536           0           0\n00000002:            0           0  1073741824\n",
+                  "rotation": 90
+                }
+              ]
+            },
+            {
+              "codec_name": "aac",
+              "profile": "LC",
+              "codec_tag_string": "mp4a",
+              "time_base": "1/48000",
+              "r_frame_rate": "0/0",
+              "avg_frame_rate": "0/0",
+              "duration": "0.874667",
+              "sample_rate": "48000",
+              "channels": 2,
+              "extradata_hash": "SHA256:b3108813350006ef07740046fab14af9c374938867d16db02fe1a8baa5e72f10"
+            }
+          ],
+          "ordered_packet_hash_aggregates": {
+            "video": {
+              "count": 60,
+              "sha256_of_ordered_sha256_strings": "729897269e08c8df0d79b1473b1bc59ee57c812fe0b523a575db7b03848d5ca4"
+            },
+            "audio": {
+              "count": 41,
+              "sha256_of_ordered_sha256_strings": "e65844a1a39c74c79b209b8f23900dba1c29c58090e0d4af87f75a971e5ba982"
+            }
+          },
+          "validation": {
+            "packet_hashes": "identical for video and AAC",
+            "pts_dts_duration": "verified per packet",
+            "common_offset_seconds": 0.0,
+            "decoded_pcm": "identical",
+            "first_frame_hdr_metadata": "identical (presence reported separately)"
+          }
+        }
+      }
+    },
+    "sdr": {
+      "ffmpeg_version": "ffmpeg version 7.1.5-0+deb13u1 Copyright (c) 2000-2026 the FFmpeg developers",
+      "source_to_A_timing": {
+        "video": {
+          "max_absolute_pts_difference_microseconds": 10.416666666666666,
+          "max_absolute_dts_difference_microseconds": 9.722222222222221,
+          "max_absolute_duration_difference_microseconds": 16.666666666666668
+        },
+        "audio": {
+          "max_absolute_pts_difference_microseconds": 0.0,
+          "max_absolute_dts_difference_microseconds": 0.0,
+          "max_absolute_duration_difference_microseconds": 0.0
+        }
+      },
+      "variants": {
+        "source": {
+          "bytes": 28224,
+          "sha256": "53ef0a7cbd04341846382929d0c9f8723b0b4d67f157329fda4823611fb8791f",
+          "structure": {
+            "top": [
+              "ftyp",
+              "wide",
+              "mdat",
+              "moov"
+            ],
+            "movie_timescale": 1000,
+            "movie_duration_ticks": 1009,
+            "tracks": [
+              {
+                "handler": "vide",
+                "track_duration_ticks": 1001,
+                "media_timescale": 60000,
+                "media_duration_ticks": 60060,
+                "edits": [
+                  {
+                    "duration": 1001,
+                    "media_time": 2002,
+                    "rate": [
+                      1,
+                      0
+                    ]
+                  }
+                ],
+                "sample_entry_sha256": "03abdcced38ccb31975fecf41f61086dd478d756f68c11003d8f6c703e02fa15",
+                "tables": {
+                  "stts": {
+                    "bytes": 24,
+                    "sha256": "ca3c06252aae6cf678120382c7b72121842bfb864395df4f0f8ecce00ded19e6",
+                    "hex": "00000000000000010000003c000003e9"
+                  },
+                  "stss": {
+                    "bytes": 20,
+                    "sha256": "ba32f13acaf822f7ea3ecc784b3783e80a891afe1d25de9a5f74f3fab242904f",
+                    "hex": "000000000000000100000001"
+                  },
+                  "ctts": {
+                    "bytes": 496,
+                    "sha256": "397a0e1679ebec546859d106d8c0755c4059b25e67adb58e73125d7bcdf3ccd7",
+                    "hex": null
+                  },
+                  "stsc": {
+                    "bytes": 376,
+                    "sha256": "f820812cfb03ae26c81eaf2c26876cdbf72dcacc876364e83abb5dd5e5da8a43",
+                    "hex": null
+                  },
+                  "stsz": {
+                    "bytes": 260,
+                    "sha256": "13b59be8b7f762289869b65e4e28da826f699eaccf2db83582faecd379d43999",
+                    "hex": null
+                  },
+                  "stco": {
+                    "bytes": 164,
+                    "sha256": "649f0701d71e8463c5e02269667222a96c5c1f0ad49d5394a2aeb6bc585a76fe",
+                    "hex": "00000000000000250000002400000fd100001175000012aa00001536000017040000182000001b4d00001cf400001e410000221f000023450000246d00002811000028f100002c1c00002d8900002e7d000031d1000033700000347d000037be0000390300003a6700003e0e00003f7d0000409e000043f800004572000046ab00004a8c00004c6100004d6e0000517f000052570000537c000056e4"
+                  }
+                }
+              },
+              {
+                "handler": "soun",
+                "track_duration_ticks": 1009,
+                "media_timescale": 44100,
+                "media_duration_ticks": 38912,
+                "edits": [
+                  {
+                    "duration": 126,
+                    "media_time": -1,
+                    "rate": [
+                      1,
+                      0
+                    ]
+                  },
+                  {
+                    "duration": 883,
+                    "media_time": 0,
+                    "rate": [
+                      1,
+                      0
+                    ]
+                  }
+                ],
+                "sample_entry_sha256": "7f5db0eb0145bf9311c029b88fab8947a0502b7b3cc523af65f91fba951d68d1",
+                "tables": {
+                  "stts": {
+                    "bytes": 24,
+                    "sha256": "8ece1e1ae2c4f49f7b67fa35c992168e47c57c3dac6e1b4b70c8a5295d4cd5f6",
+                    "hex": "00000000000000010000002600000400"
+                  },
+                  "stsc": {
+                    "bytes": 40,
+                    "sha256": "e5eb612cfe5c637deae87b09f2a11cbbce4a40e6107c5308d93e207ebc95be32",
+                    "hex": "0000000000000002000000010000000100000001000000250000000200000001"
+                  },
+                  "stsz": {
+                    "bytes": 172,
+                    "sha256": "7806cbcc308997004b94bde18fd57399991614ac4b63e12dab594142a5d6bdba",
+                    "hex": "000000000000000000000026000001020000010200000092000000ba000000d7000000e1000000be000000be000000e7000000d0000000e3000000e8000000d300000098000000bf000000d0000000bc000000aa000000de000000f7000000ca000000ba000000ce000000d1000000b8000000a3000000e6000000dd000000e1000000d2000000ae000000b6000000d6000000c0000000da000000b9000000a8000000e6"
+                  },
+                  "stco": {
+                    "bytes": 164,
+                    "sha256": "31149c9e049ea9f153a18df314cf47cb799cf953495b2c8b5fed431a8f79c1b8",
+                    "hex": "000000000000002500000ecf00001073000012180000147c0000162d0000173f00001a8f00001c3600001d5a0000214f00002262000023850000273e0000285900002b5d00002cb900002dc1000031270000329200003386000036f4000038490000399900003d3d00003ec500003ffb0000431200004495000045ca000049ba00004bb300004cb8000050a900005197000052a20000562b0000573d"
+                  },
+                  "sgpd": {
+                    "bytes": 26,
+                    "sha256": "92b9b296cb0f465c18266e76442a7a115e91aeef26a5715225d17e0adb4fb477",
+                    "hex": "01000000726f6c6c0000000200000001ffff"
+                  },
+                  "sbgp": {
+                    "bytes": 28,
+                    "sha256": "4980d3e3e3492b05b5c23324a3c273938aa0b9468f8cad099b5298a87f6ac7e9",
+                    "hex": "00000000726f6c6c000000010000002600000001"
+                  }
+                }
+              }
+            ]
+          },
+          "interleaving": {
+            "track_runs": 74,
+            "largest_consecutive_run_samples": 10,
+            "first_20_track_runs": [
+              [
+                "video",
+                10
+              ],
+              [
+                "audio",
+                1
+              ],
+              [
+                "video",
+                1
+              ],
+              [
+                "audio",
+                1
+              ],
+              [
+                "video",
+                2
+              ],
+              [
+                "audio",
+                1
+              ],
+              [
+                "video",
+                1
+              ],
+              [
+                "audio",
+                1
+              ],
+              [
+                "video",
+                2
+              ],
+              [
+                "audio",
+                1
+              ],
+              [
+                "video",
+                1
+              ],
+              [
+                "audio",
+                1
+              ],
+              [
+                "video",
+                1
+              ],
+              [
+                "audio",
+                1
+              ],
+              [
+                "video",
+                2
+              ],
+              [
+                "audio",
+                1
+              ],
+              [
+                "video",
+                1
+              ],
+              [
+                "audio",
+                1
+              ],
+              [
+                "video",
+                2
+              ],
+              [
+                "audio",
+                1
+              ]
+            ],
+            "timeline": {
+              "video": {
+                "packets": 60,
+                "first_pts_seconds": 0.0,
+                "last_end_seconds": 1.001
+              },
+              "audio": {
+                "packets": 38,
+                "first_pts_seconds": 0.126009,
+                "last_end_seconds": 1.008367
+              }
+            }
+          },
+          "first_frame_hdr_metadata": [
+            []
+          ],
+          "decoded_pcm": "SHA256=7376f20529f3c44f5386b8eaf9e898e7ea6635afdc2cc668c8fa0ce2cf52798b",
+          "stream_summary": [
+            {
+              "codec_name": "hevc",
+              "profile": "Main",
+              "codec_tag_string": "hvc1",
+              "pix_fmt": "yuv420p",
+              "time_base": "1/60000",
+              "r_frame_rate": "60000/1001",
+              "avg_frame_rate": "60000/1001",
+              "duration": "1.001000",
+              "extradata_hash": "SHA256:71838464d33caed1af8dbd45d88b53ed9cde14715c883a4287a737231b424f6b",
+              "color_range": "tv",
+              "color_space": "bt709",
+              "color_transfer": "bt709",
+              "color_primaries": "bt709",
+              "side_data_list": [
+                {
+                  "side_data_type": "Display Matrix",
+                  "displaymatrix": "\n00000000:            0      -65536           0\n00000001:        65536           0           0\n00000002:            0           0  1073741824\n",
+                  "rotation": 90
+                }
+              ]
+            },
+            {
+              "codec_name": "aac",
+              "profile": "LC",
+              "codec_tag_string": "mp4a",
+              "time_base": "1/44100",
+              "r_frame_rate": "0/0",
+              "avg_frame_rate": "0/0",
+              "duration": "0.882358",
+              "sample_rate": "44100",
+              "channels": 1,
+              "extradata_hash": "SHA256:e1d9202ffd952e4a2732fa1093c81702a05a553570e848fb8e670c958c05c101"
+            }
+          ],
+          "ordered_packet_hash_aggregates": {
+            "video": {
+              "count": 60,
+              "sha256_of_ordered_sha256_strings": "6d3cd12551cde6b3ed062cb50baf117b47b4d22eceeeb8f3504fdab138bd4057"
+            },
+            "audio": {
+              "count": 38,
+              "sha256_of_ordered_sha256_strings": "159dc81fd9de9567b9c267b28d6d2da761fc75b825554dfb991bbb24f8a36579"
+            }
+          }
+        },
+        "A": {
+          "bytes": 27415,
+          "sha256": "453e6e292dd8fd53174d7b2366d8f8c6c4bbf86951082bbfdcd2200aacde4297",
+          "structure": {
+            "top": [
+              "ftyp",
+              "moov",
+              "mdat"
+            ],
+            "movie_timescale": 57600,
+            "movie_duration_ticks": 58082,
+            "tracks": [
+              {
+                "handler": "vide",
+                "track_duration_ticks": 57658,
+                "media_timescale": 57600,
+                "media_duration_ticks": 57658,
+                "edits": [],
+                "sample_entry_sha256": "954a6a5ff766f7ce91a4e6d535f195ff8c84910a47b9e67f36954ef34af35c52",
+                "tables": {
+                  "stts": {
+                    "bytes": 56,
+                    "sha256": "7124bbbc7a093818d1c59a6e5604fab02a43976e525162b11ea59932ad65fbb8",
+                    "hex": "00000000000000050000000c000003c100000001000003c000000018000003c100000001000003c000000016000003c1"
+                  },
+                  "ctts": {
+                    "bytes": 496,
+                    "sha256": "715a5cc332fac2752ca58c3c5231ec62b9ec65721e0bd36282c6f45355e1e8dd",
+                    "hex": null
+                  },
+                  "cslg": {
+                    "bytes": 32,
+                    "sha256": "3073d3bd569705cc32a0e9a3913c4f781f733d98cf9bc83ee9fc2be64b637aa1",
+                    "hex": "0000000000000782fffff87e00000b43000000000000e13a"
+                  },
+                  "stsc": {
+                    "bytes": 52,
+                    "sha256": "d9625fd91082525a55baf1808ce7d68dff301e722409be7911ced75e6268a77b",
+                    "hex": "0000000000000003000000010000001d00000001000000020000001c00000001000000030000000300000001"
+                  },
+                  "stsz": {
+                    "bytes": 260,
+                    "sha256": "13b59be8b7f762289869b65e4e28da826f699eaccf2db83582faecd379d43999",
+                    "hex": null
+                  },
+                  "stco": {
+                    "bytes": 28,
+                    "sha256": "c529ea65c8ca9fe4101677b5c29205af1f9bb5d7499c0069bf1ef1f422fb4a05",
+                    "hex": "000000000000000300001270000041f30000680f"
+                  },
+                  "stss": {
+                    "bytes": 20,
+                    "sha256": "ba32f13acaf822f7ea3ecc784b3783e80a891afe1d25de9a5f74f3fab242904f",
+                    "hex": "000000000000000100000001"
+                  }
+                }
+              },
+              {
+                "handler": "soun",
+                "track_duration_ticks": 58082,
+                "media_timescale": 44100,
+                "media_duration_ticks": 38912,
+                "edits": [
+                  {
+                    "duration": 7258,
+                    "media_time": -1,
+                    "rate": [
+                      1,
+                      0
+                    ]
+                  },
+                  {
+                    "duration": 50824,
+                    "media_time": 0,
+                    "rate": [
+                      1,
+                      0
+                    ]
+                  }
+                ],
+                "sample_entry_sha256": "306fb146ab46d2b859454ec4cdb988e3ded7d6b3e68cf030e1e8f336f62ce89a",
+                "tables": {
+                  "stts": {
+                    "bytes": 24,
+                    "sha256": "8ece1e1ae2c4f49f7b67fa35c992168e47c57c3dac6e1b4b70c8a5295d4cd5f6",
+                    "hex": "00000000000000010000002600000400"
+                  },
+                  "stsc": {
+                    "bytes": 40,
+                    "sha256": "9cb0c0a184b652e6dd4d9befca9d853dcc7bed80d9b9b14e35d0dc4d277e9359",
+                    "hex": "0000000000000002000000010000001600000001000000020000001000000001"
+                  },
+                  "stsz": {
+                    "bytes": 172,
+                    "sha256": "7806cbcc308997004b94bde18fd57399991614ac4b63e12dab594142a5d6bdba",
+                    "hex": "000000000000000000000026000001020000010200000092000000ba000000d7000000e1000000be000000be000000e7000000d0000000e3000000e8000000d300000098000000bf000000d0000000bc000000aa000000de000000f7000000ca000000ba000000ce000000d1000000b8000000a3000000e6000000dd000000e1000000d2000000ae000000b6000000d6000000c0000000da000000b9000000a8000000e6"
+                  },
+                  "stco": {
+                    "bytes": 24,
+                    "sha256": "561c8e935582a8656cb6f0d89115fb750b44a28d79453a7f36f1e3017966cc6a",
+                    "hex": "00000000000000020000303400005b84"
+                  },
+                  "sgpd": {
+                    "bytes": 26,
+                    "sha256": "92b9b296cb0f465c18266e76442a7a115e91aeef26a5715225d17e0adb4fb477",
+                    "hex": "01000000726f6c6c0000000200000001ffff"
+                  },
+                  "sbgp": {
+                    "bytes": 36,
+                    "sha256": "7da659593c7ef7b71874f62cbb797f92232d3ab2c749cd956b29f94671b4f484",
+                    "hex": "00000000726f6c6c0000000200000001000000000000002500000001"
+                  }
+                }
+              }
+            ]
+          },
+          "interleaving": {
+            "track_runs": 5,
+            "largest_consecutive_run_samples": 29,
+            "first_20_track_runs": [
+              [
+                "video",
+                29
+              ],
+              [
+                "audio",
+                22
+              ],
+              [
+                "video",
+                28
+              ],
+              [
+                "audio",
+                16
+              ],
+              [
+                "video",
+                3
+              ]
+            ],
+            "timeline": {
+              "video": {
+                "packets": 60,
+                "first_pts_seconds": 0.0,
+                "last_end_seconds": 1.00099
+              },
+              "audio": {
+                "packets": 38,
+                "first_pts_seconds": 0.126009,
+                "last_end_seconds": 1.008367
+              }
+            }
+          },
+          "first_frame_hdr_metadata": [
+            []
+          ],
+          "decoded_pcm": "SHA256=7376f20529f3c44f5386b8eaf9e898e7ea6635afdc2cc668c8fa0ce2cf52798b",
+          "stream_summary": [
+            {
+              "codec_name": "hevc",
+              "profile": "Main",
+              "codec_tag_string": "hvc1",
+              "pix_fmt": "yuv420p",
+              "time_base": "1/57600",
+              "r_frame_rate": "60000/1001",
+              "avg_frame_rate": "1728000/28829",
+              "duration": "1.001007",
+              "extradata_hash": "SHA256:71838464d33caed1af8dbd45d88b53ed9cde14715c883a4287a737231b424f6b",
+              "color_range": "tv",
+              "color_space": "bt709",
+              "color_transfer": "bt709",
+              "color_primaries": "bt709",
+              "side_data_list": [
+                {
+                  "side_data_type": "Display Matrix",
+                  "displaymatrix": "\n00000000:            0      -65536           0\n00000001:        65536           0           0\n00000002:            0           0  1073741824\n",
+                  "rotation": 90
+                }
+              ]
+            },
+            {
+              "codec_name": "aac",
+              "profile": "LC",
+              "codec_tag_string": "mp4a",
+              "time_base": "1/44100",
+              "r_frame_rate": "0/0",
+              "avg_frame_rate": "0/0",
+              "duration": "0.882358",
+              "sample_rate": "44100",
+              "channels": 1,
+              "extradata_hash": "SHA256:e1d9202ffd952e4a2732fa1093c81702a05a553570e848fb8e670c958c05c101"
+            }
+          ],
+          "ordered_packet_hash_aggregates": {
+            "video": {
+              "count": 60,
+              "sha256_of_ordered_sha256_strings": "6d3cd12551cde6b3ed062cb50baf117b47b4d22eceeeb8f3504fdab138bd4057"
+            },
+            "audio": {
+              "count": 38,
+              "sha256_of_ordered_sha256_strings": "159dc81fd9de9567b9c267b28d6d2da761fc75b825554dfb991bbb24f8a36579"
+            }
+          },
+          "validation": {
+            "packet_hashes": "identical for video and AAC",
+            "pts_dts_duration": "verified per packet",
+            "common_offset_seconds": 0.0,
+            "decoded_pcm": "identical",
+            "first_frame_hdr_metadata": "identical (presence reported separately)"
+          }
+        },
+        "B": {
+          "bytes": 27547,
+          "sha256": "0a573dfebb68b9d3722cbb4e06527d93e64086d0bc9f647d4e5ad68326c5d882",
+          "structure": {
+            "top": [
+              "ftyp",
+              "moov",
+              "mdat"
+            ],
+            "movie_timescale": 57600,
+            "movie_duration_ticks": 58082,
+            "tracks": [
+              {
+                "handler": "vide",
+                "track_duration_ticks": 57658,
+                "media_timescale": 57600,
+                "media_duration_ticks": 57658,
+                "edits": [],
+                "sample_entry_sha256": "954a6a5ff766f7ce91a4e6d535f195ff8c84910a47b9e67f36954ef34af35c52",
+                "tables": {
+                  "stts": {
+                    "bytes": 56,
+                    "sha256": "7124bbbc7a093818d1c59a6e5604fab02a43976e525162b11ea59932ad65fbb8",
+                    "hex": "00000000000000050000000c000003c100000001000003c000000018000003c100000001000003c000000016000003c1"
+                  },
+                  "ctts": {
+                    "bytes": 496,
+                    "sha256": "715a5cc332fac2752ca58c3c5231ec62b9ec65721e0bd36282c6f45355e1e8dd",
+                    "hex": null
+                  },
+                  "cslg": {
+                    "bytes": 32,
+                    "sha256": "3073d3bd569705cc32a0e9a3913c4f781f733d98cf9bc83ee9fc2be64b637aa1",
+                    "hex": "0000000000000782fffff87e00000b43000000000000e13a"
+                  },
+                  "stsc": {
+                    "bytes": 52,
+                    "sha256": "d9625fd91082525a55baf1808ce7d68dff301e722409be7911ced75e6268a77b",
+                    "hex": "0000000000000003000000010000001d00000001000000020000001c00000001000000030000000300000001"
+                  },
+                  "stsz": {
+                    "bytes": 260,
+                    "sha256": "13b59be8b7f762289869b65e4e28da826f699eaccf2db83582faecd379d43999",
+                    "hex": null
+                  },
+                  "stco": {
+                    "bytes": 28,
+                    "sha256": "9d2284ec1f63d41e9926c7054fbd3c8964515d004720406b56877a671c3bc38c",
+                    "hex": "0000000000000003000012f40000427700006893"
+                  },
+                  "stss": {
+                    "bytes": 20,
+                    "sha256": "ba32f13acaf822f7ea3ecc784b3783e80a891afe1d25de9a5f74f3fab242904f",
+                    "hex": "000000000000000100000001"
+                  }
+                }
+              },
+              {
+                "handler": "soun",
+                "track_duration_ticks": 58082,
+                "media_timescale": 44100,
+                "media_duration_ticks": 38912,
+                "edits": [
+                  {
+                    "duration": 7258,
+                    "media_time": -1,
+                    "rate": [
+                      1,
+                      0
+                    ]
+                  },
+                  {
+                    "duration": 50824,
+                    "media_time": 0,
+                    "rate": [
+                      1,
+                      0
+                    ]
+                  }
+                ],
+                "sample_entry_sha256": "306fb146ab46d2b859454ec4cdb988e3ded7d6b3e68cf030e1e8f336f62ce89a",
+                "tables": {
+                  "stts": {
+                    "bytes": 24,
+                    "sha256": "8ece1e1ae2c4f49f7b67fa35c992168e47c57c3dac6e1b4b70c8a5295d4cd5f6",
+                    "hex": "00000000000000010000002600000400"
+                  },
+                  "stsc": {
+                    "bytes": 28,
+                    "sha256": "633c10313c18e03b1d625240713dcab296f19e818bc33ae4eefa50190d793f03",
+                    "hex": "0000000000000001000000010000000100000001"
+                  },
+                  "stsz": {
+                    "bytes": 172,
+                    "sha256": "7806cbcc308997004b94bde18fd57399991614ac4b63e12dab594142a5d6bdba",
+                    "hex": "000000000000000000000026000001020000010200000092000000ba000000d7000000e1000000be000000be000000e7000000d0000000e3000000e8000000d300000098000000bf000000d0000000bc000000aa000000de000000f7000000ca000000ba000000ce000000d1000000b8000000a3000000e6000000dd000000e1000000d2000000ae000000b6000000d6000000c0000000da000000b9000000a8000000e6"
+                  },
+                  "stco": {
+                    "bytes": 168,
+                    "sha256": "f0e9fe99485890313fd5d673ce5396c6e1698846ecf2f4be335483eb3d928144",
+                    "hex": "0000000000000026000030b8000031ba000032bc0000334e00003408000034df000035c00000367e0000373c00003823000038f3000039d600003abe00003b9100003c2900003ce800003db800003e7400003f1e00003ffc000040f3000041bd00005c0800005cd600005da700005e5f00005f0200005fe8000060c5000061a60000627800006326000063dc000064b2000065720000664c00006705000067ad"
+                  },
+                  "sgpd": {
+                    "bytes": 26,
+                    "sha256": "92b9b296cb0f465c18266e76442a7a115e91aeef26a5715225d17e0adb4fb477",
+                    "hex": "01000000726f6c6c0000000200000001ffff"
+                  },
+                  "sbgp": {
+                    "bytes": 36,
+                    "sha256": "7da659593c7ef7b71874f62cbb797f92232d3ab2c749cd956b29f94671b4f484",
+                    "hex": "00000000726f6c6c0000000200000001000000000000002500000001"
+                  }
+                }
+              }
+            ]
+          },
+          "interleaving": {
+            "track_runs": 5,
+            "largest_consecutive_run_samples": 29,
+            "first_20_track_runs": [
+              [
+                "video",
+                29
+              ],
+              [
+                "audio",
+                22
+              ],
+              [
+                "video",
+                28
+              ],
+              [
+                "audio",
+                16
+              ],
+              [
+                "video",
+                3
+              ]
+            ],
+            "timeline": {
+              "video": {
+                "packets": 60,
+                "first_pts_seconds": 0.0,
+                "last_end_seconds": 1.00099
+              },
+              "audio": {
+                "packets": 38,
+                "first_pts_seconds": 0.126009,
+                "last_end_seconds": 1.008367
+              }
+            }
+          },
+          "first_frame_hdr_metadata": [
+            []
+          ],
+          "decoded_pcm": "SHA256=7376f20529f3c44f5386b8eaf9e898e7ea6635afdc2cc668c8fa0ce2cf52798b",
+          "stream_summary": [
+            {
+              "codec_name": "hevc",
+              "profile": "Main",
+              "codec_tag_string": "hvc1",
+              "pix_fmt": "yuv420p",
+              "time_base": "1/57600",
+              "r_frame_rate": "60000/1001",
+              "avg_frame_rate": "1728000/28829",
+              "duration": "1.001007",
+              "extradata_hash": "SHA256:71838464d33caed1af8dbd45d88b53ed9cde14715c883a4287a737231b424f6b",
+              "color_range": "tv",
+              "color_space": "bt709",
+              "color_transfer": "bt709",
+              "color_primaries": "bt709",
+              "side_data_list": [
+                {
+                  "side_data_type": "Display Matrix",
+                  "displaymatrix": "\n00000000:            0      -65536           0\n00000001:        65536           0           0\n00000002:            0           0  1073741824\n",
+                  "rotation": 90
+                }
+              ]
+            },
+            {
+              "codec_name": "aac",
+              "profile": "LC",
+              "codec_tag_string": "mp4a",
+              "time_base": "1/44100",
+              "r_frame_rate": "0/0",
+              "avg_frame_rate": "0/0",
+              "duration": "0.882358",
+              "sample_rate": "44100",
+              "channels": 1,
+              "extradata_hash": "SHA256:e1d9202ffd952e4a2732fa1093c81702a05a553570e848fb8e670c958c05c101"
+            }
+          ],
+          "ordered_packet_hash_aggregates": {
+            "video": {
+              "count": 60,
+              "sha256_of_ordered_sha256_strings": "6d3cd12551cde6b3ed062cb50baf117b47b4d22eceeeb8f3504fdab138bd4057"
+            },
+            "audio": {
+              "count": 38,
+              "sha256_of_ordered_sha256_strings": "159dc81fd9de9567b9c267b28d6d2da761fc75b825554dfb991bbb24f8a36579"
+            }
+          },
+          "validation": {
+            "packet_hashes": "identical for video and AAC",
+            "pts_dts_duration": "verified per packet",
+            "common_offset_seconds": 0.0,
+            "decoded_pcm": "identical",
+            "first_frame_hdr_metadata": "identical (presence reported separately)"
+          }
+        },
+        "C": {
+          "bytes": 27743,
+          "sha256": "f0bfbfba2df859356ab9db4efb87b014489127135bd95af8845045cd2a3b9777",
+          "structure": {
+            "top": [
+              "ftyp",
+              "moov",
+              "mdat"
+            ],
+            "movie_timescale": 2822400,
+            "movie_duration_ticks": 2846018,
+            "tracks": [
+              {
+                "handler": "vide",
+                "track_duration_ticks": 2825242,
+                "media_timescale": 57600,
+                "media_duration_ticks": 57658,
+                "edits": [],
+                "sample_entry_sha256": "954a6a5ff766f7ce91a4e6d535f195ff8c84910a47b9e67f36954ef34af35c52",
+                "tables": {
+                  "stts": {
+                    "bytes": 56,
+                    "sha256": "7124bbbc7a093818d1c59a6e5604fab02a43976e525162b11ea59932ad65fbb8",
+                    "hex": "00000000000000050000000c000003c100000001000003c000000018000003c100000001000003c000000016000003c1"
+                  },
+                  "ctts": {
+                    "bytes": 496,
+                    "sha256": "715a5cc332fac2752ca58c3c5231ec62b9ec65721e0bd36282c6f45355e1e8dd",
+                    "hex": null
+                  },
+                  "cslg": {
+                    "bytes": 32,
+                    "sha256": "3073d3bd569705cc32a0e9a3913c4f781f733d98cf9bc83ee9fc2be64b637aa1",
+                    "hex": "0000000000000782fffff87e00000b43000000000000e13a"
+                  },
+                  "stsc": {
+                    "bytes": 28,
+                    "sha256": "633c10313c18e03b1d625240713dcab296f19e818bc33ae4eefa50190d793f03",
+                    "hex": "0000000000000001000000010000000100000001"
+                  },
+                  "stsz": {
+                    "bytes": 260,
+                    "sha256": "13b59be8b7f762289869b65e4e28da826f699eaccf2db83582faecd379d43999",
+                    "hex": null
+                  },
+                  "stco": {
+                    "bytes": 256,
+                    "sha256": "80cc88646e0745e75e1d5408d5269828938edc52927eacb62a72dfd22bb27517",
+                    "hex": null
+                  },
+                  "stss": {
+                    "bytes": 20,
+                    "sha256": "ba32f13acaf822f7ea3ecc784b3783e80a891afe1d25de9a5f74f3fab242904f",
+                    "hex": "000000000000000100000001"
+                  }
+                }
+              },
+              {
+                "handler": "soun",
+                "track_duration_ticks": 2846018,
+                "media_timescale": 44100,
+                "media_duration_ticks": 38912,
+                "edits": [
+                  {
+                    "duration": 355642,
+                    "media_time": -1,
+                    "rate": [
+                      1,
+                      0
+                    ]
+                  },
+                  {
+                    "duration": 2490376,
+                    "media_time": 0,
+                    "rate": [
+                      1,
+                      0
+                    ]
+                  }
+                ],
+                "sample_entry_sha256": "306fb146ab46d2b859454ec4cdb988e3ded7d6b3e68cf030e1e8f336f62ce89a",
+                "tables": {
+                  "stts": {
+                    "bytes": 24,
+                    "sha256": "8ece1e1ae2c4f49f7b67fa35c992168e47c57c3dac6e1b4b70c8a5295d4cd5f6",
+                    "hex": "00000000000000010000002600000400"
+                  },
+                  "stsc": {
+                    "bytes": 28,
+                    "sha256": "633c10313c18e03b1d625240713dcab296f19e818bc33ae4eefa50190d793f03",
+                    "hex": "0000000000000001000000010000000100000001"
+                  },
+                  "stsz": {
+                    "bytes": 172,
+                    "sha256": "7806cbcc308997004b94bde18fd57399991614ac4b63e12dab594142a5d6bdba",
+                    "hex": "000000000000000000000026000001020000010200000092000000ba000000d7000000e1000000be000000be000000e7000000d0000000e3000000e8000000d300000098000000bf000000d0000000bc000000aa000000de000000f7000000ca000000ba000000ce000000d1000000b8000000a3000000e6000000dd000000e1000000d2000000ae000000b6000000d6000000c0000000da000000b9000000a8000000e6"
+                  },
+                  "stco": {
+                    "bytes": 168,
+                    "sha256": "eaca021046533fd3579d5d4a7d2b88904c861e3de41f705c289e4dbc7cc62713",
+                    "hex": "00000000000000260000226300002407000025ac00002810000029c100002ad300002e2300002fca000030ee000034e3000035f60000371900003ad200003bed00003ef10000404d00004155000044bb000046260000471a00004a8800004bdd00004d2d000050d1000052590000538f000056a6000058290000595e00005d4e00005f470000604c0000643d0000652b00006636000069bf00006ad100006b79"
+                  },
+                  "sgpd": {
+                    "bytes": 26,
+                    "sha256": "92b9b296cb0f465c18266e76442a7a115e91aeef26a5715225d17e0adb4fb477",
+                    "hex": "01000000726f6c6c0000000200000001ffff"
+                  },
+                  "sbgp": {
+                    "bytes": 36,
+                    "sha256": "7da659593c7ef7b71874f62cbb797f92232d3ab2c749cd956b29f94671b4f484",
+                    "hex": "00000000726f6c6c0000000200000001000000000000002500000001"
+                  }
+                }
+              }
+            ]
+          },
+          "interleaving": {
+            "track_runs": 74,
+            "largest_consecutive_run_samples": 10,
+            "first_20_track_runs": [
+              [
+                "video",
+                10
+              ],
+              [
+                "audio",
+                1
+              ],
+              [
+                "video",
+                1
+              ],
+              [
+                "audio",
+                1
+              ],
+              [
+                "video",
+                2
+              ],
+              [
+                "audio",
+                1
+              ],
+              [
+                "video",
+                1
+              ],
+              [
+                "audio",
+                1
+              ],
+              [
+                "video",
+                2
+              ],
+              [
+                "audio",
+                1
+              ],
+              [
+                "video",
+                1
+              ],
+              [
+                "audio",
+                1
+              ],
+              [
+                "video",
+                1
+              ],
+              [
+                "audio",
+                1
+              ],
+              [
+                "video",
+                2
+              ],
+              [
+                "audio",
+                1
+              ],
+              [
+                "video",
+                1
+              ],
+              [
+                "audio",
+                1
+              ],
+              [
+                "video",
+                2
+              ],
+              [
+                "audio",
+                1
+              ]
+            ],
+            "timeline": {
+              "video": {
+                "packets": 60,
+                "first_pts_seconds": 0.0,
+                "last_end_seconds": 1.00099
+              },
+              "audio": {
+                "packets": 38,
+                "first_pts_seconds": 0.126009,
+                "last_end_seconds": 1.008367
+              }
+            }
+          },
+          "first_frame_hdr_metadata": [
+            []
+          ],
+          "decoded_pcm": "SHA256=7376f20529f3c44f5386b8eaf9e898e7ea6635afdc2cc668c8fa0ce2cf52798b",
+          "stream_summary": [
+            {
+              "codec_name": "hevc",
+              "profile": "Main",
+              "codec_tag_string": "hvc1",
+              "pix_fmt": "yuv420p",
+              "time_base": "1/57600",
+              "r_frame_rate": "60000/1001",
+              "avg_frame_rate": "1728000/28829",
+              "duration": "1.001007",
+              "extradata_hash": "SHA256:71838464d33caed1af8dbd45d88b53ed9cde14715c883a4287a737231b424f6b",
+              "color_range": "tv",
+              "color_space": "bt709",
+              "color_transfer": "bt709",
+              "color_primaries": "bt709",
+              "side_data_list": [
+                {
+                  "side_data_type": "Display Matrix",
+                  "displaymatrix": "\n00000000:            0      -65536           0\n00000001:        65536           0           0\n00000002:            0           0  1073741824\n",
+                  "rotation": 90
+                }
+              ]
+            },
+            {
+              "codec_name": "aac",
+              "profile": "LC",
+              "codec_tag_string": "mp4a",
+              "time_base": "1/44100",
+              "r_frame_rate": "0/0",
+              "avg_frame_rate": "0/0",
+              "duration": "0.882358",
+              "sample_rate": "44100",
+              "channels": 1,
+              "extradata_hash": "SHA256:e1d9202ffd952e4a2732fa1093c81702a05a553570e848fb8e670c958c05c101"
+            }
+          ],
+          "ordered_packet_hash_aggregates": {
+            "video": {
+              "count": 60,
+              "sha256_of_ordered_sha256_strings": "6d3cd12551cde6b3ed062cb50baf117b47b4d22eceeeb8f3504fdab138bd4057"
+            },
+            "audio": {
+              "count": 38,
+              "sha256_of_ordered_sha256_strings": "159dc81fd9de9567b9c267b28d6d2da761fc75b825554dfb991bbb24f8a36579"
+            }
+          },
+          "validation": {
+            "packet_hashes": "identical for video and AAC",
+            "pts_dts_duration": "verified per packet",
+            "common_offset_seconds": 0.0,
+            "decoded_pcm": "identical",
+            "first_frame_hdr_metadata": "identical (presence reported separately)"
+          }
+        }
+      }
+    }
+  }
+}
