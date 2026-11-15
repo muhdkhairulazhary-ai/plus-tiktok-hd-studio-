@@ -9,6 +9,7 @@ export function createStudio(doc, dependencies = {}) {
   let file = null, metadata = null, src = null, out = null, outputFile = null;
   let metadataController = null;
   let controller = null, generation = 0, supportGeneration = 0, supported = false, estimatedSize = null, timer = null, started = 0, shareFailed = false, sharing = false;
+  const isCopyMode = () => ['smart','compat'].includes($('mode').value);
   const settings = () => ({ mode: $('mode').value, hdr: $('hdr').value, resolution: $('resolution').value, fps: $('fps').value, quality: $('quality').value, bitrate: $('bitrate').value });
   const message = (text, error = false) => { $('status').textContent = text; $('status').classList.toggle('error', error); };
   const resetPlayer = player => { player.pause(); player.removeAttribute('src'); player.load(); };
@@ -30,8 +31,8 @@ export function createStudio(doc, dependencies = {}) {
     supported = false; estimatedSize = null; $('go').disabled = true;
     $('estimate-output').textContent = 'Unavailable';
     $('custom-field').hidden = $('quality').value !== 'custom';
-    $('encoding-fields').disabled = $('mode').value === 'smart';
-    $('mode-help').textContent = $('mode').value === 'smart' ? 'Original resolution, timing and encoded packets. No bitrate or frame-rate changes are applied. Hash verification is required before No Re-encode is shown in results.' : 'Video will be re-encoded to HEVC. Changes are lossy and may alter color, quality and file size. HDR re-encoding is unavailable.';
+    $('encoding-fields').disabled = isCopyMode();
+    $('mode-help').textContent = $('mode').value === 'compat' ? 'Experimental standard MP4 layout: front index and 64-bit chunk offsets. Video/AAC packets and supported HDR must pass verification. No silent samples, extra tracks or TikTok request flags. Upload quality benefit is unproven.' : isCopyMode() ? 'Original resolution, timing and encoded packets. No bitrate or frame-rate changes are applied. Hash verification is required before No Re-encode is shown in results.' : 'Video will be re-encoded to HEVC. Changes are lossy and may alter color, quality and file size. HDR re-encoding is unavailable.';
     if (!metadata) return;
     $('support').textContent = 'Checking your selected HEVC configuration…';
     $('support').classList.remove('unsupported');
@@ -40,7 +41,7 @@ export function createStudio(doc, dependencies = {}) {
       if (version !== supportGeneration) return;
       supported = support.supported;
       const c = support.config;
-      $('output-summary').textContent = `${c.width} × ${c.height} · ${c.frameRate ? c.frameRate + ' FPS' : 'Original timing'} · ${$('mode').value === 'smart' ? 'Smart Copy (verification pending)' : formatBitrate(c.bitrate)} · HEVC + AAC`;
+      $('output-summary').textContent = `${c.width} × ${c.height} · ${c.frameRate ? c.frameRate + ' FPS' : 'Original timing'} · ${isCopyMode() ? `${$('mode').value === 'compat' ? 'Experimental co64 layout' : 'Smart Copy'} (verification pending)` : formatBitrate(c.bitrate)} · HEVC + AAC`;
       estimatedSize = c.estimatedSize;
       $('estimate-output').textContent = formatBytes(estimatedSize);
       $('size-note').textContent = c.sizeNote || 'Estimated from the target video bitrate, audio and MP4 headers. Hardware output varies. TikTok may still recompress your upload.';
@@ -110,8 +111,8 @@ export function createStudio(doc, dependencies = {}) {
   $('dropzone').ondrop = event => { event.preventDefault(); $('dropzone').classList.remove('dragover'); if (!controller) void loadFile(event.dataTransfer?.files[0]); };
   $('settings').onsubmit = event => event.preventDefault();
   for (const id of ['mode', 'hdr', 'resolution', 'fps', 'quality', 'bitrate']) $(id).onchange = () => { if (!controller) {
-    if (id === 'mode' && $('mode').value === 'smart') { $('resolution').value = $('fps').value = 'original'; $('quality').value = 'preserve'; }
-    if (['resolution','fps','quality','bitrate'].includes(id) && $('mode').value === 'smart') $('mode').value = 'custom';
+    if (id === 'mode' && isCopyMode()) { $('resolution').value = $('fps').value = 'original'; $('quality').value = 'preserve'; }
+    if (['resolution','fps','quality','bitrate'].includes(id) && isCopyMode()) $('mode').value = 'custom';
     void refreshSupport();
   } };
   $('go').onclick = async () => {
@@ -142,7 +143,7 @@ export function createStudio(doc, dependencies = {}) {
       $('result-resolution').textContent = `${result.width} × ${result.height}`;
       $('result-fps').textContent = Number.isFinite(result.fps) ? `${result.fps.toFixed(2)} FPS${selectedSettings.fps === 'original' ? ' average' : ''}` : 'Unavailable';
       $('result-codec').textContent = result.codec || 'HEVC H.265 (hvc1)';
-      $('result-mode').textContent = result.videoCopied ? 'Smart Copy — video No Re-encode (SHA-256 verified)' : `${result.processingMode || 'HEVC Conversion'} — video re-encoded`;
+      $('result-mode').textContent = result.videoCopied ? `${result.processingMode || 'Smart Copy'} — video No Re-encode (SHA-256 verified)` : `${result.processingMode || 'HEVC Conversion'} — video re-encoded`;
       $('result-hdr').textContent = result.hdrStatus || 'HDR not verified';
       $('result-container').textContent = result.containerNote || 'MP4 container validated';
       $('result-audio').textContent = `AAC${result.audioCopied ? ' · original packets' : ' · transcoded'}`;
@@ -151,7 +152,7 @@ export function createStudio(doc, dependencies = {}) {
       $('compare-before').textContent = formatBytes(selectedFile.size); $('compare-after').textContent = formatBytes(outputFile.size);
       $('compare-change').textContent = sizeComparison(selectedFile.size, outputFile.size);
       $('compare-estimate').textContent = formatBytes(result.estimatedSize ?? selectedEstimate);
-      $('size-outcome').textContent = selectedSettings.mode === 'smart' ? 'MOV/MP4 container overhead can change file size. Identical encoded quality does not require equal file size. No padding is added.' : sizeOutcome(selectedSettings.quality === 'preserve' ? selectedFile.size : null, outputFile.size);
+      $('size-outcome').textContent = ['smart','compat'].includes(selectedSettings.mode) ? 'MOV/MP4 container overhead can change file size. Identical encoded quality does not require equal file size. No padding is added.' : sizeOutcome(selectedSettings.quality === 'preserve' ? selectedFile.size : null, outputFile.size);
       $('results').hidden = false; $('bar').value = 100; $('percent').textContent = '100%';
       $('stage').textContent = 'Export complete. MP4, audio and timing verified.';
       message('Ready to save. Play the result and check sound and sync before posting.');

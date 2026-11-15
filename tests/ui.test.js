@@ -136,3 +136,14 @@ test('eligible HEVC defaults to Smart Copy, locks encoding settings, and labels 
     s.$('mode').value='custom';s.$('mode').onchange();await Promise.resolve();assert.ok(!s.$('encoding-fields').disabled);
   }finally{s.close();}
 });
+test('experimental mode is optional, locks encode controls, reaches the engine and resets on a new upload',async()=>{
+  let chosen;
+  const s=setup({inspect:async()=>({...info,videoCodec:'hevc',hdr:{label:'SDR',bitDepth:8}}),convert:async(file,progress,signal,settings)=>{chosen=settings.mode;return {blob:new Blob(['mp4']),width:1920,height:1080,fps:29.97,videoCopied:true,audioCopied:true,processingMode:'TikTok MP4 Compatibility — Experimental',containerNote:'Experimental co64; upload benefit is unproven.'};}});
+  try {
+    await s.app.loadFile(s.file);assert.equal(s.$('mode').value,'smart');
+    s.$('mode').value='compat';s.$('mode').onchange();await Promise.resolve();await s.app.refreshSupport();
+    assert.ok(s.$('encoding-fields').disabled);assert.match(s.$('mode-help').textContent,/benefit is unproven/);
+    await s.$('go').onclick();assert.equal(chosen,'compat');assert.match(s.$('result-mode').textContent,/Compatibility.*Experimental/);assert.match(s.$('result-container').textContent,/co64/);
+    await s.app.loadFile(s.file);assert.equal(s.$('mode').value,'smart');
+  }finally{s.close();}
+});

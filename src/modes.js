@@ -1,9 +1,9 @@
 import { resolveSettings } from './settings.js';
 export function processingPlan(source, settings={}) {
   const mode=settings.mode??(source.videoCodec==='hevc'?'smart':'convert'),hdr=settings.hdr??'auto';
-  if(!['smart','convert','custom'].includes(mode) || !['auto','required','sdr'].includes(hdr)) throw Error('Invalid processing/HDR mode.');
+  if(!['smart','compat','convert','custom'].includes(mode) || !['auto','required','sdr'].includes(hdr)) throw Error('Invalid processing/HDR mode.');
   if(hdr==='sdr') throw Error('SDR conversion is disabled: a validated color-managed HDR tone mapper is not available.');
-  if(mode==='smart') {
+  if(mode==='smart'||mode==='compat') {
     if(source.videoCodec!=='hevc' || source.copyReason) throw Error(source.copyReason||'Smart Copy requires compatible HEVC. Choose HEVC Conversion for lossy encoding.');
     if(source.audio?.codec!=='mp4a.40.2') throw Error('Smart Copy requires AAC-LC. Audio-only transcoding is unavailable in Smart Copy; HEVC Conversion supports audio transcoding for SDR sources.');
     if((settings.resolution??'original')!=='original'||(settings.fps??'original')!=='original'||(settings.quality??'preserve')!=='preserve') throw Error('Smart Copy cannot apply resolution, FPS or bitrate changes. Choose Custom Encoding.');

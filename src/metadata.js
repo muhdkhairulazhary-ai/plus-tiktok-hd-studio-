@@ -18,7 +18,7 @@ export async function inspect(file, signal) {
 export async function checkSupport(metadata, settings) {
   const {mode,config} = processingPlan(metadata,settings);
   if (metadata.videoTracks !== 1 || metadata.audioTracks !== 1) return { supported: false, config, reason: 'Choose a video with one video track and one audio track. Silent and multi-track exports are not supported.' };
-  if(mode==='smart') return {supported:true,config,reason:'Smart Copy uses no video/audio encoder. Packet, timing and HDR retention must pass output verification before saving.'};
+  if(mode==='smart'||mode==='compat') return {supported:true,config,reason:'Smart Copy uses no video/audio encoder. Packet, timing and HDR retention must pass output verification before saving.'};
   if (!await canEncodeVideo('hevc', { width: config.width, height: config.height, bitrate: config.bitrate, ...(config.frameRate ? { frameRate: config.frameRate } : {}) })) return { supported: false, config, reason: 'This browser cannot encode HEVC with these settings. Try a lower resolution or frame rate, or use a native editor.' };
   return { supported: true, config, reason: 'Lossy HEVC re-encoding selected. Quality and file size can change. HEVC encoder available for these settings. Source decoding and audio support are checked when processing starts.' };
 }

@@ -50,7 +50,29 @@ for(const [kind,extension] of [['sdr','mov'],['sdr','mp4'],['hlg','mov'],['hlg',
       assert.deepEqual(frames(dest)[0].side_data_list.filter(s=>/Mastering|Content light/.test(s.side_data_type)),side);
       assert.match(result.hdrStatus,/HDR10 preserved/);
     }
+    const experimental=await convert(blob,()=>{},new AbortController().signal,{mode:'compat'});
+    assert.ok(experimental.videoCopied);assert.match(experimental.processingMode,/Experimental/);assert.match(experimental.containerNote,/co64/);
+    const compatPath=join(dir,'experimental.mp4');writeFileSync(compatPath,new Uint8Array(await experimental.blob.arrayBuffer()));
+    const c=probe(compatPath);
+    assert.equal(c.streams.length,2);assert.equal(c.streams[0].extradata_hash,b.streams[0].extradata_hash);
+    assert.equal(c.streams[0].pix_fmt,b.streams[0].pix_fmt);assert.equal(c.streams[0].color_transfer,b.streams[0].color_transfer);
+    for(const type of ['video','audio']) {
+      const expected=b.packets.filter(p=>p.codec_type===type),actual=c.packets.filter(p=>p.codec_type===type);
+      assert.deepEqual(actual.map(p=>[p.data_hash,p.pts_time,p.dts_time,p.duration_time,p.flags]),expected.map(p=>[p.data_hash,p.pts_time,p.dts_time,p.duration_time,p.flags]));
+    }
+    const children=async(file,parent)=>listBoxes(file,parent.data,parent.end);
+    const top=(await listBoxes(experimental.blob,0,experimental.blob.size));assert.ok(top.find(b=>b.type==='moov').start<top.find(b=>b.type==='mdat').start);
+    for(const track of (await children(experimental.blob,top.find(b=>b.type==='moov'))).filter(b=>b.type==='trak')) {
+      let node=track;for(const type of ['mdia','minf','stbl'])node=(await children(experimental.blob,node)).find(b=>b.type===type);
+      const tables=await children(experimental.blob,node);assert.ok(tables.some(b=>b.type==='co64'));assert.ok(!tables.some(b=>b.type==='stco'));
+    }
+    if(kind==='hdr10') {
+      const side=path=>JSON.parse(run('ffprobe',['-v','error','-select_streams','v:0','-show_frames','-of','json',path])).frames[0].side_data_list.filter(s=>/Mastering|Content light/.test(s.side_data_type));
+      assert.deepEqual(side(compatPath),side(src));assert.match(experimental.hdrStatus,/HDR10 preserved/);
+    }
     const second=await smartCopy(blob,()=>{},new AbortController().signal);assert.ok(second.videoCopied);
+    const cancelExperiment=new AbortController();await assert.rejects(convert(blob,p=>{if(p>=76)cancelExperiment.abort();},cancelExperiment.signal,{mode:'compat'}),{name:'AbortError'});
+
     for(const phase of [1,76,78,88]) {const cancel=new AbortController();await assert.rejects(smartCopy(blob,p=>{if(p>=phase)cancel.abort();},cancel.signal),{name:'AbortError'});}
   } finally {rmSync(dir,{recursive:true,force:true});}
 });

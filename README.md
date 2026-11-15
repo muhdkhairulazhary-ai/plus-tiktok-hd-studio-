@@ -174,3 +174,13 @@ Keep the **existing** Cloudflare Pages project and production URL. Framework pre
 ## KilatFrame comparison and standard MP4 finalization
 
 See [the evidence-based investigation](docs/kilatframe-investigation-2026-11-15.md) for confirmed public implementation differences, confidence levels, official sources and the unresolved 576p/1080p report. No third-party code/assets are included. The only media-layout change is standard front-index MP4 finalization, with the full packet/HDR validation performed afterward. It adds no samples or padding, preserves exact muxed byte length and uses Blob slices rather than another full media buffer. It is not a TikTok compression bypass. Physical iPhone and controlled TikTok upload comparisons remain outstanding.
+
+## Optional experimental MP4 compatibility
+
+Checkpoint: remote tag **`pre-experimental-mp4-compatibility`** preserves the working version before this experiment.
+
+**TikTok MP4 Compatibility — Experimental** is opt-in; Smart Copy remains the HEVC default. It uses the same verified HEVC/AAC packet-copy and HDR restrictions, locks encoding settings and adds no audio samples or tracks. Its independent container pass writes front-loaded indexing with standard 64-bit `co64` chunk offsets. Converting `stco` adds four actual index bytes per chunk; media payloads, timestamps, orientation and unrelated metadata remain unchanged. This is not padding or bitrate inflation. The benefit for TikTok is **unproven**; standard Smart Copy already has a front-loaded index. Unexpected layouts stop explicitly. Physical iPhone playback, sharing, resource use and TikTok rendition comparisons remain untested for this mode.
+
+See [the actual HIDZZ archive investigation](docs/hidzz-investigation-2026-11-15.md) for file hashes, confirmed audio/container changes, an offline FFprobe comparison, private request flags and their limitations. Its duplicate audio tracks, generated AAC tails, fake request FPS and upload hooks are **not** implemented. No TikTok requests or credentials are accessed by this website. The optional mode is a validated container experiment, not a claim of bypassing compression.
+
+Additional regression tests compare Smart Copy and experimental outputs against original SDR/HLG/HDR10 MOV/MP4 using FFprobe packet/configuration/timestamp checks. Delayed mono/stereo AAC at 32/44.1/48 kHz also has independently decoded PCM hash checks. Unit tests cover co64 addressing, exact metadata growth, cancellation and malformed layouts; UI tests cover opt-in routing and reset to Smart Copy.

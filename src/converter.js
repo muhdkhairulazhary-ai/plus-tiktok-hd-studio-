@@ -41,7 +41,7 @@ export async function convert(file, progress, signal, settings = {}) {
     signal.throwIfAborted();
     const meta=await videoMetadata(file,video,signal);
     const plan=processingPlan({...source,videoCodec:meta.codec,hdr:meta.summary,copyReason:meta.copyReason},settings);
-    if(plan.mode==='smart') return await smartCopy(file,progress,signal,settings);
+    if(plan.mode==='smart'||plan.mode==='compat') return await smartCopy(file,progress,signal,settings);
     const config = plan.config;
     const { width, height, frameRate, bitrate } = config;
     const size = { width, height };
