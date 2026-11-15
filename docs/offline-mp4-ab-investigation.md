@@ -115,3 +115,7 @@ B/C preserve A's per-packet rational PTS/DTS/duration with **zero tolerance**. M
 - New audit rejection tests cover packet substitution, missing packets, individual timestamp drift and changed decoder configuration. Existing output directories are refused to avoid overwriting evidence.
 - No browser encoding run, physical iPhone test, actual Apple camera fixture, authentic Dolby Vision preservation test or TikTok ingestion/rendition inspection was performed. No 1080p claim follows from these tests.
 - The offline harness does not establish a standards-conformance certification or full decoder compatibility; FFprobe parsing, native AAC decoding and initial video metadata decoding are independent checks, not substitutes for complete Safari playback.
+
+## Exact-timing follow-up
+
+[Variant D results](offline-d-timing-investigation.md) now test the recommended source-timing/edit restoration. D achieves zero source timing error on five fixture cases, while A/B/C/D retain matching decoded content and native seek results. This supports greater timing-box fidelity, without demonstrating a TikTok rendition benefit. The implementation remains offline on the research branch.

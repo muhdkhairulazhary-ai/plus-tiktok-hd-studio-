@@ -6,13 +6,13 @@ import {tmpdir} from 'node:os';
 import {join} from 'node:path';
 const available=['ffmpeg','ffprobe','python3'].every(cmd=>spawnSync(cmd,[cmd==='python3'?'--version':'-version']).status===0);
 const run=(cmd,args)=>execFileSync(cmd,args,{encoding:'utf8',stdio:['ignore','pipe','pipe']});
-for(const [kind,rate,channels] of [['sdr',44100,1],['hlg',48000,2],['hdr10',32000,2]])test(`offline A/B/C ${kind}: unchanged HEVC/AAC, PCM, edits, HDR and real alternate structure`,{skip:!available},()=>{
+for(const [kind,rate,channels] of [['sdr',44100,1],['hlg',48000,2],['hdr10',32000,2],['priming',48000,2],['vfr',44100,1]])test(`offline A/B/C/D ${kind}: unchanged HEVC/AAC, PCM, edits, HDR and real alternate structure`,{skip:!available},()=>{
   const dir=mkdtempSync(join(tmpdir(),'studio-ab-'));
   try{
     const src=join(dir,'source.mov'),out=join(dir,'variants');
-    const hdr=kind!=='sdr',transfer=kind==='hlg'?'arib-std-b67':kind==='hdr10'?'smpte2084':'bt709';
-    const params=`pools=1:frame-threads=1:log-level=error:colorprim=${hdr?'bt2020':'bt709'}:transfer=${transfer}:colormatrix=${hdr?'bt2020nc':'bt709'}`+(kind==='hdr10'?':master-display=G(13250,34500)B(7500,3000)R(34000,16000)WP(15635,16450)L(10000000,1):max-cll=1000,400':'');
-    run('ffmpeg',['-v','error','-f','lavfi','-i','testsrc2=size=128x72:rate=60000/1001','-itsoffset','0.15','-f','lavfi','-i',`sine=frequency=440:sample_rate=${rate}`,'-t','1','-c:v','libx265','-preset','ultrafast','-x265-params',params,'-pix_fmt',hdr?'yuv420p10le':'yuv420p','-color_primaries',hdr?'bt2020':'bt709','-color_trc',transfer,'-colorspace',hdr?'bt2020nc':'bt709','-tag:v','hvc1','-c:a','aac','-ac',String(channels),src]);
+    const hdr=['hlg','hdr10'].includes(kind),transfer=kind==='hlg'?'arib-std-b67':kind==='hdr10'?'smpte2084':'bt709';
+    const params=`pools=1:frame-threads=1:log-level=error:colorprim=${hdr?'bt2020':'bt709'}:transfer=${transfer}:colormatrix=${hdr?'bt2020nc':'bt709'}:keyint=30`+(kind==='hdr10'?':master-display=G(13250,34500)B(7500,3000)R(34000,16000)WP(15635,16450)L(10000000,1):max-cll=1000,400':'');
+    run('ffmpeg',['-v','error','-f','lavfi','-i','testsrc2=size=128x72:rate=60000/1001','-itsoffset',kind==='priming'?'0':'0.15','-f','lavfi','-i',`sine=frequency=440:sample_rate=${rate}`,'-t',kind==='sdr'?'13':'1',...(kind==='vfr'?['-vf',"select='not(mod(n,2))+not(mod(n,5))'",'-fps_mode','vfr','-bf','0']:[]),'-c:v','libx265','-preset','ultrafast','-x265-params',params,'-pix_fmt',hdr?'yuv420p10le':'yuv420p','-color_primaries',hdr?'bt2020':'bt709','-color_trc',transfer,'-colorspace',hdr?'bt2020nc':'bt709','-tag:v','hvc1','-c:a','aac','-ac',String(channels),src]);
     // Include a real rotated track; its transformation must survive both variants.
     const rotated=join(dir,'rotated.mov');run('ffmpeg',['-v','error','-display_rotation:v:0','90','-i',src,'-map','0','-c','copy',rotated]);
     run(process.execPath,['tools/mp4-ab.mjs',rotated,out]);
@@ -31,6 +31,30 @@ for(const [kind,rate,channels] of [['sdr',44100,1],['hlg',48000,2],['hdr10',3200
         assert.deepEqual(f.map(x=>[x.duration/movieB,x.media_time,x.rate]),e.map(x=>[x.duration/movieA,x.media_time,x.rate]));
       }
       assert.deepEqual(b.first_frame_hdr_metadata,a.first_frame_hdr_metadata);
+    }
+    const source=report.variants.source,d=report.variants.D;
+    assert.equal(d.structure.movie_timescale,source.structure.movie_timescale);
+    assert.equal(d.structure.movie_duration_ticks,source.structure.movie_duration_ticks);
+    assert.equal(d.validation.common_offset_seconds,0);
+    assert.equal(d.native_seek_matches_source,true);
+    for(const kind of ['video','audio'])for(const field of ['pts','dts','duration'])assert.equal(d.source_timing_errors[kind][`max_${field}_error_seconds_exact`],'0');
+    for(let i=0;i<2;i++) {
+      assert.equal(d.structure.tracks[i].sample_entry_sha256,source.structure.tracks[i].sample_entry_sha256);
+      assert.deepEqual(d.structure.tracks[i].edits,source.structure.tracks[i].edits);
+      assert.equal(d.structure.tracks[i].media_timescale,source.structure.tracks[i].media_timescale);
+      for(const table of ['stts','ctts','cslg','stss','sgpd','sbgp'])assert.deepEqual(d.structure.tracks[i].tables[table],source.structure.tracks[i].tables[table]);
+    }
+    for(const name of ['A','B','C','D']) {
+      const v=report.variants[name];
+      assert.equal(v.native_playback.decoded_video_frames,source.native_playback.decoded_video_frames);
+      assert.deepEqual(v.native_playback.ordered_decoded_frame_hashes,source.native_playback.ordered_decoded_frame_hashes);
+      assert.deepEqual(v.native_playback.all_frame_hdr,source.native_playback.all_frame_hdr);
+      assert.equal(v.native_seeks.length,3);
+    }
+    if(kind==='priming') {
+      const index=source.structure.tracks.findIndex(t=>t.handler==='soun');
+      assert.ok(source.structure.tracks[index].edits.some(e=>e.media_time>0));
+      assert.ok(source.packets.some(p=>p.codec_type==='audio' && p.side_data_list?.some(s=>s.skip_samples>0)));
     }
     const audioIndex=a.structure.tracks.findIndex(t=>t.handler==='soun');
     assert.notEqual(report.variants.B.structure.tracks[audioIndex].tables.stsc.sha256,a.structure.tracks[audioIndex].tables.stsc.sha256);
@@ -53,6 +77,27 @@ for change in ['hash','pts','config','count']:
  except AssertionError: pass
  else: raise AssertionError('Audit accepted '+change)
 `,join(out,'A-smart.mp4')]);
+    run('python3',['-c',`import sys
+sys.path.insert(0,'tools')
+from mp4_ab import *
+source,a,d,out=map(Path,sys.argv[1:])
+# A valid-looking edit rate change is unsupported and must fail before declaring D valid.
+nodes=parse(source.read_bytes()); track=tracks(nodes)[1][0]; edit=child(child(track,b'edts'),b'elst'); data=bytearray(edit['payload']); data[-4:]=pack(2<<16); replace(edit,bytes(data))
+bad=out/'rate-change.mov'; bad.write_bytes(b''.join(serialize(n) for n in nodes))
+try: source_timing(bad,a,out/'bad-D.mp4')
+except ValueError as e: assert 'rate-changing' in str(e)
+else: raise AssertionError('Accepted rate-changing edit')
+# Table sample counts must agree even when compressed payloads have not changed.
+nodes=parse(source.read_bytes()); stts=child(tracks(nodes)[0][2],b'stts'); data=bytearray(stts['payload']); data[8:12]=pack(u32(data,8)+1); replace(stts,bytes(data)); bad.write_bytes(b''.join(serialize(n) for n in nodes))
+try: source_timing(bad,a,out/'bad-D.mp4')
+except ValueError as e: assert 'counts disagree' in str(e)
+else: raise AssertionError('Accepted mismatched stts count')
+# Changing a single AAC edit media_time tick must be detected by box-level proof.
+nodes=parse(d.read_bytes()); track=tracks(nodes)[1][0]; edit=child(child(track,b'edts'),b'elst'); data=bytearray(edit['payload']); at=23 if data[0]==1 else 15; data[at]^=1; replace(edit,bytes(data)); bad.write_bytes(b''.join(serialize(n) for n in nodes))
+try: assert_source_boxes(source,bad)
+except AssertionError: pass
+else: raise AssertionError('Accepted altered AAC edit')
+`,rotated,join(out,'A-smart.mp4'),join(out,'D-source-timing.mp4'),out]);
     assert.throws(()=>run(process.execPath,['tools/mp4-ab.mjs',src,out]),/Output directory must be empty/);
   }finally{rmSync(dir,{recursive:true,force:true});}
 });
