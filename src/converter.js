@@ -1,6 +1,8 @@
 import { Input, BlobSource, ALL_FORMATS, Output, BufferTarget, Mp4OutputFormat, Conversion, canEncodeVideo, canEncodeAudio, EncodedPacketSink } from 'mediabunny';
 import { checkDuration, checkTimeline } from './policy.js';
-import { resolveSettings } from './settings.js';
+import { processingPlan } from './modes.js';
+import { videoMetadata } from './video-metadata.js';
+import { smartCopy, verifyTrack } from './smart-copy.js';
 import { analyzeSource } from './analysis.js';
 
 export async function timeline(track, frameRate = false) {
@@ -36,7 +38,10 @@ export async function convert(file, progress, signal, settings = {}) {
     checkDuration(duration);
     const source = await analyzeSource(file, input, video, audio, signal);
     signal.throwIfAborted();
-    const config = resolveSettings(source.width, source.height, settings, source);
+    const meta=await videoMetadata(file,video,signal);
+    const plan=processingPlan({...source,videoCodec:meta.codec,hdr:meta.summary,copyReason:meta.copyReason},settings);
+    if(plan.mode==='smart') return await smartCopy(file,progress,signal,settings);
+    const config = plan.config;
     const { width, height, frameRate, bitrate } = config;
     const size = { width, height };
     if (!await video.canDecode()) throw Error('Codec video asal tidak boleh didekod oleh Safari ini. Gunakan fail H.264/HEVC yang disokong.');
@@ -65,10 +70,11 @@ export async function convert(file, progress, signal, settings = {}) {
         !/^hvc1\./.test(await ov.getCodecParameterString()) ||
         await ov.getDisplayWidth() !== size.width || await ov.getDisplayHeight() !== size.height) throw Error('Pengesahan codec/container MP4 gagal.');
     checkTimeline(before, { video: await timeline(ov, frameRate), audio: await timeline(oa) });
+    if(copyAudio) { progress(96,'Verifying copied AAC packet hashes…');await verifyTrack(audio,oa,signal); }
     if (!await ov.canDecode() || !await oa.canDecode()) throw Error('Safari ini tidak boleh memainkan codec output. Fail tidak dieksport.');
     completed = true;
     const stats = await ov.computePacketStats();
-    return { blob, ...size, fps: stats.averagePacketRate, codec: await ov.getCodecParameterString(), audioCodec: await oa.getCodecParameterString(), bitrate, audioCopied: copyAudio, estimatedSize: config.estimatedSize, targetSize: config.targetSize };
+    return { blob, ...size, fps: stats.averagePacketRate, codec: await ov.getCodecParameterString(), audioCodec: await oa.getCodecParameterString(), bitrate, audioCopied: copyAudio, estimatedSize: config.estimatedSize, targetSize: config.targetSize, videoCopied:false, processingMode:plan.mode==='custom'?'Custom Encoding':'HEVC Conversion', hdrStatus:'HDR not preserved — SDR/unknown 8-bit source re-encoded' };
   } finally {
     signal.removeEventListener('abort', abort);
     if (!completed) {

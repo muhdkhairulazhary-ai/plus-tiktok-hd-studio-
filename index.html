@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#100a0d">
   <meta name="description" content="Your personal, local-first HEVC video studio. Prepare MOV and MP4 videos for TikTok, with your audio intact.">
-  <title>plus+ TikTok HD Studio — Personal Edition v2.1</title>
+  <title>plus+ TikTok HD Studio — Personal Edition v2.2</title>
   <link rel="stylesheet" href="./styles.css">
 </head>
 <body>
@@ -55,7 +55,7 @@
           <div id="source-content" hidden>
             <div class="video-wrap"><video id="preview" controls playsinline preload="metadata" aria-label="Original video preview"></video><span class="video-label">ORIGINAL</span></div>
             <div class="file-row"><div><span class="subtle-label">SOURCE FILE</span><p id="filename" class="filename"></p></div><button id="change" class="button text-button" type="button">Change video</button></div>
-            <dl class="metadata" id="source-meta"><div><dt>Resolution</dt><dd id="source-resolution">Reading…</dd></div><div><dt>Frame rate</dt><dd id="source-fps">Reading…</dd></div><div><dt>Duration</dt><dd id="source-duration">Reading…</dd></div><div><dt>File size</dt><dd id="source-size">—</dd></div><div><dt>Video bitrate</dt><dd id="source-video-bitrate">Reading…</dd></div><div><dt>Audio bitrate</dt><dd id="source-audio-bitrate">Reading…</dd></div><div class="full"><dt>Audio</dt><dd id="source-audio">Reading…</dd></div></dl>
+            <dl class="metadata" id="source-meta"><div><dt>Resolution</dt><dd id="source-resolution">Reading…</dd></div><div><dt>Frame rate</dt><dd id="source-fps">Reading…</dd></div><div><dt>Duration</dt><dd id="source-duration">Reading…</dd></div><div><dt>File size</dt><dd id="source-size">—</dd></div><div><dt>Video bitrate</dt><dd id="source-video-bitrate">Reading…</dd></div><div><dt>Audio bitrate</dt><dd id="source-audio-bitrate">Reading…</dd></div><div class="full"><dt>Source video / HDR</dt><dd id="source-hdr">Reading…</dd></div><div class="full"><dt>Color / configuration</dt><dd id="source-color">Reading…</dd></div><div class="full"><dt>HDR static metadata</dt><dd id="source-static">Reading…</dd></div><div class="full"><dt>Audio</dt><dd id="source-audio">Reading…</dd></div></dl>
           </div>
           <div class="privacy-line"><span aria-hidden="true">◈</span> No uploads. No account. Just your video.</div>
         </section>
@@ -63,15 +63,21 @@
           <div class="card-heading"><h3 id="settings-title"><span class="step">02</span> Make it yours</h3><span class="subtle-label">OUTPUT SETTINGS</span></div>
           <form id="settings">
             <fieldset id="settings-fields" aria-labelledby="settings-title" aria-describedby="support">
+              <div class="field-row mode-field"><label for="mode">Processing mode</label><select id="mode" name="mode" aria-describedby="mode-help"><option value="smart" selected>Original Quality — No Re-encode</option><option value="convert">HEVC Conversion</option><option value="custom">Custom Encoding</option></select></div>
+              <p class="field-help" id="mode-help">Smart Copy preserves original HEVC and AAC packets. Available only after compatibility and output verification.</p>
+              <div class="field-row mode-field"><label for="hdr">HDR handling</label><select id="hdr" name="hdr" aria-describedby="hdr-help"><option value="auto">Auto / Preserve Original</option><option value="required">HDR Preservation Required</option><option value="sdr" disabled>SDR Output — unavailable</option></select></div>
+              <p id="hdr-help" class="field-help">HDR re-encoding and SDR tone mapping are unavailable. Supported HDR can use verified Smart Copy.</p>
+              <fieldset id="encoding-fields" aria-label="Video encoding settings" disabled>
               <div class="field-row"><label for="resolution">Resolution</label><select id="resolution" name="resolution" aria-describedby="resolution-help"><option value="original" selected>Original resolution</option><option value="1080">1080p HD</option><option value="4k">4K UHD</option></select></div>
               <p class="field-help" id="resolution-help">Fits your aspect ratio. 4K requires a compatible HEVC encoder.</p>
               <div class="field-row"><label for="fps">Frame rate</label><select id="fps" name="fps"><option value="original" selected>Original FPS / timing</option><option value="30">30 FPS</option><option value="60">60 FPS</option></select></div>
               <div class="field-row"><span class="field-label" id="codec-label">Video codec</span><div class="codec-value" id="codec" aria-labelledby="codec-label">HEVC <span>H.265</span><svg aria-hidden="true" viewBox="0 0 24 24"><path d="m6 12 4 4 8-8"/></svg></div></div>
               <div class="field-row"><label for="quality">Quality mode</label><select id="quality" name="quality"><option value="preserve" selected>Preserve Original Size</option><option value="auto">Automatic</option><option value="high">High quality</option><option value="custom">Custom bitrate</option></select></div>
               <div id="custom-field" class="field-row" hidden><label for="bitrate">Target bitrate <small>1–100 Mbps</small></label><div class="number-wrap"><input id="bitrate" name="bitrate" type="number" min="1" max="100" step="0.1" value="8.5" inputmode="decimal"><span>Mbps</span></div></div>
+              </fieldset>
             </fieldset>
           </form>
-          <div class="output-summary"><span class="subtle-label">YOUR OUTPUT</span><p id="output-summary">Original resolution · Original timing · HEVC + AAC</p><dl class="metadata size-estimate"><div><dt>Original size</dt><dd id="estimate-original">Choose a video</dd></div><div><dt>Estimated output size</dt><dd id="estimate-output">Unavailable</dd></div></dl><p id="size-note" class="field-help">Size is a target, not a guarantee. TikTok may still recompress your upload.</p></div>
+          <div class="output-summary"><span class="subtle-label">YOUR OUTPUT</span><p id="output-summary">Smart Copy · Original resolution & timing</p><dl class="metadata size-estimate"><div><dt>Original size</dt><dd id="estimate-original">Choose a video</dd></div><div><dt>Estimated output size</dt><dd id="estimate-output">Unavailable</dd></div></dl><p id="size-note" class="field-help">Size is a target, not a guarantee. TikTok may still recompress your upload.</p></div>
           <p id="support" class="support-note">Choose a video to check device compatibility.</p>
           <button id="go" class="button primary process-button" type="button" disabled><span aria-hidden="true">✦</span> Process video <span aria-hidden="true">→</span></button>
           <p class="settings-footnote">Upscaling adds pixels, not new detail. Higher FPS may repeat frames. Original timing preserves variable frame rates.</p>
@@ -85,9 +91,9 @@
       </section>
       <p id="status" class="status" role="status" aria-live="polite" aria-atomic="true"></p>
       <section id="results" class="card results-card" aria-labelledby="results-title" hidden>
-        <div class="card-heading"><div><p class="eyebrow">READY FOR YOUR NEXT POST</p><h2 id="results-title" tabindex="-1">A fresh finish. Sound intact.</h2></div><span class="verified-badge">✓ MP4 verified</span></div>
+        <div class="card-heading"><div><p class="eyebrow">READY FOR YOUR NEXT POST</p><h2 id="results-title" tabindex="-1">Your video. Ready to share.</h2></div><span class="verified-badge">✓ MP4 verified</span></div>
         <div class="result-layout"><div class="video-wrap result-preview"><video id="result-preview" controls playsinline preload="metadata" aria-label="Processed video preview"></video><span class="video-label">PROCESSED</span></div>
-          <div class="result-info"><dl class="metadata"><div><dt>Resolution</dt><dd id="result-resolution"></dd></div><div><dt>Frame rate</dt><dd id="result-fps"></dd></div><div><dt>Video codec</dt><dd id="result-codec"></dd></div><div><dt>Audio codec</dt><dd id="result-audio"></dd></div><div><dt>Actual output size</dt><dd id="result-size"></dd></div><div><dt>Processing time</dt><dd id="result-time"></dd></div></dl>
+          <div class="result-info"><dl class="metadata"><div><dt>Resolution</dt><dd id="result-resolution"></dd></div><div><dt>Frame rate</dt><dd id="result-fps"></dd></div><div><dt>Video codec</dt><dd id="result-codec"></dd></div><div><dt>Video processing</dt><dd id="result-mode"></dd></div><div class="full"><dt>HDR status</dt><dd id="result-hdr"></dd></div><div><dt>Audio codec</dt><dd id="result-audio"></dd></div><div><dt>Actual output size</dt><dd id="result-size"></dd></div><div><dt>Processing time</dt><dd id="result-time"></dd></div></dl>
             <div class="comparison"><div><span>Original</span><b id="compare-before"></b></div><span aria-hidden="true">→</span><div><span>Actual output</span><b id="compare-after"></b></div><div><span>Estimated output</span><b id="compare-estimate"></b></div><small id="compare-change"></small><small id="size-outcome"></small></div>
             <button id="share" class="button primary" type="button">Save to Photos <span aria-hidden="true">↗</span></button>
             <a id="download" class="button secondary" download>Save to Files / Download MP4 <span aria-hidden="true">↓</span></a>
@@ -99,7 +105,7 @@
       </section>
     </section>
     <section class="how-it-works" id="guide" aria-labelledby="guide-title"><div class="section-heading"><div><p class="eyebrow">LESS FRICTION. MORE CREATING.</p><h2 id="guide-title">From camera roll to ready.</h2></div></div><div class="guide-grid"><article><span>01 / SELECT</span><h3>Start with your original.</h3><p>Choose a MOV or MP4 from Photos or Files. Keep the best source you have.</p></article><article><span>02 / REFINE</span><h3>Find your finish.</h3><p>Choose your size, timing and bitrate. We check what your device can actually encode.</p></article><article><span>03 / SHARE</span><h3>Save. Review. Post.</h3><p>Download your MP4 with AAC audio, check the result, and bring it into TikTok.</p></article></div></section>
-    <aside class="personal-note"><div class="personal-symbol" aria-hidden="true">✳</div><div><h3>Your studio. Your pace.</h3><p>Free, personal, and watermark-free. No subscriptions, ads, daily quotas or file-size caps. Processing uses your device’s memory; long or high-resolution videos can exceed Safari’s resources. HEVC and AAC encoding depend on your browser and hardware. No video is sent to a server.</p></div><span class="subtle-label">PERSONAL EDITION / V2.1</span></aside>
+    <aside class="personal-note"><div class="personal-symbol" aria-hidden="true">✳</div><div><h3>Your studio. Your pace.</h3><p>Free, personal, and watermark-free. No subscriptions, ads, daily quotas or file-size caps. Processing uses your device’s memory; long or high-resolution videos can exceed Safari’s resources. HEVC and AAC encoding depend on your browser and hardware. No video is sent to a server.</p></div><span class="subtle-label">PERSONAL EDITION / V2.2</span></aside>
   </main>
   <footer class="shell footer"><span>plus<span class="accent">+</span> TikTok HD Studio</span><span>Made for the moments worth sharing.</span><a href="#studio">Back to studio ↑</a></footer>
   <noscript><p class="shell status error">JavaScript is required for local video processing. Your video is never uploaded.</p></noscript>

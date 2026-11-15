@@ -5,3 +5,5 @@
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 
 .size-estimate{margin-top:13px;margin-bottom:15px}.output-summary #size-note{margin:0;max-width:none}.settings-card select{font-size:11px}
+
+.field-row.mode-field{display:grid;grid-template-columns:1fr;gap:8px}.mode-field select{width:100%;font-size:12px}.mode-field+ .field-help{max-width:none}

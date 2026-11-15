@@ -1,4 +1,4 @@
-# plus+ TikTok HD Studio v2.1 — Personal Edition
+# plus+ TikTok HD Studio v2.2 — Personal Edition
 
 Production: **https://plus-tiktok-hd-studio.pages.dev/**
 
@@ -8,17 +8,57 @@ A free, mobile-first, local video studio for preparing MOV/MP4 footage with HEVC
 
 The user confirmed physical-iPhone audio/video success for `db4a581a3ae41afd8b7cfea08029f14365be2314`. It is preserved as the remote annotated tag **`v1.3-iphone-checkpoint`** before the v2 changes.
 
-V2 retains Mediabunny 1.66.0, Blob range reads, demuxing, the existing AAC copy/transcode decision, HEVC WebCodecs encoding, contain fitting, baked orientation, MP4 muxing, timestamp validation, decoder checks, cancellation and Share Sheet/download behavior. The encoding/audio/muxing path is retained; the settings layer supplies resolution, timing and bitrate targets. V2.1 adds compressed-sample analysis for bitrate budgeting and estimated output metadata. V2.1 defaults to **Preserve Original Size / Original resolution / Original timing**. The previously tested 1080p / 60 FPS / Automatic (8.5 Mbps) configuration remains available.
+The working v2.1 commit `38aa5db88a525283004902e7c43de6d0d1f66a74` is checkpointed as **`v2.1-checkpoint`** before this release.
+
+V2.2 retains Mediabunny **1.66.0** and the existing HEVC/AAC conversion pipeline. It adds a separate verified encoded-packet copy path. Default for HEVC input: **Original Quality — No Re-encode / Smart Copy**. Ineligible input is blocked in that mode, not silently encoded. H.264 defaults to explicitly lossy **HEVC Conversion**. **Custom Encoding** exposes deliberate size/FPS/bitrate changes. The v2.1 Preserve Original Size bitrate mode and the previously tested 1080p60 Automatic configuration remain available in encoding modes.
+
+## Smart Copy and actual HDR support
+
+The implementation uses supported Mediabunny `EncodedPacketSink`, `EncodedVideoPacketSource`, `EncodedAudioPacketSource`, `InputVideoTrack.getDecoderConfig()`, `getColorSpace()`, `getTransformationMatrix()`, `Output` and `Mp4OutputFormat` APIs. Packets are fed in each track's original decode order with original presentation timestamps and durations, using writer backpressure and track interleaving. It does not merely remove `forceTranscode`: **no encoder/decoder source is constructed in the copy path**. Encoding modes retain `forceTranscode: true` intentionally.
+
+Supported copy inputs have one **hvc1 HEVC** video sample description and one **AAC-LC** audio track in a non-fragmented MOV/MP4:
+
+| Source | Behavior |
+| --- | --- |
+| SDR HEVC | Original video/AAC samples copied; SHA-256, timing, orientation and configuration verified. |
+| HLG HEVC | HDR preservation claimed only with complete BT.2020 / HLG / BT.2020 nonconstant matrix / range signaling and at least 10-bit HEVC, retained codec configuration, verified output nclx and identical packets. |
+| HDR10 HEVC | Same checks for BT.2020 / PQ, plus detected mastering-display SEI. Retained mastering/content-light SEI is independently checked by FFprobe in tests. |
+| PQ without detected mastering metadata | Can copy the original bits if other checks pass, but shows **HDR not verified**, not full HDR10 preservation. Required HDR mode blocks this case. |
+| Unknown color metadata | Shows **Unknown**. HEVC alone never implies HDR. Eligible copying preserves the samples/configuration but makes no HDR preservation claim. |
+| Dolby Vision | **Unsupported / blocked**: `dvcC`, `dvvC`, `dvwC`, DV sample entries or RPU/reserved enhancement NALs are detected, but full configuration/RPU/EL semantics and playback cannot be validated. Nothing is synthesized. |
+| hev1, multiple sample descriptions, fragmented input, ICC color profiles, interlaced/unknown sample-entry extensions | Blocked in Smart Copy because complete remux semantics have not been validated. |
+| Separate `mdcv` / `clli` container boxes | Detected and blocked; this library does not write them. HDR10 **bitstream SEI** is supported; equivalent container-box retention is not claimed. |
+| Dynamic registered-user-data HDR SEI (including possible HDR10+) | Blocked because its complete metadata semantics are not validated. |
+| Non-AAC-LC audio | Smart Copy stops explicitly. **Audio-only transcoding is not implemented in Smart Copy.** Existing encoding modes can transcode supported SDR input audio to 48 kHz stereo AAC. Audio is never discarded. |
+
+The range reader inspects structured ISO BMFF sample entries, not arbitrary text matches inside media bytes. It inspects `hvcC` profile/depth/parameter sets, `colr` nclx/nclc, relevant unsupported boxes, and HEVC SEI/RPU NALs in configuration and samples. Unspecified container color fields may be resolved from retained SPS VUI through Mediabunny's public color API; actual output nclx is then checked against that semantic source color. Unknown properties remain Unknown. Progressive `fiel` is allowed: dropping this redundant QuickTime box does not change the progressive SPS/bitstream; other field-order metadata is blocked.
+
+**HDR re-encoding is unavailable.** Auto never silently converts detected HDR, Dolby Vision, 10-bit or unknown-depth material to SDR. HDR Preservation Required permits only supported, verified HDR Smart Copy. SDR Output is disabled because there is no validated color-managed tone mapper or complete 10-bit HDR encoding/metadata pipeline. Unknown-color 8-bit SDR-capable sources may use the existing lossy conversion path with HDR status explicitly unverified.
+
+### What No Re-encode actually verifies
+
+Before results are exposed, the MP4 is reopened and checked for:
+
+- HEVC profile/codec string and **byte-identical hvcC** (including bit-depth/parameter-set information).
+- Original coded/display dimensions, aspect ratio and complete transformation matrix. Supported track names, ISO language codes and dispositions are forwarded too; arbitrary MOV metadata is not a byte-for-byte container copy.
+- Identical video and AAC **per-packet SHA-256**, counts, decode ordering and key/delta flags (GOP structure).
+- Every packet's presentation timestamp against a common source/output offset across both tracks (100 µs tolerance), plus duration (2 ms tolerance). This verifies cadence and A/V sync, not just endpoints.
+- Original AAC decoder configuration, sample rate and channels.
+- Source color characteristics, required output HDR nclx fields, and retained mastering/content-light SEI sets. Full packet/configuration hashes also protect embedded HDR SEI bytes.
+
+Different MP4 timing tables may legitimately represent reorder/timing differently. If this writer cannot retain the verified presentation durations/cadence for a particular source, **export stops** rather than weakening the claim. A VFR + B-frame fixture exposed a last-sample duration change and is explicitly tested as a rejection; VFR without that ambiguity and rotated MOVs are tested as successful copies.
+
+Smart Copy size estimates use original compressed media bytes plus approximate MP4 overhead. Original/actual size and difference are shown. MOV metadata, free space and remux overhead can change file size without changing encoded quality; equal file size is never proof or a requirement. There is no padding, bitrate inflation or guaranteed TikTok playback/compression bypass.
 
 ## Studio workflow
 
 1. Choose a MOV or MP4 from Photos/Files, or drop it on the desktop upload area.
 2. Inspect the original preview, filename, display resolution, duration, size and audio metadata. FPS is a measured **average** from packet metadata, not an invented constant rate. Unreadable metadata is shown as unavailable.
-3. Keep Preserve Original Size or select Automatic, High quality or Custom bitrate. Review original and estimated output sizes. Set resolution and frame timing if needed. The selected HEVC encoder configuration is probed before Process is enabled. Source decoder and audio support are rechecked during processing.
+3. Review the detected codec/HDR metadata and processing mode. Smart Copy locks size/FPS/bitrate changes. Choose HEVC Conversion or Custom Encoding for explicit lossy changes, including the existing Preserve Original Size / Automatic / High quality / Custom bitrate options. Encoder probes run only for encoding modes.
 4. Watch measurable conversion progress, validation/playback stages and elapsed time. Cancel stops the conversion; uploads/settings are locked while processing.
 5. Review the actual result, audio, measured FPS, processing time and honest size comparison. Save using the iOS Share Sheet or download the MP4. Process Another Video releases the old previews and output URLs.
 
-## Implemented output settings
+## Encoding-mode output settings
 
 | Setting | Behavior |
 | --- | --- |
@@ -32,9 +72,9 @@ V2 retains Mediabunny 1.66.0, Blob range reads, demuxing, the existing AAC copy/
 | High quality | Targets 1.5× automatic bitrate. Larger files are possible. |
 | Custom bitrate | Passes a 1–100 Mbps video bitrate target to the HEVC encoder. Hardware may produce a different actual average. Unsupported configurations are blocked. |
 
-All sizes use contain fitting to preserve aspect ratio without cropping/stretching. Upscaling adds pixels, **not genuine image detail**. Repeating frames for higher FPS does **not** create new motion detail. HEVC is the only output video codec; there is no hidden H.264 substitution or extension renaming.
+Encoding modes use contain fitting to preserve aspect ratio without cropping/stretching. Upscaling adds pixels, **not genuine image detail**. Repeating frames for higher FPS does **not** create new motion detail. HEVC is the only output video codec; there is no hidden H.264 substitution or extension renaming.
 
-## Preserve Original Size calculation
+## Preserve Original Size calculation (encoding modes only)
 
 Source analysis scans **packet metadata**, counting compressed bytes and packets and measuring each track's timestamp span. It reports total file size/duration, display resolution, average FPS, and video/audio bitrates (`track bytes × 8 / track duration`). It does not infer video bitrate from the entire container or allocate decoded media for analysis. FFprobe independently checks the measured byte counts in tests.
 
@@ -58,10 +98,10 @@ The estimate cannot guarantee a ±5–10% outcome or equal perceptual quality: h
 
 The pinned, bundled Mediabunny library demuxes container samples. It never passes MOV/MP4 container bytes to `decodeAudioData()`.
 
-- Compatible AAC-LC (`mp4a.40.2`) is copied as compressed packets whenever possible, preserving sound without unnecessary re-encoding or an AAC encoder requirement.
-- Other supported audio is decoded and encoded to stereo 48 kHz AAC, requiring an available decoder and AAC encoder. Unavailable audio support stops export.
+- Compatible AAC-LC (`mp4a.40.2`) is copied as compressed packets whenever possible. Copied AAC payloads are now hash-verified in both Smart Copy and conversion output before original-packet labeling.
+- In encoding modes, other supported audio is decoded and encoded to stereo 48 kHz AAC, requiring an available decoder and AAC encoder. Unavailable audio support stops export.
 - One video track and one audio track are required. Silent and multi-track files are explicitly rejected rather than losing audio or choosing an unexpected track.
-- The output is reopened and verified as HEVC `hvc1` + AAC with expected dimensions, valid timestamps, nonempty tracks and preserved relative audio/video start/end timing within 120 ms (AAC priming/frame rounding).
+- In encoding modes, the output is reopened and verified as HEVC `hvc1` + AAC with expected dimensions, valid timestamps, nonempty tracks and preserved relative audio/video start/end timing within 120 ms (AAC priming/frame rounding).
 - Fixed-FPS output is checked for packet cadence. Original timing is not forced to a constant rate.
 - Browser decoder support and loading of the first output video frame must pass before saving is offered. These structural checks do not prove perceptual lip sync or complete playback on every device.
 
@@ -69,15 +109,15 @@ The pinned, bundled Mediabunny library demuxes container samples. It never passe
 
 No fixed input file-size, duration or daily processing quota is imposed. **Unlimited file selection does not mean unlimited device resources.** The conversion pipeline retains backpressure and sample cleanup, but the compressed MP4 is buffered in RAM and copied into a Blob/File for preview/sharing. Timestamp metadata also uses memory. Large, long, 4K or high-bitrate clips can exhaust Safari's resources or terminate the tab. Use shorter clips/lower settings and close other tabs if necessary.
 
-HTTPS and a working WebCodecs HEVC encoder are required. A browser that plays HEVC may still be unable to encode it. Capability probes use the selected configuration, while actual decoder/encoder failures remain possible during conversion. Keep Safari visible; backgrounding can pause or lose hardware codecs. Cancellation and page hiding abort active conversion; superseded metadata reads are disposed and Blob URLs are revoked when replaced.
+Smart Copy requires HTTPS/Web Crypto SHA-256 and supported HEVC/AAC playback, **not an HEVC encoder**. The app loads a first-frame preview after copying as a playback check; processing itself does not decode frames. Encoding modes require a working WebCodecs HEVC encoder. A browser that plays HEVC may still be unable to encode it. Capability probes use the selected configuration, while actual decoder/encoder failures remain possible during conversion. Keep Safari visible; backgrounding can pause or lose hardware codecs. Cancellation and page hiding abort active conversion; superseded metadata reads are disposed and Blob URLs are revoked when replaced.
 
-Intended input is H.264/HEVC + AAC in MOV/MP4. Other audio codecs (including PCM MOV) depend on decoding and AAC encoding availability. ProRes, protected media and unsupported codecs are not promised. HDR/Dolby Vision preservation and faithful HDR-to-SDR tone mapping are not guaranteed; use native software for color-critical HDR work.
+Intended input is H.264/HEVC + AAC in MOV/MP4. Other audio codecs (including PCM MOV) depend on decoding and AAC encoding availability. ProRes, protected media and unsupported codecs are not promised. HDR support is limited to the verified copy cases above. Dolby Vision, HDR re-encoding and SDR tone mapping are blocked; use specialist native software for unsupported HDR/DV workflows.
 
 **Save to Photos** opens the Share Sheet: the user must choose **Save Video** if iOS offers it. **Save to Files / Download MP4** uses file sharing where supported, with a direct-download fallback elsewhere or after a sharing failure. A website cannot force the Photos destination. TikTok can recompress output or change resolution/FPS/bitrate; enable HD/high-quality upload when available and review before posting.
 
 ## Native fallback
 
-No personal video is sent to an external service. Cloudflare Pages serves static files and cannot perform native FFmpeg transcoding. When browser encoding is unavailable, the app stops explicitly; use a native editor or FFmpeg on a computer:
+No personal video is sent to an external service. Cloudflare Pages serves static files and cannot perform native FFmpeg transcoding. When browser encoding is unavailable, the app stops explicitly; use a native editor or FFmpeg on a computer. This **lossy SDR-only** example must not be used as an HDR/Dolby Vision preservation workflow:
 
 ```sh
 ffmpeg -i input.MOV -map 0:v:0 -map 0:a:0 \
@@ -100,7 +140,10 @@ The committed `app.js` bundles production dependencies locally; no CDN, external
 
 Tests cover:
 
-- Default original size/timing/dimensions, HEVC size budgets, AAC byte reservation, transcoded audio budgets, metadata-heavy/tiny/low-bitrate inputs, honest size misses, and alternative bitrate modes.
+- Real SDR, HLG and HDR10 in both MOV and MP4 Smart Copy through the application entry point, independently verified by FFprobe packet/extradata hashes, profile/depth/color checks, timestamps, common A/V offsets and HDR10 mastering/content-light side data.
+- VFR/rotation copying, a VFR/B-frame timing mismatch rejection, real H.264 routing, real PCM audio rejection, payload-tamper detection, repeated conversions and cancellation during copy/verification.
+- Missing HDR metadata, PQ without static mastering metadata, unsupported HDR re-encoding/tone mapping, ICC/hev1/unsupported boxes, and synthetic Dolby Vision configuration/RPU rejection. **No real Dolby Vision preservation fixture was available; no DV support is claimed.**
+- Original size/timing/dimensions, HEVC size budgets, AAC byte reservation, transcoded audio budgets, metadata-heavy/tiny/low-bitrate inputs, honest size misses, and alternative bitrate modes.
 - Geometry, 4K/original/1080 sizing, 30/60/original timing configuration, bitrate validation, and the former tested 1080p60 configuration.
 - Timeline offset/drift guards and invalid duration/container rejection.
 - A real FFmpeg-generated HEVC/AAC MOV with delayed audio, demux/remux, independent FFprobe codec/FPS checks and identical compressed AAC hashes. Silent/multiple-audio sources fail explicitly.
@@ -110,8 +153,10 @@ CI installs FFmpeg, runs tests/build and checks the committed bundle is reproduc
 
 ### Physical iPhone follow-up
 
-The earlier engine success was reported by the user. This redesign has not been physically tested on an iPhone. Repeat the known working MOV at both the former 1080p60 Automatic settings and the new Preserve Original Size defaults, then check:
+The earlier engine success and v2.1 size deviation were reported by the user. V2.2 Smart Copy has not been physically tested on an iPhone. Repeat the reported 27.5 MB clip with Smart Copy, plus the former encoding settings, and check:
 
+- Actual iPhone SDR/HLG/HDR10 MOV sample descriptions, metadata eligibility and any explicit rejection reasons. Dolby Vision clips should stop with an unsupported message.
+- HDR display behavior in Photos/Safari, full-clip sync, keyframe seeking and saved-file playback.
 - The new upload/settings/results layout at iPhone sizes, VoiceOver, safe areas and reduced motion.
 - Preserve Original Size rate control and actual size deviation across short/long, low/high-bitrate and variable-FPS iPhone MOV files.
 - Original timing (including variable-FPS MOV), 30 FPS, 4K and custom-bitrate hardware encoding.
@@ -120,7 +165,7 @@ The earlier engine success was reported by the user. This redesign has not been 
 - Cancel, background/foreground transitions, repeat uploads and repeated conversions.
 - Both Share Sheet buttons, Save Video to Photos, Save to Files and playback of saved MP4s.
 
-The DOM tests and FFmpeg remux checks do not substitute for a browser layout check or actual Safari hardware encoding.
+The DOM tests and synthetic FFmpeg-generated media do not substitute for a browser layout check, real iPhone HDR/DV capture or actual Safari hardware encoding. No licensed/authentic Dolby Vision fixture was supplied.
 
 ## Deployment
 

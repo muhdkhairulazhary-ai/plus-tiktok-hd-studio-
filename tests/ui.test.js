@@ -126,3 +126,13 @@ test('new default shows source bitrates, original settings, estimates and honest
     assert.ok(s.$('download').href.startsWith('blob:')); // Missing a target never blocks a valid export.
   }finally{s.close();}
 });
+test('eligible HEVC defaults to Smart Copy, locks encoding settings, and labels only verified results',async()=>{
+  const s=setup({inspect:async()=>({...info,videoCodec:'hevc',videoCodecString:'hvc1.2.4.L120.B0',hdr:{label:'HLG HDR',bitDepth:10,primaries:9,transfer:18,matrix:9,profile:2,staticMetadata:[]}}),convert:async()=>({blob:new Blob(['mp4']),width:1920,height:1080,fps:60,videoCopied:true,audioCopied:true,processingMode:'Smart Copy',hdrStatus:'HLG HDR preserved — verified configuration, color and packets'})});
+  try {
+    await s.app.loadFile(s.file);assert.equal(s.$('mode').value,'smart');assert.ok(s.$('encoding-fields').disabled);
+    assert.match(s.$('source-hdr').textContent,/HLG HDR/);assert.match(s.$('source-color').textContent,/BT.2020/);
+    await s.$('go').onclick();assert.match(s.$('result-mode').textContent,/No Re-encode.*verified/);assert.match(s.$('result-hdr').textContent,/HLG HDR preserved/);
+    assert.match(s.$('size-outcome').textContent,/equal file size/);
+    s.$('mode').value='custom';s.$('mode').onchange();await Promise.resolve();assert.ok(!s.$('encoding-fields').disabled);
+  }finally{s.close();}
+});

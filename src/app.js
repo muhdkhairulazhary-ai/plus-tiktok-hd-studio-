@@ -9,7 +9,7 @@ export function createStudio(doc, dependencies = {}) {
   let file = null, metadata = null, src = null, out = null, outputFile = null;
   let metadataController = null;
   let controller = null, generation = 0, supportGeneration = 0, supported = false, estimatedSize = null, timer = null, started = 0, shareFailed = false, sharing = false;
-  const settings = () => ({ resolution: $('resolution').value, fps: $('fps').value, quality: $('quality').value, bitrate: $('bitrate').value });
+  const settings = () => ({ mode: $('mode').value, hdr: $('hdr').value, resolution: $('resolution').value, fps: $('fps').value, quality: $('quality').value, bitrate: $('bitrate').value });
   const message = (text, error = false) => { $('status').textContent = text; $('status').classList.toggle('error', error); };
   const resetPlayer = player => { player.pause(); player.removeAttribute('src'); player.load(); };
   function clearOutput() {
@@ -30,6 +30,8 @@ export function createStudio(doc, dependencies = {}) {
     supported = false; estimatedSize = null; $('go').disabled = true;
     $('estimate-output').textContent = 'Unavailable';
     $('custom-field').hidden = $('quality').value !== 'custom';
+    $('encoding-fields').disabled = $('mode').value === 'smart';
+    $('mode-help').textContent = $('mode').value === 'smart' ? 'Original resolution, timing and encoded packets. No bitrate or frame-rate changes are applied. Hash verification is required before No Re-encode is shown in results.' : 'Video will be re-encoded to HEVC. Changes are lossy and may alter color, quality and file size. HDR re-encoding is unavailable.';
     if (!metadata) return;
     $('support').textContent = 'Checking your selected HEVC configuration…';
     $('support').classList.remove('unsupported');
@@ -38,7 +40,7 @@ export function createStudio(doc, dependencies = {}) {
       if (version !== supportGeneration) return;
       supported = support.supported;
       const c = support.config;
-      $('output-summary').textContent = `${c.width} × ${c.height} · ${c.frameRate ? c.frameRate + ' FPS' : 'Original timing'} · ${formatBitrate(c.bitrate)} · HEVC + AAC`;
+      $('output-summary').textContent = `${c.width} × ${c.height} · ${c.frameRate ? c.frameRate + ' FPS' : 'Original timing'} · ${$('mode').value === 'smart' ? 'Smart Copy (verification pending)' : formatBitrate(c.bitrate)} · HEVC + AAC`;
       estimatedSize = c.estimatedSize;
       $('estimate-output').textContent = formatBytes(estimatedSize);
       $('size-note').textContent = c.sizeNote || 'Estimated from the target video bitrate, audio and MP4 headers. Hardware output varies. TikTok may still recompress your upload.';
@@ -67,7 +69,7 @@ export function createStudio(doc, dependencies = {}) {
     $('estimate-original').textContent = formatBytes(file.size);
     $('estimate-output').textContent = 'Unavailable';
     $('size-note').textContent = 'Reading source bitrates to estimate output size…';
-    for (const id of ['source-resolution', 'source-fps', 'source-duration', 'source-audio', 'source-video-bitrate', 'source-audio-bitrate']) $(id).textContent = 'Reading…';
+    for (const id of ['source-resolution', 'source-fps', 'source-duration', 'source-audio', 'source-video-bitrate', 'source-audio-bitrate', 'source-hdr', 'source-color', 'source-static']) $(id).textContent = 'Reading…';
     $('support').textContent = 'Reading metadata before checking HEVC support…';
     $('support').classList.remove('unsupported');
     $('output-summary').textContent = 'Waiting for video metadata…';
@@ -78,6 +80,13 @@ export function createStudio(doc, dependencies = {}) {
       const result = await deps.inspect(next, metadataSignal);
       if (version !== generation) return;
       metadata = result;
+      $('mode').value = result.videoCodec === 'hevc' ? 'smart' : 'convert';
+      $('resolution').value = $('fps').value = 'original'; $('quality').value = 'preserve';
+      $('source-hdr').textContent = `${result.videoCodecString || 'Unknown codec'} · ${result.hdr?.label || 'Unknown'}`;
+      const h = result.hdr || {};
+      const names = {1:'BT.709',9:'BT.2020',16:'PQ',18:'HLG'};
+      $('source-color').textContent = `Primaries: ${names[h.primaries] || h.primaries || 'Unknown'} · Transfer: ${names[h.transfer] || h.transfer || 'Unknown'} · Matrix: ${h.matrix ?? 'Unknown'} · Depth: ${h.bitDepth ?? 'Unknown'} · HEVC profile: ${h.profile ?? 'Unknown'}`;
+      $('source-static').textContent = [h.staticMetadata?.length ? `${h.staticMetadata.length} unique mastering/content-light SEI messages detected` : 'Static SEI: Unknown / not detected', h.staticBoxes?.length ? `Container ${h.staticBoxes.join(', ')} detected — retention unsupported` : '', h.dolbyVisionConfiguration?.length ? `Dolby Vision ${h.dolbyVisionConfiguration.join(', ')} — retention unsupported; DV profile Unknown` : ''].filter(Boolean).join(' · ');
       $('source-resolution').textContent = `${result.width} × ${result.height}`;
       $('source-fps').textContent = result.fps ? `${result.fps.toFixed(2)} FPS average` : 'Unavailable';
       $('source-duration').textContent = formatTime(result.duration);
@@ -88,7 +97,7 @@ export function createStudio(doc, dependencies = {}) {
       await refreshSupport();
     } catch (error) {
       if (version !== generation) return;
-      for (const id of ['source-resolution', 'source-fps', 'source-duration', 'source-audio', 'source-video-bitrate', 'source-audio-bitrate']) $(id).textContent = 'Unavailable';
+      for (const id of ['source-resolution', 'source-fps', 'source-duration', 'source-audio', 'source-video-bitrate', 'source-audio-bitrate', 'source-hdr', 'source-color', 'source-static']) $(id).textContent = 'Unavailable';
       message(`Could not read this video: ${error.message}`, true);
       $('support').textContent = 'Choose another MOV or MP4 video.';
     }
@@ -100,7 +109,11 @@ export function createStudio(doc, dependencies = {}) {
   $('dropzone').ondragleave = () => $('dropzone').classList.remove('dragover');
   $('dropzone').ondrop = event => { event.preventDefault(); $('dropzone').classList.remove('dragover'); if (!controller) void loadFile(event.dataTransfer?.files[0]); };
   $('settings').onsubmit = event => event.preventDefault();
-  for (const id of ['resolution', 'fps', 'quality', 'bitrate']) $(id).onchange = () => { if (!controller) void refreshSupport(); };
+  for (const id of ['mode', 'hdr', 'resolution', 'fps', 'quality', 'bitrate']) $(id).onchange = () => { if (!controller) {
+    if (id === 'mode' && $('mode').value === 'smart') { $('resolution').value = $('fps').value = 'original'; $('quality').value = 'preserve'; }
+    if (['resolution','fps','quality','bitrate'].includes(id) && $('mode').value === 'smart') $('mode').value = 'custom';
+    void refreshSupport();
+  } };
   $('go').onclick = async () => {
     if (controller || !file || !metadata || !supported) return;
     const selectedFile = file, selectedSettings = settings(), selectedEstimate = estimatedSize;
@@ -109,7 +122,7 @@ export function createStudio(doc, dependencies = {}) {
     clearOutput(); resetPlayer($('result-preview')); $('preview').pause();
     lock(true); $('processing').hidden = false; $('cancel').disabled = false;
     $('bar').value = 0; $('percent').textContent = '0%';
-    $('stage').textContent = 'Checking source video and audio…';
+    $('stage').textContent = 'Checking source video, audio and HDR metadata…';
     message('Processing locally. Keep this tab visible.');
     started = win.performance.now();
     const clock = () => $('elapsed').textContent = `${formatTime((win.performance.now() - started) / 1000)} elapsed`;
@@ -128,14 +141,16 @@ export function createStudio(doc, dependencies = {}) {
       $('result-preview').src = out; $('download').href = out; $('download').download = outputFile.name;
       $('result-resolution').textContent = `${result.width} × ${result.height}`;
       $('result-fps').textContent = Number.isFinite(result.fps) ? `${result.fps.toFixed(2)} FPS${selectedSettings.fps === 'original' ? ' average' : ''}` : 'Unavailable';
-      $('result-codec').textContent = 'HEVC H.265 (hvc1)';
+      $('result-codec').textContent = result.codec || 'HEVC H.265 (hvc1)';
+      $('result-mode').textContent = result.videoCopied ? 'Smart Copy — video No Re-encode (SHA-256 verified)' : `${result.processingMode || 'HEVC Conversion'} — video re-encoded`;
+      $('result-hdr').textContent = result.hdrStatus || 'HDR not verified';
       $('result-audio').textContent = `AAC${result.audioCopied ? ' · original packets' : ' · transcoded'}`;
       $('result-size').textContent = formatBytes(outputFile.size);
       $('result-time').textContent = formatTime(seconds);
       $('compare-before').textContent = formatBytes(selectedFile.size); $('compare-after').textContent = formatBytes(outputFile.size);
       $('compare-change').textContent = sizeComparison(selectedFile.size, outputFile.size);
       $('compare-estimate').textContent = formatBytes(result.estimatedSize ?? selectedEstimate);
-      $('size-outcome').textContent = sizeOutcome(selectedSettings.quality === 'preserve' ? selectedFile.size : null, outputFile.size);
+      $('size-outcome').textContent = selectedSettings.mode === 'smart' ? 'MOV/MP4 container overhead can change file size. Identical encoded quality does not require equal file size. No padding is added.' : sizeOutcome(selectedSettings.quality === 'preserve' ? selectedFile.size : null, outputFile.size);
       $('results').hidden = false; $('bar').value = 100; $('percent').textContent = '100%';
       $('stage').textContent = 'Export complete. MP4, audio and timing verified.';
       message('Ready to save. Play the result and check sound and sync before posting.');
