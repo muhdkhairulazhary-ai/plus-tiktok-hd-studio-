@@ -1,0 +1,28 @@
+{
+  "name": "studio",
+  "version": "1.0.0",
+  "description": "Mobile-first, client-side TikTok video processing prototype.",
+  "main": "index.js",
+  "scripts": {
+    "build": "esbuild src/app.js --bundle --minify --format=esm --outfile=app.js",
+    "test": "node --test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/muhdkhairulazhary-ai/plus-tiktok-hd-studio-.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/muhdkhairulazhary-ai/plus-tiktok-hd-studio-/issues"
+  },
+  "homepage": "https://github.com/muhdkhairulazhary-ai/plus-tiktok-hd-studio-#readme",
+  "dependencies": {
+    "mediabunny": "1.66.0"
+  },
+  "devDependencies": {
+    "esbuild": "0.28.2"
+  }
+}
