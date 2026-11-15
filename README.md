@@ -107,7 +107,7 @@ The pinned, bundled Mediabunny library demuxes container samples. It never passe
 
 ## Practical Safari limits
 
-No fixed input file-size, duration or daily processing quota is imposed. **Unlimited file selection does not mean unlimited device resources.** The conversion pipeline retains backpressure and sample cleanup, but the compressed MP4 is buffered in RAM and copied into a Blob/File for preview/sharing. Timestamp metadata also uses memory. Large, long, 4K or high-bitrate clips can exhaust Safari's resources or terminate the tab. Use shorter clips/lower settings and close other tabs if necessary.
+No fixed input file-size, duration or daily processing quota is imposed. **Unlimited file selection does not mean unlimited device resources.** The conversion pipeline retains backpressure and sample cleanup, but the compressed MP4 is buffered in RAM and copied into a Blob/File for preview/sharing. After muxing, standard fast-start finalization places moov before media using Blob slices and metadata-only offset updates; unsupported layouts retain the original MP4 with a visible notice. This improves progressive access, not guaranteed TikTok rendition quality. Timestamp metadata also uses memory. Large, long, 4K or high-bitrate clips can exhaust Safari's resources or terminate the tab. Use shorter clips/lower settings and close other tabs if necessary.
 
 Smart Copy requires HTTPS/Web Crypto SHA-256 and supported HEVC/AAC playback, **not an HEVC encoder**. The app loads a first-frame preview after copying as a playback check; processing itself does not decode frames. Encoding modes require a working WebCodecs HEVC encoder. A browser that plays HEVC may still be unable to encode it. Capability probes use the selected configuration, while actual decoder/encoder failures remain possible during conversion. Keep Safari visible; backgrounding can pause or lose hardware codecs. Cancellation and page hiding abort active conversion; superseded metadata reads are disposed and Blob URLs are revoked when replaced.
 
@@ -170,3 +170,7 @@ The DOM tests and synthetic FFmpeg-generated media do not substitute for a brows
 ## Deployment
 
 Keep the **existing** Cloudflare Pages project and production URL. Framework preset **None**, build command empty, output directory `/`, production branch `main`. The committed bundle is deployable as-is. A push to `main` triggers the connected Pages deployment; no new project, hosting migration or account system is needed.
+
+## KilatFrame comparison and standard MP4 finalization
+
+See [the evidence-based investigation](docs/kilatframe-investigation-2026-11-15.md) for confirmed public implementation differences, confidence levels, official sources and the unresolved 576p/1080p report. No third-party code/assets are included. The only media-layout change is standard front-index MP4 finalization, with the full packet/HDR validation performed afterward. It adds no samples or padding, preserves exact muxed byte length and uses Blob slices rather than another full media buffer. It is not a TikTok compression bypass. Physical iPhone and controlled TikTok upload comparisons remain outstanding.

@@ -124,3 +124,6 @@ export function assertCopyHDR(hdr, required=false) {
 export function hdrSummary(hdr) {
   return {label:hdrLabel(hdr),primaries:hdr.color?.primaries??'Unknown',transfer:hdr.color?.transfer??'Unknown',matrix:hdr.color?.matrix??'Unknown',bitDepth:hdr.bitDepth??'Unknown',profile:hdr.profile??'Unknown',staticMetadata:[...hdr.state.staticMetadata],staticBoxes:hdr.staticBoxes,dolbyVisionConfiguration:['dvcC','dvvC','dvwC'].filter(k=>hdr.records[k]).map(k=>`${k} (${hdr.records[k][0].length} bytes)`),dolbyVision:hdr.state.dolbyVision,unsupported:hdr.unsupported,hasUnsupportedColor:!!hdr.records.colr&&!hdr.rawColor,hasHDRSignal:[16,18].includes(hdr.color?.transfer)||['pq','hlg'].includes(hdr.colorSpace.transfer)||hdr.bitDepth>8||hdr.state.staticMetadata.size>0||hdr.staticBoxes.length>0||hdr.state.unregisteredHDR||hdr.state.dolbyVision};
 }
+
+// Shared bounded ISO BMFF range reader, also used for standard fast-start finalization.
+export { boxes as listBoxes };

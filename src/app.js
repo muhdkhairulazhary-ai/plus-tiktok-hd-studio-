@@ -144,6 +144,7 @@ export function createStudio(doc, dependencies = {}) {
       $('result-codec').textContent = result.codec || 'HEVC H.265 (hvc1)';
       $('result-mode').textContent = result.videoCopied ? 'Smart Copy — video No Re-encode (SHA-256 verified)' : `${result.processingMode || 'HEVC Conversion'} — video re-encoded`;
       $('result-hdr').textContent = result.hdrStatus || 'HDR not verified';
+      $('result-container').textContent = result.containerNote || 'MP4 container validated';
       $('result-audio').textContent = `AAC${result.audioCopied ? ' · original packets' : ' · transcoded'}`;
       $('result-size').textContent = formatBytes(outputFile.size);
       $('result-time').textContent = formatTime(seconds);

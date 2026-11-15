@@ -50,7 +50,7 @@
             <div class="upload-icon" aria-hidden="true"><svg viewBox="0 0 48 48"><path d="M24 31V9m-8 8 8-8 8 8M10 29v10h28V29"/></svg></div>
             <h4>A fresh start for your footage.</h4><p>Drop a video here, or choose one below.</p>
             <button id="choose" class="button primary" type="button">Choose video <span aria-hidden="true">＋</span></button>
-            <small>From Photos or Files · MOV & MP4</small>
+            <small>From Photos or Files · MOV & MP4</small><p class="picker-help">For a controlled upload test, choose the saved MP4 from Files. Photos sharing options can convert media; Current prevents format conversion.</p>
           </div>
           <div id="source-content" hidden>
             <div class="video-wrap"><video id="preview" controls playsinline preload="metadata" aria-label="Original video preview"></video><span class="video-label">ORIGINAL</span></div>
@@ -93,14 +93,14 @@
       <section id="results" class="card results-card" aria-labelledby="results-title" hidden>
         <div class="card-heading"><div><p class="eyebrow">READY FOR YOUR NEXT POST</p><h2 id="results-title" tabindex="-1">Your video. Ready to share.</h2></div><span class="verified-badge">✓ MP4 verified</span></div>
         <div class="result-layout"><div class="video-wrap result-preview"><video id="result-preview" controls playsinline preload="metadata" aria-label="Processed video preview"></video><span class="video-label">PROCESSED</span></div>
-          <div class="result-info"><dl class="metadata"><div><dt>Resolution</dt><dd id="result-resolution"></dd></div><div><dt>Frame rate</dt><dd id="result-fps"></dd></div><div><dt>Video codec</dt><dd id="result-codec"></dd></div><div><dt>Video processing</dt><dd id="result-mode"></dd></div><div class="full"><dt>HDR status</dt><dd id="result-hdr"></dd></div><div><dt>Audio codec</dt><dd id="result-audio"></dd></div><div><dt>Actual output size</dt><dd id="result-size"></dd></div><div><dt>Processing time</dt><dd id="result-time"></dd></div></dl>
+          <div class="result-info"><dl class="metadata"><div><dt>Resolution</dt><dd id="result-resolution"></dd></div><div><dt>Frame rate</dt><dd id="result-fps"></dd></div><div><dt>Video codec</dt><dd id="result-codec"></dd></div><div><dt>Video processing</dt><dd id="result-mode"></dd></div><div class="full"><dt>HDR status</dt><dd id="result-hdr"></dd></div><div class="full"><dt>MP4 layout</dt><dd id="result-container"></dd></div><div><dt>Audio codec</dt><dd id="result-audio"></dd></div><div><dt>Actual output size</dt><dd id="result-size"></dd></div><div><dt>Processing time</dt><dd id="result-time"></dd></div></dl>
             <div class="comparison"><div><span>Original</span><b id="compare-before"></b></div><span aria-hidden="true">→</span><div><span>Actual output</span><b id="compare-after"></b></div><div><span>Estimated output</span><b id="compare-estimate"></b></div><small id="compare-change"></small><small id="size-outcome"></small></div>
             <button id="share" class="button primary" type="button">Save to Photos <span aria-hidden="true">↗</span></button>
             <a id="download" class="button secondary" download>Save to Files / Download MP4 <span aria-hidden="true">↓</span></a>
             <p class="save-help">On iPhone, choose <b>Save Video</b> or <b>Save to Files</b> in the Share Sheet. Available actions depend on iOS.</p>
           </div>
         </div>
-        <div class="tiktok-guide"><b>Next stop: TikTok.</b><p>Save the MP4 → open TikTok → tap + → Upload → choose your exported video. Enable HD / high-quality upload if available. Review sound and sync before posting.</p><small>TikTok may recompress video. Resolution, FPS, HDR and bitrate are not guaranteed after upload.</small></div>
+        <div class="tiktok-guide"><b>Next stop: TikTok.</b><p>Save the MP4 → open TikTok → tap + → Upload → choose your exported video. Enable HD / high-quality upload if available. For comparisons, select the exported MP4 from Files and keep account, privacy, edits and viewing conditions the same. Review sound and sync before posting.</p><small>TikTok may recompress video. Resolution, FPS, HDR and bitrate are not guaranteed after upload.</small></div>
         <button id="another" class="button text-button another" type="button">＋ Process another video</button>
       </section>
     </section>

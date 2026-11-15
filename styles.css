@@ -7,3 +7,5 @@
 .size-estimate{margin-top:13px;margin-bottom:15px}.output-summary #size-note{margin:0;max-width:none}.settings-card select{font-size:11px}
 
 .field-row.mode-field{display:grid;grid-template-columns:1fr;gap:8px}.mode-field select{width:100%;font-size:12px}.mode-field+ .field-help{max-width:none}
+
+.dropzone .picker-help{font-size:10px;max-width:300px;margin:14px 0 0;line-height:1.65;color:var(--muted)}

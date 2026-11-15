@@ -4,6 +4,7 @@ import { processingPlan } from './modes.js';
 import { videoMetadata } from './video-metadata.js';
 import { smartCopy, verifyTrack } from './smart-copy.js';
 import { analyzeSource } from './analysis.js';
+import { frontloadMp4 } from './fast-start.js';
 
 export async function timeline(track, frameRate = false) {
   const times = [];
@@ -62,8 +63,9 @@ export async function convert(file, progress, signal, settings = {}) {
     await conversion.execute();
     signal.throwIfAborted();
     progress(95, 'Mengesahkan MP4, codec dan timestamp…');
-    const blob = new Blob([target.buffer], { type: 'video/mp4' });
+    const muxed = new Blob([target.buffer], { type: 'video/mp4' });
     target.buffer = null;
+    const finalizedMp4 = await frontloadMp4(muxed,signal), blob = finalizedMp4.blob;
     verified = new Input({ source: new BlobSource(blob), formats: ALL_FORMATS });
     const ov = await verified.getPrimaryVideoTrack(), oa = await verified.getPrimaryAudioTrack();
     if (!ov || !oa || await ov.getCodec() !== 'hevc' || await oa.getCodec() !== 'aac' ||
@@ -74,7 +76,7 @@ export async function convert(file, progress, signal, settings = {}) {
     if (!await ov.canDecode() || !await oa.canDecode()) throw Error('Safari ini tidak boleh memainkan codec output. Fail tidak dieksport.');
     completed = true;
     const stats = await ov.computePacketStats();
-    return { blob, ...size, fps: stats.averagePacketRate, codec: await ov.getCodecParameterString(), audioCodec: await oa.getCodecParameterString(), bitrate, audioCopied: copyAudio, estimatedSize: config.estimatedSize, targetSize: config.targetSize, videoCopied:false, processingMode:plan.mode==='custom'?'Custom Encoding':'HEVC Conversion', hdrStatus:'HDR not preserved — SDR/unknown 8-bit source re-encoded' };
+    return { blob, ...size, fps: stats.averagePacketRate, codec: await ov.getCodecParameterString(), audioCodec: await oa.getCodecParameterString(), bitrate, audioCopied: copyAudio, estimatedSize: config.estimatedSize, targetSize: config.targetSize, videoCopied:false, processingMode:plan.mode==='custom'?'Custom Encoding':'HEVC Conversion', hdrStatus:'HDR not preserved — SDR/unknown 8-bit source re-encoded', containerNote:finalizedMp4.note, fastStart:finalizedMp4.fastStart };
   } finally {
     signal.removeEventListener('abort', abort);
     if (!completed) {

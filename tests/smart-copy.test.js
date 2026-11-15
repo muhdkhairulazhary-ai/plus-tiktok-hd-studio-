@@ -8,6 +8,7 @@ import {convert} from '../src/converter.js';
 import {smartCopy,verifyTrack} from '../src/smart-copy.js';
 import {Input,BlobSource,ALL_FORMATS} from 'mediabunny';
 import {inspect} from '../src/metadata.js';
+import {listBoxes} from '../src/hdr.js';
 import {processingPlan} from '../src/modes.js';
 const available=spawnSync('ffmpeg',['-version']).status===0;
 const run=(cmd,args)=>execFileSync(cmd,args,{encoding:'utf8',stdio:['ignore','pipe','pipe']});
@@ -28,7 +29,9 @@ for(const [kind,extension] of [['sdr','mov'],['sdr','mp4'],['hlg','mov'],['hlg',
     assert.equal(meta.hdr.label,kind==='sdr'?'SDR':kind==='hlg'?'HLG HDR':'HDR10');
     assert.equal(processingPlan(meta,{}).mode,'smart');
     const result=await convert(blob,()=>{},new AbortController().signal);
-    assert.ok(result.videoCopied);assert.ok(result.audioCopied);writeFileSync(dest,new Uint8Array(await result.blob.arrayBuffer()));
+    assert.ok(result.videoCopied);assert.ok(result.audioCopied);assert.ok(result.fastStart);
+    const layout=await listBoxes(result.blob,0,result.blob.size);assert.ok(layout.find(b=>b.type==='moov').start<layout.find(b=>b.type==='mdat').start);
+    writeFileSync(dest,new Uint8Array(await result.blob.arrayBuffer()));
     const probe=path=>JSON.parse(run('ffprobe',['-v','error','-show_streams','-show_packets','-show_data_hash','sha256','-of','json',path]));
     const a=probe(src),b=probe(dest);
     assert.equal(b.streams[0].profile,a.streams[0].profile);assert.ok(a.streams[0].extradata_hash);assert.equal(b.streams[0].extradata_hash,a.streams[0].extradata_hash);
@@ -48,7 +51,7 @@ for(const [kind,extension] of [['sdr','mov'],['sdr','mp4'],['hlg','mov'],['hlg',
       assert.match(result.hdrStatus,/HDR10 preserved/);
     }
     const second=await smartCopy(blob,()=>{},new AbortController().signal);assert.ok(second.videoCopied);
-    for(const phase of [1,78,88]) {const cancel=new AbortController();await assert.rejects(smartCopy(blob,p=>{if(p>=phase)cancel.abort();},cancel.signal),{name:'AbortError'});}
+    for(const phase of [1,76,78,88]) {const cancel=new AbortController();await assert.rejects(smartCopy(blob,p=>{if(p>=phase)cancel.abort();},cancel.signal),{name:'AbortError'});}
   } finally {rmSync(dir,{recursive:true,force:true});}
 });
 test('VFR MOV rotation, real H.264 routing, corrupted output hashes and unsupported metadata',{skip:!available},async()=>{

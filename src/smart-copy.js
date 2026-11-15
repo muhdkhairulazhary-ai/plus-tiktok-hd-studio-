@@ -1,6 +1,7 @@
 import { Input, BlobSource, ALL_FORMATS, Output, BufferTarget, Mp4OutputFormat, EncodedPacketSink, EncodedVideoPacketSource, EncodedAudioPacketSource } from 'mediabunny';
 import { videoMetadata } from './video-metadata.js';
 import { assertCopyHDR, hdrLabel } from './hdr.js';
+import { frontloadMp4 } from './fast-start.js';
 const sameBytes=(a,b)=>a?.length===b?.length && a?.every((v,i)=>v===b[i]);
 const configBytes=config=>config?.description?new Uint8Array(config.description.buffer??config.description,config.description.byteOffset??0,config.description.byteLength):null;
 const digest=async data=>new Uint8Array(await globalThis.crypto.subtle.digest('SHA-256',data));
@@ -60,7 +61,9 @@ export async function smartCopy(file, progress, signal, settings={}) {
       }
     } finally {await vi.return();await ai.return();}
     vSource.close();aSource.close();await output.finalize();finalized=true;signal.throwIfAborted();
-    const blob=new Blob([target.buffer],{type:'video/mp4'});target.buffer=null;
+    const muxed=new Blob([target.buffer],{type:'video/mp4'});target.buffer=null;
+    progress(76,'Finalizing standard MP4 index for progressive access…');
+    const finalizedMp4=await frontloadMp4(muxed,signal),blob=finalizedMp4.blob;
     check=new Input({source:new BlobSource(blob),formats:ALL_FORMATS});
     const ov=await check.getPrimaryVideoTrack(),oa=await check.getPrimaryAudioTrack();
     if(!ov || !oa || await ov.getCodec()!=='hevc' || await oa.getCodecParameterString()!==await audio.getCodecParameterString()) throw Error('Smart Copy MP4 codec verification failed.');
@@ -78,7 +81,7 @@ export async function smartCopy(file, progress, signal, settings={}) {
     await verifyTrack(audio,oa,signal,verifiedVideo.offset,count=>{if(count%32===0 || count===audioCount)progress(88+Math.floor(count/audioCount*8),'Verifying AAC packet hashes and A/V sync…');});
     const label=hdrLabel(meta.hdr),hdrPreserved=['HLG HDR','HDR10'].includes(label);
     const stats=await ov.computePacketStats();done=true;
-    return {blob,width,height,fps:stats.averagePacketRate,codec:outMeta.codecString,audioCodec:await oa.getCodecParameterString(),audioCopied:true,videoCopied:true,processingMode:'Smart Copy',hdrStatus:hdrPreserved?`${label} preserved — verified configuration, color and packets`:label==='SDR'?'SDR — copied and verified':'HDR not verified (unknown source color metadata)',estimatedSize:null,targetSize:null};
+    return {blob,width,height,fps:stats.averagePacketRate,codec:outMeta.codecString,audioCodec:await oa.getCodecParameterString(),audioCopied:true,videoCopied:true,processingMode:'Smart Copy',hdrStatus:hdrPreserved?`${label} preserved — verified configuration, color and packets`:label==='SDR'?'SDR — copied and verified':'HDR not verified (unknown source color metadata)',estimatedSize:null,targetSize:null,containerNote:finalizedMp4.note,fastStart:finalizedMp4.fastStart};
   } finally {
     signal.removeEventListener('abort',abort);
     if(!done && output && !finalized) await output.cancel().catch(()=>{});
